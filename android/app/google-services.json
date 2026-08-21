@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "616518085043",
+    "project_id": "trabajohub-5f023",
+    "storage_bucket": "trabajohub-5f023.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:616518085043:android:b3c6a8e7693d042f2343c6",
+        "android_client_info": {
+          "package_name": "com.nikoliahealthsystem.trabajo_hub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDKMBHeZVGGFsZd7LkcMRGiCYln1W6opQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
