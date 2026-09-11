@@ -13,15 +13,19 @@ final casesApiProvider = Provider<CasesApi>((ref) {
 });
 
 final casesRepositoryProvider = Provider<CasesRepository>((ref) {
-  return CasesRepositoryImpl(ref.watch(casesApiProvider), ref.watch(appCacheProvider));
+  return CasesRepositoryImpl(
+    ref.watch(casesApiProvider),
+    ref.watch(appCacheProvider),
+  );
 });
 
-final casesProvider =
-StateNotifierProvider<CasesNotifier, CasesState>((ref) {
+final casesProvider = StateNotifierProvider<CasesNotifier, CasesState>((ref) {
   return CasesNotifier(ref.watch(casesRepositoryProvider));
 });
 
-final caseDetailProvider =
-FutureProvider.family<dynamic, String>((ref, id) async {
+final caseDetailProvider = FutureProvider.family<dynamic, String>((
+  ref,
+  id,
+) async {
   return ref.watch(casesRepositoryProvider).getCase(id);
 });

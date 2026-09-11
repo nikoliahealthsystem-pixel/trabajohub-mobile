@@ -8,11 +8,7 @@ class SurveyScreen extends ConsumerStatefulWidget {
   final String shiftId;
   final String visitId;
 
-  const SurveyScreen({
-    super.key,
-    required this.shiftId,
-    required this.visitId,
-  });
+  const SurveyScreen({super.key, required this.shiftId, required this.visitId});
 
   @override
   ConsumerState<SurveyScreen> createState() => _SurveyScreenState();
@@ -43,24 +39,22 @@ class _SurveyScreenState extends ConsumerState<SurveyScreen> {
       body: Column(
         children: [
           _buildHeader(context, state),
-          Expanded(
-            child: _buildBody(state, notifier),
-          ),
+          Expanded(child: _buildBody(state, notifier)),
         ],
       ),
     );
   }
 
   Widget _buildHeader(BuildContext context, SurveyState state) {
-    final answeredCount = state.answers.values.where((a) => a.isNotEmpty).length;
+    final answeredCount = state.answers.values
+        .where((a) => a.isNotEmpty)
+        .length;
     final totalQuestions = state.survey?.questions.length ?? 0;
     final progress = totalQuestions > 0 ? answeredCount / totalQuestions : 0.0;
 
     return Container(
       width: double.maxFinite,
-      decoration: const BoxDecoration(
-        gradient: ColorConstants.appGradient,
-      ),
+      decoration: const BoxDecoration(gradient: ColorConstants.appGradient),
       padding: EdgeInsets.fromLTRB(
         20,
         MediaQuery.of(context).padding.top + 14,
@@ -82,10 +76,7 @@ class _SurveyScreenState extends ConsumerState<SurveyScreen> {
             const SizedBox(height: 4),
             Text(
               state.survey!.title,
-              style: const TextStyle(
-                color: Colors.white70,
-                fontSize: 15,
-              ),
+              style: const TextStyle(color: Colors.white70, fontSize: 15),
             ),
             const SizedBox(height: 12),
             // Progress
@@ -121,9 +112,7 @@ class _SurveyScreenState extends ConsumerState<SurveyScreen> {
 
   Widget _buildBody(SurveyState state, SurveyNotifier notifier) {
     if (state.isLoading) {
-      return  Center(
-        child: CircularProgressIndicator(color: accentColor),
-      );
+      return Center(child: CircularProgressIndicator(color: accentColor));
     }
 
     if (state.error != null) {
@@ -138,15 +127,28 @@ class _SurveyScreenState extends ConsumerState<SurveyScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-               Icon(state.error!.contains("already")? Icons.check_circle:Icons.error_outline, size: 64, color:state.error!.contains("already")? Colors.green: Color(0xFFE24B4A)),
+              Icon(
+                state.error!.contains("already")
+                    ? Icons.check_circle
+                    : Icons.error_outline,
+                size: 64,
+                color: state.error!.contains("already")
+                    ? Colors.green
+                    : Color(0xFFE24B4A),
+              ),
               const SizedBox(height: 16),
               Text(
                 title, // Uses the dynamic title
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(height: 8),
               Text(
-                state.error!.contains("already")? "Your Response As Already been Recorded" :state.error!,
+                state.error!.contains("already")
+                    ? "Your Response As Already been Recorded"
+                    : state.error!,
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: Color(0xFF536C79)),
               ),
@@ -179,7 +181,7 @@ class _SurveyScreenState extends ConsumerState<SurveyScreen> {
     }
 
     final allAnswered = state.survey!.questions.every(
-          (q) => state.answers.containsKey(q.id) && state.answers[q.id]!.isNotEmpty,
+      (q) => state.answers.containsKey(q.id) && state.answers[q.id]!.isNotEmpty,
     );
 
     return RefreshIndicator(
@@ -208,15 +210,17 @@ class _SurveyScreenState extends ConsumerState<SurveyScreen> {
 
           const SizedBox(height: 20),
 
-          ...state.survey!.questions.map((q) => Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: SurveyQuestionWidget(
-              question: q,
-              currentAnswer: state.answers[q.id],
-              onAnswerChanged: (answer) =>
-                  notifier.updateAnswer(q.id, answer),
+          ...state.survey!.questions.map(
+            (q) => Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: SurveyQuestionWidget(
+                question: q,
+                currentAnswer: state.answers[q.id],
+                onAnswerChanged: (answer) =>
+                    notifier.updateAnswer(q.id, answer),
+              ),
             ),
-          )),
+          ),
 
           const SizedBox(height: 32),
 
@@ -225,20 +229,22 @@ class _SurveyScreenState extends ConsumerState<SurveyScreen> {
             onPressed: state.isSubmitting || !allAnswered
                 ? null
                 : () async {
-              final success = await notifier.submitSurvey(
-                widget.shiftId,
-                widget.visitId,
-              );
-              if (success && mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Thank you! Survey submitted successfully.'),
-                    backgroundColor: Color(0xFF10B981),
-                  ),
-                );
-                Navigator.pop(context, true);
-              }
-            },
+                    final success = await notifier.submitSurvey(
+                      widget.shiftId,
+                      widget.visitId,
+                    );
+                    if (success && mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Thank you! Survey submitted successfully.',
+                          ),
+                          backgroundColor: Color(0xFF10B981),
+                        ),
+                      );
+                      Navigator.pop(context, true);
+                    }
+                  },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF0A7D95),
               foregroundColor: Colors.white,
@@ -250,20 +256,22 @@ class _SurveyScreenState extends ConsumerState<SurveyScreen> {
             ),
             child: state.isSubmitting
                 ? const SizedBox(
-              height: 24,
-              width: 24,
-              child: CircularProgressIndicator(
-                color: Colors.white,
-                strokeWidth: 2.5,
-              ),
-            )
+                    height: 24,
+                    width: 24,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2.5,
+                    ),
+                  )
                 : Text(
-              allAnswered ? 'Submit Survey' : 'Answer all questions to continue',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+                    allAnswered
+                        ? 'Submit Survey'
+                        : 'Answer all questions to continue',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
           ),
 
           if (state.successMessage != null)
@@ -272,7 +280,10 @@ class _SurveyScreenState extends ConsumerState<SurveyScreen> {
               child: Text(
                 state.successMessage!,
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: Color(0xFF10B981), fontWeight: FontWeight.w500),
+                style: const TextStyle(
+                  color: Color(0xFF10B981),
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
         ],

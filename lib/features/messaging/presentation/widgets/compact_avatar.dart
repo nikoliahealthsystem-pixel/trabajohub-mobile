@@ -27,33 +27,27 @@ class CompactAvatar extends StatelessWidget {
         height: diameter,
         child: avatarUrl.isNotEmpty
             ? Image.network(
-          avatarUrl,
-          key: ValueKey(avatarUrl),
-          width: diameter,
-          height: diameter,
-          fit: BoxFit.cover,
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) return child;
+                avatarUrl,
+                key: ValueKey(avatarUrl),
+                width: diameter,
+                height: diameter,
+                fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
 
-            return _InitialsAvatar(
-              initials: user.initials,
-              radius: radius,
-            );
-          },
-          errorBuilder: (context, error, stackTrace) {
-            debugPrint('CompactAvatar failed to load image: $error');
-            debugPrint('CompactAvatar URL: $avatarUrl');
-
-            return _InitialsAvatar(
-              initials: user.initials,
-              radius: radius,
-            );
-          },
-        )
-            : _InitialsAvatar(
-          initials: user.initials,
-          radius: radius,
-        ),
+                  return _InitialsAvatar(
+                    initials: user.initials,
+                    radius: radius,
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return _InitialsAvatar(
+                    initials: user.initials,
+                    radius: radius,
+                  );
+                },
+              )
+            : _InitialsAvatar(initials: user.initials, radius: radius),
       ),
     );
 
@@ -87,10 +81,7 @@ class _InitialsAvatar extends StatelessWidget {
   final String initials;
   final double radius;
 
-  const _InitialsAvatar({
-    required this.initials,
-    required this.radius,
-  });
+  const _InitialsAvatar({required this.initials, required this.radius});
 
   @override
   Widget build(BuildContext context) {
@@ -98,10 +89,7 @@ class _InitialsAvatar extends StatelessWidget {
       width: radius * 2,
       height: radius * 2,
       alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Colors.grey,
-        shape: BoxShape.circle,
-      ),
+      decoration: BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
       child: Text(
         initials,
         maxLines: 1,

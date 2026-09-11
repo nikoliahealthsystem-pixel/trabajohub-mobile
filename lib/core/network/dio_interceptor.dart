@@ -29,7 +29,8 @@ class AuthInterceptor extends Interceptor {
       }
 
       if (data is Map) {
-        errorMessage = data['message']?.toString() ??
+        errorMessage =
+            data['message']?.toString() ??
             data['error']?.toString() ??
             data['msg']?.toString() ??
             data['detail']?.toString() ??
@@ -49,10 +50,7 @@ class AuthInterceptor extends Interceptor {
   }
 
   @override
-  void onResponse(
-      Response response,
-      ResponseInterceptorHandler handler,
-      ) async {
+  void onResponse(Response response, ResponseInterceptorHandler handler) async {
     // final dateHeader = response.headers.value('date');
     //
     // if (dateHeader != null &&
@@ -72,7 +70,10 @@ class AuthInterceptor extends Interceptor {
   }
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  void onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     final token = await AppStorage.getAccessToken();
     if (token != null) {
       options.headers['Authorization'] = 'Bearer $token';
@@ -122,10 +123,16 @@ class AuthInterceptor extends Interceptor {
       case 400:
       case 404:
       case 409:
-      // Keep backend message, e.g. "Resource not found"
+        // Keep backend message, e.g. "Resource not found"
         break;
       case 403:
-        errorMessage = "You don't have permission to perform this action.";
+        // Preserve specific backend authorization/compliance messages.
+        // The API already knows the actual reason for the 403.
+        if (errorMessage.trim().isEmpty ||
+            errorMessage.toLowerCase() == 'forbidden') {
+          errorMessage =
+              "You can't perform this action with your current account access.";
+        }
         break;
       case 500:
         errorMessage = "Server error. Please try again later.";

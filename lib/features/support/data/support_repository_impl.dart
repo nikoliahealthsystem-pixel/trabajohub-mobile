@@ -5,6 +5,7 @@ import '../../../core/cache/cache_ttl.dart';
 import 'api/support_api.dart';
 import 'models/support_ticket.dart';
 import 'support_repository.dart';
+
 class SupportRepositoryImpl implements SupportRepository {
   final SupportApi _api;
   final AppCache _cache;
@@ -20,11 +21,11 @@ class SupportRepositoryImpl implements SupportRepository {
     required String message,
     required String userId,
   }) async {
-
     final payload = {
       "name": name.trim(),
       "email": email.trim(),
-      "subject": "$category: ${message.length > 60 ? '${message.substring(0, 60)}…' : message}",
+      "subject":
+          "$category: ${message.length > 60 ? '${message.substring(0, 60)}…' : message}",
       "category": category,
       "message": message.trim(),
       if (userId != null) "userId": userId,
@@ -42,13 +43,10 @@ class SupportRepositoryImpl implements SupportRepository {
     String? status,
     String? search,
   }) async {
-    final key = CacheKeys.tickets(
-      page: page,
-      status: status,
-      search: search,
-    );
+    final key = CacheKeys.tickets(page: page, status: status, search: search);
 
-    final cached = _cache.get<({List<TicketListItem> tickets, int total, bool hasMore})>(key);
+    final cached = _cache
+        .get<({List<TicketListItem> tickets, int total, bool hasMore})>(key);
 
     if (cached != null && !cached.isStale) {
       return cached.data;
@@ -66,9 +64,9 @@ class SupportRepositoryImpl implements SupportRepository {
       final pagination = raw['pagination'] as Map<String, dynamic>? ?? {};
 
       final result = (
-      tickets: data.map((j) => TicketListItem.fromJson(j)).toList(),
-      total: pagination['total'] as int? ?? 0,
-      hasMore: pagination['hasNext'] as bool? ?? false,
+        tickets: data.map((j) => TicketListItem.fromJson(j)).toList(),
+        total: pagination['total'] as int? ?? 0,
+        hasMore: pagination['hasNext'] as bool? ?? false,
       );
 
       _cache.set(key, result, CacheTtl.tickets);
@@ -108,11 +106,7 @@ class SupportRepositoryImpl implements SupportRepository {
     required String body,
     bool isInternal = false,
   }) async {
-    await _api.addReply(
-      ticketId: ticketId,
-      body: body,
-      isInternal: isInternal,
-    );
+    await _api.addReply(ticketId: ticketId, body: body, isInternal: isInternal);
 
     // Invalidate related cache
     _cache.invalidate(CacheKeys.ticketDetail(ticketId));

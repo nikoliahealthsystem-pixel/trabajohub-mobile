@@ -4,16 +4,10 @@ class LoginRequest {
   final String email;
   final String password;
 
-  LoginRequest({
-    required this.email,
-    required this.password,
-  });
+  LoginRequest({required this.email, required this.password});
 
   Map<String, dynamic> toJson() {
-    return {
-      "email": email,
-      "password": password,
-    };
+    return {"email": email, "password": password};
   }
 }
 
@@ -28,15 +22,11 @@ class LoginResponse {
     required this.user,
   });
 
-  factory LoginResponse.fromJson(
-      Map<String, dynamic> json,
-      ) {
+  factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
       accessToken: json["accessToken"],
       refreshToken: json["refreshToken"],
-      user: UserModel.fromJson(
-        json["user"],
-      ),
+      user: UserModel.fromJson(json["user"]),
     );
   }
 }
@@ -76,14 +66,10 @@ class RegisterRequest {
 class ForgotPasswordRequest {
   final String email;
 
-  ForgotPasswordRequest({
-    required this.email,
-  });
+  ForgotPasswordRequest({required this.email});
 
   Map<String, dynamic> toJson() {
-    return {
-      "email": email,
-    };
+    return {"email": email};
   }
 }
 
@@ -91,16 +77,10 @@ class ResetPasswordRequest {
   final String token;
   final String password;
 
-  ResetPasswordRequest({
-    required this.token,
-    required this.password,
-  });
+  ResetPasswordRequest({required this.token, required this.password});
 
   Map<String, dynamic> toJson() {
-    return {
-      "token": token,
-      "password": password,
-    };
+    return {"token": token, "password": password};
   }
 }
 
@@ -108,15 +88,9 @@ class VerifyEmailRequest {
   final String userId;
   final String code;
 
-  VerifyEmailRequest({
-    required this.userId,
-    required this.code,
-  });
+  VerifyEmailRequest({required this.userId, required this.code});
 
   Map<String, dynamic> toJson() {
-    return {
-      "userId": userId,
-      "code": code,
-    };
+    return {"userId": userId, "code": code};
   }
 }

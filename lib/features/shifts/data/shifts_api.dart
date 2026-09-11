@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import '../../../core/network/dio_client.dart';
 import 'models/shift_model.dart';
 import 'models/shift_assignment_model.dart';
+import 'models/cancellation_preview.dart';
 
 class ShiftsApi {
   final DioClient _client;
@@ -39,14 +40,14 @@ class ShiftsApi {
   Future<Map<String, dynamic>> fetchMyShifts({
     int page = 1,
     int limit = 20,
-    String? status,
+    String? category,
   }) async {
     final response = await _client.instance.get(
       '/shifts/nurse/my-shifts',
       queryParameters: {
         'page': page,
         'limit': limit,
-        if (status != null) 'status': status,
+        if (category != null) 'category': category,
       },
     );
     return response.data as Map<String, dynamic>;
@@ -54,7 +55,6 @@ class ShiftsApi {
 
   Future<Map<String, dynamic>> fetchShiftById(String id) async {
     final response = await _client.instance.get('/shifts/$id');
-    debugPrint(response.data.toString());
     return response.data as Map<String, dynamic>;
   }
 
@@ -63,10 +63,32 @@ class ShiftsApi {
     return response.data as Map<String, dynamic>;
   }
 
-  Future<void> cancelShift(String shiftId, {String? reason}) async {
-    await _client.instance.patch(
-      '/shifts/$shiftId/cancel',
-      data: {'reason': reason},
+  Future<CancellationPreview> fetchCancellationPreview(String shiftId) async {
+    final response = await _client.instance.get(
+      '/shifts/$shiftId/cancellation-preview',
     );
+
+    final raw = response.data as Map<String, dynamic>;
+    final data = raw['data'] as Map<String, dynamic>;
+
+    return CancellationPreview.fromJson(data);
+  }
+
+  Future<Map<String, dynamic>> cancelShift(
+    String shiftId, {
+    required String reason,
+    required double expectedPenaltyAmount,
+    required String expectedPolicyVersion,
+  }) async {
+    final response = await _client.instance.patch(
+      '/shifts/$shiftId/cancel',
+      data: {
+        'reason': reason,
+        'expectedPenaltyAmount': expectedPenaltyAmount,
+        'expectedPolicyVersion': expectedPolicyVersion,
+      },
+    );
+
+    return response.data as Map<String, dynamic>;
   }
 }

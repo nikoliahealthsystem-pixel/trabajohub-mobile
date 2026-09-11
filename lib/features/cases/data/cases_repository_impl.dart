@@ -19,20 +19,28 @@ class CasesRepositoryImpl implements CasesRepository {
     bool? isActive,
     String? search,
   }) async {
-    final key = CacheKeys.cases(page: page, visitType: visitType, search: search);
-    final cached =
-    _cache.get<({List<CaseModel> cases, int total, bool hasMore})>(key);
+    final key = CacheKeys.cases(
+      page: page,
+      visitType: visitType,
+      search: search,
+    );
+    final cached = _cache
+        .get<({List<CaseModel> cases, int total, bool hasMore})>(key);
     if (cached != null && !cached.isStale) return cached.data;
 
     final raw = await _api.fetchCases(
-        page: page, limit: limit,
-        visitType: visitType, isActive: isActive, search: search);
+      page: page,
+      limit: limit,
+      visitType: visitType,
+      isActive: isActive,
+      search: search,
+    );
     final data = raw['data'] as List? ?? [];
     final pagination = raw['pagination'] as Map<String, dynamic>? ?? {};
     final result = (
-    cases: data.map((j) => CaseModel.fromJson(j)).toList(),
-    total: pagination['total'] as int? ?? 0,
-    hasMore: pagination['hasNext'] as bool? ?? false,
+      cases: data.map((j) => CaseModel.fromJson(j)).toList(),
+      total: pagination['total'] as int? ?? 0,
+      hasMore: pagination['hasNext'] as bool? ?? false,
     );
     _cache.set(key, result, CacheTtl.cases);
     return result;

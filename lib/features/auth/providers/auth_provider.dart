@@ -12,45 +12,33 @@ import '../data/models/user_model.dart';
 import '../state/auth_notifier.dart';
 import '../state/auth_state.dart';
 
-final dioProvider = Provider<Dio>(
-      (ref) => DioClient.dio,
-);
+final dioProvider = Provider<Dio>((ref) => DioClient.dio);
 
 final authApiProvider = Provider<AuthApi>(
-      (ref) => AuthApi(
-    ref.read(dioProvider),
-  ),
+  (ref) => AuthApi(ref.read(dioProvider)),
 );
 
 final authRepositoryProvider = Provider<AuthRepository>(
-      (ref) => AuthRepositoryImpl(
-    ref.read(authApiProvider),
-    ref.read(appCacheProvider),
-      ),
+  (ref) =>
+      AuthRepositoryImpl(ref.read(authApiProvider), ref.read(appCacheProvider)),
 );
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>(
-      (ref) => AuthNotifier(
+  (ref) => AuthNotifier(
     ref.read(authRepositoryProvider),
-        ref.read(socketClientProvider),
-      ),
+    ref.read(socketClientProvider),
+  ),
 );
 
-final authCheckProvider = FutureProvider<bool>(
-      (ref) async {
-    final accessToken =
-    await AppStorage.getAccessToken();
+final authCheckProvider = FutureProvider<bool>((ref) async {
+  final accessToken = await AppStorage.getAccessToken();
 
-    final refreshToken =
-    await AppStorage.getRefreshToken();
+  final refreshToken = await AppStorage.getRefreshToken();
 
-    return accessToken != null &&
-        refreshToken != null;
-  },
-);
+  return accessToken != null && refreshToken != null;
+});
 
 final splashDelayProvider = FutureProvider<bool>((ref) async {
-
   // Wait for 5 seconds
   await Future.delayed(const Duration(seconds: 5));
 
@@ -58,10 +46,8 @@ final splashDelayProvider = FutureProvider<bool>((ref) async {
   return ref.watch(authCheckProvider.future);
 });
 
-final currentUserProvider =
-Provider<UserModel?>(
-      (ref) =>
-  ref.watch(authProvider).user,
+final currentUserProvider = Provider<UserModel?>(
+  (ref) => ref.watch(authProvider).user,
 );
 
 // usage

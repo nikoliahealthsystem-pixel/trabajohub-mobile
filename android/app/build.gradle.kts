@@ -1,25 +1,43 @@
-import java.util.Properties
 import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     id("com.android.application")
-    // START: FlutterFire Configuration
     id("com.google.gms.google-services")
-    // END: FlutterFire Configuration
     id("kotlin-android")
     id("dev.flutter.flutter-gradle-plugin")
 }
 
-// Load keystore properties
 val keystoreProperties = Properties()
 val keystorePropertiesFile = rootProject.file("key.properties")
 
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+if (!keystorePropertiesFile.exists()) {
+    throw GradleException(
+        "Missing android/key.properties. Release signing cannot continue."
+    )
 }
+
+keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
+val releaseStoreFile =
+    keystoreProperties["storeFile"]?.toString()
+        ?: throw GradleException("Missing storeFile in android/key.properties")
+
+val releaseStorePassword =
+    keystoreProperties["storePassword"]?.toString()
+        ?: throw GradleException("Missing storePassword in android/key.properties")
+
+val releaseKeyAlias =
+    keystoreProperties["keyAlias"]?.toString()
+        ?: throw GradleException("Missing keyAlias in android/key.properties")
+
+val releaseKeyPassword =
+    keystoreProperties["keyPassword"]?.toString()
+        ?: throw GradleException("Missing keyPassword in android/key.properties")
 
 android {
     namespace = "com.nikoliahealthsystem.trabajo_hub"
+
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -41,13 +59,12 @@ android {
         versionName = flutter.versionName
     }
 
-    // Signing configuration
     signingConfigs {
         create("release") {
-            keyAlias = keystoreProperties["keyAlias"] as String
-            keyPassword = keystoreProperties["keyPassword"] as String
-            storeFile = file(keystoreProperties["storeFile"] as String)
-            storePassword = keystoreProperties["storePassword"] as String
+            keyAlias = releaseKeyAlias
+            keyPassword = releaseKeyPassword
+            storeFile = file(releaseStoreFile)
+            storePassword = releaseStorePassword
         }
     }
 

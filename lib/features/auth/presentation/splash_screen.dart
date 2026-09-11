@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import '../../../active_session.dart';
@@ -19,14 +19,12 @@ class SplashScreen extends ConsumerWidget {
         data: (loggedIn) => loggedIn ? const ActiveSession() : const SignIn(),
         loading: () => const _LoadingView(),
         error: (err, stack) {
-          debugPrint('Auth Check Error: $err');
           return const SignIn();
         },
       ),
     );
   }
 }
-
 
 class _LoadingView extends StatelessWidget {
   const _LoadingView();
@@ -44,10 +42,11 @@ class _LoadingView extends StatelessWidget {
             Container(
               margin: EdgeInsets.symmetric(horizontal: 24),
               child: Lottie.asset(
-              'assets/lottie/splash.json',
-              repeat: true,
-              animate: true,
-            ),),
+                'assets/lottie/splash.json',
+                repeat: true,
+                animate: true,
+              ),
+            ),
             const SizedBox(height: 20),
             Text(
               "Trabajo Heroes",
@@ -55,7 +54,7 @@ class _LoadingView extends StatelessWidget {
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w500,
-                fontSize: 28
+                fontSize: 28,
               ),
             ),
           ],

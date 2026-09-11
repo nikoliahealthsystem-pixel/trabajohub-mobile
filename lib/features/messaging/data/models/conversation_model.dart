@@ -197,15 +197,19 @@ class ConversationModel {
 
   factory ConversationModel.fromJson(Map<String, dynamic> json) {
     final participants = (json['participants'] as List? ?? [])
-        .map((participant) => ConversationParticipant.fromJson(
-      Map<String, dynamic>.from(participant as Map),
-    ))
+        .map(
+          (participant) => ConversationParticipant.fromJson(
+            Map<String, dynamic>.from(participant as Map),
+          ),
+        )
         .toList();
 
     final otherParticipants = (json['otherParticipants'] as List? ?? [])
-        .map((participant) => ConversationParticipant.fromJson(
-      Map<String, dynamic>.from(participant as Map),
-    ))
+        .map(
+          (participant) => ConversationParticipant.fromJson(
+            Map<String, dynamic>.from(participant as Map),
+          ),
+        )
         .toList();
 
     ConversationParticipant? parsedOtherParticipant;
@@ -222,7 +226,8 @@ class ConversationModel {
       parsedLastMessage = ConversationLastMessage.fromJson(
         Map<String, dynamic>.from(json['lastMessage'] as Map),
       );
-    } else if (json['messages'] is List && (json['messages'] as List).isNotEmpty) {
+    } else if (json['messages'] is List &&
+        (json['messages'] as List).isNotEmpty) {
       parsedLastMessage = ConversationLastMessage.fromJson(
         Map<String, dynamic>.from((json['messages'] as List).first as Map),
       );

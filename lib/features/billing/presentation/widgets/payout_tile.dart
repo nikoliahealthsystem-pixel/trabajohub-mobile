@@ -6,33 +6,30 @@ import 'payout_details_modal.dart';
 class PayoutTile extends StatelessWidget {
   final PayoutModel payout;
 
-  const PayoutTile({
-    super.key,
-    required this.payout,
-  });
+  const PayoutTile({super.key, required this.payout});
 
   static const _statusConfig = {
     PayoutStatus.settled: (
-    Color(0xFFDCFCE7),
-    Color(0xFF15803D),
-    Icons.check_circle_outline_rounded,
+      Color(0xFFDCFCE7),
+      Color(0xFF15803D),
+      Icons.check_circle_outline_rounded,
     ),
     PayoutStatus.pending: (
-    Color(0xFFFEF3C7),
-    Color(0xFFB45309),
-    Icons.hourglass_bottom_rounded,
+      Color(0xFFFEF3C7),
+      Color(0xFFB45309),
+      Icons.hourglass_bottom_rounded,
     ),
     PayoutStatus.failed: (
-    Color(0xFFFCEBEB),
-    Color(0xFFB91C1C),
-    Icons.error_outline_rounded,
+      Color(0xFFFCEBEB),
+      Color(0xFFB91C1C),
+      Icons.error_outline_rounded,
     ),
   };
 
   @override
   Widget build(BuildContext context) {
-    final config = _statusConfig[payout.status] ??
-        _statusConfig[PayoutStatus.pending]!;
+    final config =
+        _statusConfig[payout.status] ?? _statusConfig[PayoutStatus.pending]!;
     final bg = config.$1;
     final fg = config.$2;
     final icon = config.$3;
@@ -82,7 +79,9 @@ class PayoutTile extends StatelessWidget {
                         ),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 3),
+                            horizontal: 8,
+                            vertical: 3,
+                          ),
                           decoration: BoxDecoration(
                             color: bg,
                             borderRadius: BorderRadius.circular(8),
@@ -101,31 +100,45 @@ class PayoutTile extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       'Gross: \$${payout.grossCharge.toStringAsFixed(2)}  ·  '
-                          'Fee: \$${payout.systemCommission.toStringAsFixed(2)}',
+                      'Fee: \$${payout.systemCommission.toStringAsFixed(2)}',
                       style: const TextStyle(
-                          fontSize: 12, color: Color(0xFF94A3B4)),
+                        fontSize: 12,
+                        color: Color(0xFF94A3B4),
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        const Icon(Icons.calendar_today_outlined,
-                            size: 11, color: Color(0xFF94A3B4)),
+                        const Icon(
+                          Icons.calendar_today_outlined,
+                          size: 11,
+                          color: Color(0xFF94A3B4),
+                        ),
                         const SizedBox(width: 4),
                         Text(
                           payout.paidAt != null
                               ? '${dateFormat.format(payout.paidAt!)} · ${timeFormat.format(payout.paidAt!)}'
                               : dateFormat.format(payout.createdAt),
                           style: const TextStyle(
-                              fontSize: 11, color: Color(0xFF94A3B4)),
+                            fontSize: 11,
+                            color: Color(0xFF94A3B4),
+                          ),
                         ),
                         if (payout.stripeTransferId != null) ...[
                           const SizedBox(width: 8),
-                          const Icon(Icons.verified_outlined,
-                              size: 11, color: Color(0xFF28D744)),
+                          const Icon(
+                            Icons.verified_outlined,
+                            size: 11,
+                            color: Color(0xFF28D744),
+                          ),
                           const SizedBox(width: 2),
-                          const Text('Stripe',
-                              style: TextStyle(
-                                  fontSize: 10, color: Color(0xFF28D744))),
+                          const Text(
+                            'Stripe',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Color(0xFF28D744),
+                            ),
+                          ),
                         ],
                       ],
                     ),
@@ -134,9 +147,10 @@ class PayoutTile extends StatelessWidget {
                       Text(
                         payout.notes!,
                         style: const TextStyle(
-                            fontSize: 11,
-                            color: Color(0xFF536C79),
-                            fontStyle: FontStyle.italic),
+                          fontSize: 11,
+                          color: Color(0xFF536C79),
+                          fontStyle: FontStyle.italic,
+                        ),
                       ),
                     ],
                   ],
@@ -154,9 +168,7 @@ class PayoutTile extends StatelessWidget {
       context: context,
       barrierDismissible: true,
       builder: (_) => Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         backgroundColor: Colors.white,
         elevation: 0,
         insetPadding: const EdgeInsets.symmetric(horizontal: 24),

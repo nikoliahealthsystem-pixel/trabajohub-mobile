@@ -6,11 +6,7 @@ class TicketTile extends StatelessWidget {
   final TicketListItem ticket;
   final VoidCallback onTap;
 
-  const TicketTile({
-    super.key,
-    required this.ticket,
-    required this.onTap,
-  });
+  const TicketTile({super.key, required this.ticket, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +28,9 @@ class TicketTile extends StatelessWidget {
               height: 4,
               decoration: BoxDecoration(
                 color: colorScheme.$2,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(16),
+                ),
               ),
             ),
             Padding(
@@ -102,7 +100,9 @@ class TicketTile extends StatelessWidget {
                             ),
                             const SizedBox(width: 12),
                             Text(
-                              DateFormat('MMM d, yyyy').format(ticket.createdAt),
+                              DateFormat(
+                                'MMM d, yyyy',
+                              ).format(ticket.createdAt),
                               style: const TextStyle(
                                 fontSize: 12,
                                 color: Color(0xFF64748B),
@@ -116,8 +116,11 @@ class TicketTile extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 6),
                             child: Row(
                               children: [
-                                const Icon(Icons.chat_bubble_outline,
-                                    size: 14, color: Color(0xFF64748B)),
+                                const Icon(
+                                  Icons.chat_bubble_outline,
+                                  size: 14,
+                                  color: Color(0xFF64748B),
+                                ),
                                 const SizedBox(width: 4),
                                 Text(
                                   "${ticket.replyCount} replies",
@@ -133,8 +136,11 @@ class TicketTile extends StatelessWidget {
                     ),
                   ),
 
-                  const Icon(Icons.chevron_right_rounded,
-                      color: Color(0xFF94A3B4), size: 24),
+                  const Icon(
+                    Icons.chevron_right_rounded,
+                    color: Color(0xFF94A3B4),
+                    size: 24,
+                  ),
                 ],
               ),
             ),
@@ -188,7 +194,7 @@ class _StatusBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = _getBadgeColor(status);
-    String statusText = status == "WAITING_ON_USER" ? "AWAITING USER":status;
+    String statusText = status == "WAITING_ON_USER" ? "AWAITING USER" : status;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       decoration: BoxDecoration(

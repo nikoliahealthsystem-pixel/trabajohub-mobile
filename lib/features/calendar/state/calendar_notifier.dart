@@ -16,7 +16,10 @@ class CalendarNotifier extends StateNotifier<CalendarState> {
     required DateTime from,
     required DateTime to,
   }) async {
-    state = state.copyWith(status: CalendarLoadStatus.loading, errorMessage: null);
+    state = state.copyWith(
+      status: CalendarLoadStatus.loading,
+      errorMessage: null,
+    );
     try {
       final activeList = state.activeTypes.isEmpty
           ? null
@@ -52,10 +55,7 @@ class CalendarNotifier extends StateNotifier<CalendarState> {
   // ── Day selection ──────────────────────────────────────────
 
   void selectDay(DateTime day, DateTime focused) {
-    state = state.copyWith(
-      selectedDay: day,
-      focusedDay: focused,
-    );
+    state = state.copyWith(selectedDay: day, focusedDay: focused);
   }
 
   void setFocusedDay(DateTime day) {

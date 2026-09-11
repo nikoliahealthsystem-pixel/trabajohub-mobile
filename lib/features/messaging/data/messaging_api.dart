@@ -17,10 +17,10 @@ class MessagingApi {
   }
 
   Future<Map<String, dynamic>> fetchMessages(
-      String conversationId, {
-        int page = 1,
-        int limit = 50,
-      }) async {
+    String conversationId, {
+    int page = 1,
+    int limit = 50,
+  }) async {
     final response = await _client.instance.get(
       '/messages/conversations/$conversationId/messages',
       queryParameters: {'page': page, 'limit': limit},
@@ -34,10 +34,7 @@ class MessagingApi {
   }) async {
     final response = await _client.instance.post(
       '/messages/conversations',
-      data: {
-        'recipientId': recipientId,
-        if (facilityId != null) 'facilityId': facilityId,
-      },
+      data: {'recipientId': recipientId, 'facilityId': ?facilityId},
     );
     return response.data as Map<String, dynamic>;
   }
@@ -85,10 +82,9 @@ class MessagingApi {
     return response.data as Map<String, dynamic>;
   }
 
-  Future<Map<String, dynamic>> searchUsers(String query) async {
+  Future<Map<String, dynamic>> fetchMessageableRecipients() async {
     final response = await _client.instance.get(
-      '/users/chat',
-      queryParameters: {'search': query, 'page': 1, 'limit': 10},
+      '/messages/messageable-recipients',
     );
     return response.data as Map<String, dynamic>;
   }

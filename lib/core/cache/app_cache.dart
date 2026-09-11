@@ -9,11 +9,7 @@ class AppCache {
   // ── Write ───────────────────────────────────────────────
 
   void set<T>(String key, T data, Duration ttl) {
-    _store[key] = CacheEntry<T>(
-      data: data,
-      cachedAt: DateTime.now(),
-      ttl: ttl,
-    );
+    _store[key] = CacheEntry<T>(data: data, cachedAt: DateTime.now(), ttl: ttl);
   }
 
   // ── Read ────────────────────────────────────────────────

@@ -11,13 +11,14 @@ class TwoFASetupScreen extends ConsumerStatefulWidget {
   const TwoFASetupScreen({super.key});
 
   @override
-  ConsumerState<TwoFASetupScreen> createState() =>
-      _TwoFASetupScreenState();
+  ConsumerState<TwoFASetupScreen> createState() => _TwoFASetupScreenState();
 }
 
 class _TwoFASetupScreenState extends ConsumerState<TwoFASetupScreen> {
-  final List<TextEditingController> _controllers =
-  List.generate(6, (_) => TextEditingController());
+  final List<TextEditingController> _controllers = List.generate(
+    6,
+    (_) => TextEditingController(),
+  );
   final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
 
   // Step 0 = loading QR, 1 = show QR, 2 = confirm code, 3 = success
@@ -75,29 +76,40 @@ class _TwoFASetupScreenState extends ConsumerState<TwoFASetupScreen> {
               gradient: ColorConstants.appGradient,
             ),
             padding: EdgeInsets.fromLTRB(
-                24, MediaQuery.of(context).padding.top + 16, 24, 28),
+              24,
+              MediaQuery.of(context).padding.top + 16,
+              24,
+              28,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 GestureDetector(
                   onTap: () => Navigator.pop(context),
                   child: Container(
-                    width: 38, height: 38,
+                    width: 38,
+                    height: 38,
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Icon(Icons.arrow_back_ios_new_rounded,
-                        color: Colors.white, size: 18),
+                    child: const Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      color: Colors.white,
+                      size: 18,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text('Set up\ntwo-factor auth',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 26,
-                        fontWeight: FontWeight.w700,
-                        height: 1.2)),
+                const Text(
+                  'Set up\ntwo-factor auth',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 26,
+                    fontWeight: FontWeight.w700,
+                    height: 1.2,
+                  ),
+                ),
                 const SizedBox(height: 6),
                 Text(
                   _step == 1
@@ -105,8 +117,7 @@ class _TwoFASetupScreenState extends ConsumerState<TwoFASetupScreen> {
                       : _step == 2
                       ? 'Enter the 6-digit code to confirm'
                       : 'Securing your account',
-                  style:
-                  const TextStyle(color: Colors.white70, fontSize: 14),
+                  style: const TextStyle(color: Colors.white70, fontSize: 14),
                 ),
               ],
             ),
@@ -127,8 +138,8 @@ class _TwoFASetupScreenState extends ConsumerState<TwoFASetupScreen> {
     switch (_step) {
       case 0:
         return const Center(
-            child:
-            CircularProgressIndicator(color: Color(0xFF0A9FBF)));
+          child: CircularProgressIndicator(color: Color(0xFF0A9FBF)),
+        );
 
       case 1:
         return _buildQRStep(authState);
@@ -167,7 +178,8 @@ class _TwoFASetupScreenState extends ConsumerState<TwoFASetupScreen> {
             child: Image.memory(
               // qrCodeUrl is a base64 data URL: "data:image/png;base64,..."
               _base64FromDataUrl(qrCode),
-              width: 220, height: 220,
+              width: 220,
+              height: 220,
               fit: BoxFit.contain,
             ),
           ),
@@ -176,21 +188,23 @@ class _TwoFASetupScreenState extends ConsumerState<TwoFASetupScreen> {
 
         // Manual entry secret
         if (secret != null) ...[
-          const Text('Or enter this code manually:',
-              style: TextStyle(fontSize: 13, color: Color(0xFF536C79))),
+          const Text(
+            'Or enter this code manually:',
+            style: TextStyle(fontSize: 13, color: Color(0xFF536C79)),
+          ),
           const SizedBox(height: 8),
           GestureDetector(
             onTap: () {
               Clipboard.setData(ClipboardData(text: secret));
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                    content: Text('Secret copied to clipboard'),
-                    behavior: SnackBarBehavior.floating),
+                  content: Text('Secret copied to clipboard'),
+                  behavior: SnackBarBehavior.floating,
+                ),
               );
             },
             child: Container(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 16, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               decoration: BoxDecoration(
                 color: const Color(0xFFEAF8FC),
                 borderRadius: BorderRadius.circular(10),
@@ -199,16 +213,22 @@ class _TwoFASetupScreenState extends ConsumerState<TwoFASetupScreen> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(secret,
-                      style: const TextStyle(
-                          fontFamily: 'monospace',
-                          fontSize: 10,
-                          letterSpacing: 2,
-                          color: Color(0xFF0A7D95),
-                          fontWeight: FontWeight.w700)),
+                  Text(
+                    secret,
+                    style: const TextStyle(
+                      fontFamily: 'monospace',
+                      fontSize: 10,
+                      letterSpacing: 2,
+                      color: Color(0xFF0A7D95),
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                   const SizedBox(width: 10),
-                  const Icon(Icons.copy_rounded,
-                      size: 16, color: Color(0xFF0A9FBF)),
+                  const Icon(
+                    Icons.copy_rounded,
+                    size: 16,
+                    color: Color(0xFF0A9FBF),
+                  ),
                 ],
               ),
             ),
@@ -227,14 +247,16 @@ class _TwoFASetupScreenState extends ConsumerState<TwoFASetupScreen> {
           ),
           child: Row(
             children: [
-              const Icon(Icons.info_outline_rounded,
-                  size: 16, color: Color(0xFF536C79)),
+              const Icon(
+                Icons.info_outline_rounded,
+                size: 16,
+                color: Color(0xFF536C79),
+              ),
               const SizedBox(width: 10),
               const Expanded(
                 child: Text(
                   'Use Google Authenticator, Authy, or any TOTP app to scan the QR code.',
-                  style:
-                  TextStyle(fontSize: 12, color: Color(0xFF536C79)),
+                  style: TextStyle(fontSize: 12, color: Color(0xFF536C79)),
                 ),
               ),
             ],
@@ -242,9 +264,11 @@ class _TwoFASetupScreenState extends ConsumerState<TwoFASetupScreen> {
         ),
         const SizedBox(height: 20),
 
-        Button(buttonText: 'I\'ve scanned the code',
-          onPressed: () => setState(() => _step = 2),),
-        SizedBox(height: 12,)
+        Button(
+          buttonText: 'I\'ve scanned the code',
+          onPressed: () => setState(() => _step = 2),
+        ),
+        SizedBox(height: 12),
       ],
     );
   }
@@ -266,7 +290,7 @@ class _TwoFASetupScreenState extends ConsumerState<TwoFASetupScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(
             6,
-                (i) => SizedBox(
+            (i) => SizedBox(
               width: 48,
               child: TextField(
                 controller: _controllers[i],
@@ -275,9 +299,10 @@ class _TwoFASetupScreenState extends ConsumerState<TwoFASetupScreen> {
                 keyboardType: TextInputType.number,
                 maxLength: 1,
                 style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF1A2632)),
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF1A2632),
+                ),
                 decoration: InputDecoration(
                   counterText: '',
                   filled: true,
@@ -285,18 +310,18 @@ class _TwoFASetupScreenState extends ConsumerState<TwoFASetupScreen> {
                   contentPadding: const EdgeInsets.symmetric(vertical: 14),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide:
-                    const BorderSide(color: Color(0xFFE2E8ED)),
+                    borderSide: const BorderSide(color: Color(0xFFE2E8ED)),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide:
-                    const BorderSide(color: Color(0xFFE2E8ED)),
+                    borderSide: const BorderSide(color: Color(0xFFE2E8ED)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: const BorderSide(
-                        color: Color(0xFF0A9FBF), width: 2),
+                      color: Color(0xFF0A9FBF),
+                      width: 2,
+                    ),
                   ),
                 ),
                 onChanged: (v) => _onDigitChanged(v, i),
@@ -316,14 +341,19 @@ class _TwoFASetupScreenState extends ConsumerState<TwoFASetupScreen> {
             ),
             child: Row(
               children: [
-                const Icon(Icons.error_outline,
-                    size: 16, color: Color(0xFFB91C1C)),
+                const Icon(
+                  Icons.error_outline,
+                  size: 16,
+                  color: Color(0xFFB91C1C),
+                ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     authState.error!.replaceAll('Exception: ', ''),
                     style: const TextStyle(
-                        fontSize: 13, color: Color(0xFFB91C1C)),
+                      fontSize: 13,
+                      color: Color(0xFFB91C1C),
+                    ),
                   ),
                 ),
               ],
@@ -333,7 +363,11 @@ class _TwoFASetupScreenState extends ConsumerState<TwoFASetupScreen> {
 
         const Spacer(),
 
-        Button(buttonText: 'Activate 2FA',isLoading: authState.isLoading,onPressed: _confirmCode,),
+        Button(
+          buttonText: 'Activate 2FA',
+          isLoading: authState.isLoading,
+          onPressed: _confirmCode,
+        ),
         const SizedBox(height: 12),
         Center(
           child: TextButton(
@@ -341,8 +375,10 @@ class _TwoFASetupScreenState extends ConsumerState<TwoFASetupScreen> {
               _step = 1;
               for (final c in _controllers) c.clear();
             }),
-            child: const Text('Go back',
-                style: TextStyle(color: Color(0xFF536C79))),
+            child: const Text(
+              'Go back',
+              style: TextStyle(color: Color(0xFF536C79)),
+            ),
           ),
         ),
       ],
@@ -355,36 +391,48 @@ class _TwoFASetupScreenState extends ConsumerState<TwoFASetupScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 80, height: 80,
+            width: 80,
+            height: 80,
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                  colors: [Color(0xFF0A9FBF), Color(0xFF28D744)]),
+                colors: [Color(0xFF0A9FBF), Color(0xFF28D744)],
+              ),
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                    color: const Color(0xFF0A9FBF).withOpacity(0.3),
-                    blurRadius: 20,
-                    offset: const Offset(0, 6)),
+                  color: const Color(0xFF0A9FBF).withOpacity(0.3),
+                  blurRadius: 20,
+                  offset: const Offset(0, 6),
+                ),
               ],
             ),
-            child: const Icon(Icons.shield_rounded,
-                color: Colors.white, size: 40),
+            child: const Icon(
+              Icons.shield_rounded,
+              color: Colors.white,
+              size: 40,
+            ),
           ),
           const SizedBox(height: 20),
-          const Text('2FA enabled!',
-              style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF1A2632))),
+          const Text(
+            '2FA enabled!',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF1A2632),
+            ),
+          ),
           const SizedBox(height: 8),
           const Text(
             'Your account is now protected.\nYou\'ll need your authenticator app to log in.',
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 14, color: Color(0xFF536C79), height: 1.5),
+              fontSize: 14,
+              color: Color(0xFF536C79),
+              height: 1.5,
+            ),
           ),
           const SizedBox(height: 32),
-          Button(buttonText: 'Done',onPressed: () => Navigator.pop(context),)
+          Button(buttonText: 'Done', onPressed: () => Navigator.pop(context)),
         ],
       ),
     );
@@ -401,13 +449,12 @@ class _TwoFASetupScreenState extends ConsumerState<TwoFASetupScreen> {
 class Disable2FASheet extends ConsumerStatefulWidget {
   const Disable2FASheet({super.key});
 
-  static Future<bool?> show(BuildContext context) =>
-      showModalBottomSheet<bool>(
-        context: context,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        builder: (_) => const Disable2FASheet(),
-      );
+  static Future<bool?> show(BuildContext context) => showModalBottomSheet<bool>(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    builder: (_) => const Disable2FASheet(),
+  );
 
   @override
   ConsumerState<Disable2FASheet> createState() => _Disable2FASheetState();
@@ -415,10 +462,11 @@ class Disable2FASheet extends ConsumerStatefulWidget {
 
 class _Disable2FASheetState extends ConsumerState<Disable2FASheet> {
   final _passwordController = TextEditingController();
-  final List<TextEditingController> _totpControllers =
-  List.generate(6, (_) => TextEditingController());
-  final List<FocusNode> _totpFocusNodes =
-  List.generate(6, (_) => FocusNode());
+  final List<TextEditingController> _totpControllers = List.generate(
+    6,
+    (_) => TextEditingController(),
+  );
+  final List<FocusNode> _totpFocusNodes = List.generate(6, (_) => FocusNode());
   bool _obscurePassword = true;
 
   @override
@@ -429,8 +477,7 @@ class _Disable2FASheetState extends ConsumerState<Disable2FASheet> {
     super.dispose();
   }
 
-  String get _totpCode =>
-      _totpControllers.map((c) => c.text).join();
+  String get _totpCode => _totpControllers.map((c) => c.text).join();
 
   void _onDigitChanged(String value, int index) {
     if (value.length == 1 && index < 5) {
@@ -442,10 +489,9 @@ class _Disable2FASheetState extends ConsumerState<Disable2FASheet> {
 
   Future<void> _submit() async {
     if (_passwordController.text.isEmpty || _totpCode.length < 6) return;
-    final ok = await ref.read(authProvider.notifier).disable2FA(
-      totpCode: _totpCode,
-      password: _passwordController.text,
-    );
+    final ok = await ref
+        .read(authProvider.notifier)
+        .disable2FA(totpCode: _totpCode, password: _passwordController.text);
     if (!mounted) return;
     Navigator.pop(context, ok);
   }
@@ -467,7 +513,8 @@ class _Disable2FASheetState extends ConsumerState<Disable2FASheet> {
         children: [
           Center(
             child: Container(
-              width: 36, height: 4,
+              width: 36,
+              height: 4,
               decoration: BoxDecoration(
                 color: Colors.grey.shade300,
                 borderRadius: BorderRadius.circular(2),
@@ -475,25 +522,35 @@ class _Disable2FASheetState extends ConsumerState<Disable2FASheet> {
             ),
           ),
           const SizedBox(height: 16),
-          const Text('Disable 2FA',
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF1A2632))),
+          const Text(
+            'Disable 2FA',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF1A2632),
+            ),
+          ),
           const SizedBox(height: 6),
           const Text(
             'Enter your password and current authenticator code to disable two-factor authentication.',
-            style: TextStyle(fontSize: 13, color: Color(0xFF536C79), height: 1.4),
+            style: TextStyle(
+              fontSize: 13,
+              color: Color(0xFF536C79),
+              height: 1.4,
+            ),
           ),
           const SizedBox(height: 20),
 
           // Password field
-          const Text('PASSWORD',
-              style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF94A3B4),
-                  letterSpacing: 0.5)),
+          const Text(
+            'PASSWORD',
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF94A3B4),
+              letterSpacing: 0.5,
+            ),
+          ),
           const SizedBox(height: 6),
           TextField(
             controller: _passwordController,
@@ -505,7 +562,8 @@ class _Disable2FASheetState extends ConsumerState<Disable2FASheet> {
                   _obscurePassword
                       ? Icons.visibility_off_outlined
                       : Icons.visibility_outlined,
-                  size: 18, color: const Color(0xFF94A3B4),
+                  size: 18,
+                  color: const Color(0xFF94A3B4),
                 ),
                 onPressed: () =>
                     setState(() => _obscurePassword = !_obscurePassword),
@@ -513,34 +571,44 @@ class _Disable2FASheetState extends ConsumerState<Disable2FASheet> {
               filled: true,
               fillColor: const Color(0xFFF7F8FA),
               contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 14, vertical: 12),
+                horizontal: 14,
+                vertical: 12,
+              ),
               border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Color(0xFFE2E8ED))),
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(color: Color(0xFFE2E8ED)),
+              ),
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Color(0xFFE2E8ED))),
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(color: Color(0xFFE2E8ED)),
+              ),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
-                      color: Color(0xFF0A9FBF), width: 1.5)),
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(
+                  color: Color(0xFF0A9FBF),
+                  width: 1.5,
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 16),
 
           // TOTP input
-          const Text('AUTHENTICATOR CODE',
-              style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF94A3B4),
-                  letterSpacing: 0.5)),
+          const Text(
+            'AUTHENTICATOR CODE',
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF94A3B4),
+              letterSpacing: 0.5,
+            ),
+          ),
           const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(
               6,
-                  (i) => SizedBox(
+              (i) => SizedBox(
                 width: 44,
                 child: TextField(
                   controller: _totpControllers[i],
@@ -549,29 +617,29 @@ class _Disable2FASheetState extends ConsumerState<Disable2FASheet> {
                   keyboardType: TextInputType.number,
                   maxLength: 1,
                   style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF1A2632)),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF1A2632),
+                  ),
                   decoration: InputDecoration(
                     counterText: '',
                     filled: true,
                     fillColor: const Color(0xFFF7F8FA),
-                    contentPadding:
-                    const EdgeInsets.symmetric(vertical: 12),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 12),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide:
-                      const BorderSide(color: Color(0xFFE2E8ED)),
+                      borderSide: const BorderSide(color: Color(0xFFE2E8ED)),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide:
-                      const BorderSide(color: Color(0xFFE2E8ED)),
+                      borderSide: const BorderSide(color: Color(0xFFE2E8ED)),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                          color: Color(0xFF0A9FBF), width: 1.5),
+                        color: Color(0xFF0A9FBF),
+                        width: 1.5,
+                      ),
                     ),
                   ),
                   onChanged: (v) => _onDigitChanged(v, i),
@@ -591,14 +659,19 @@ class _Disable2FASheetState extends ConsumerState<Disable2FASheet> {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.error_outline,
-                      size: 14, color: Color(0xFFB91C1C)),
+                  const Icon(
+                    Icons.error_outline,
+                    size: 14,
+                    color: Color(0xFFB91C1C),
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       authState.error!.replaceAll('Exception: ', ''),
                       style: const TextStyle(
-                          fontSize: 12, color: Color(0xFFB91C1C)),
+                        fontSize: 12,
+                        color: Color(0xFFB91C1C),
+                      ),
                     ),
                   ),
                 ],
@@ -617,19 +690,27 @@ class _Disable2FASheetState extends ConsumerState<Disable2FASheet> {
                 backgroundColor: const Color(0xFFEF4444),
                 disabledBackgroundColor: Colors.grey.shade300,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14)),
+                  borderRadius: BorderRadius.circular(14),
+                ),
                 elevation: 0,
               ),
               child: authState.isLoading
                   ? const SizedBox(
-                  width: 22, height: 22,
-                  child: CircularProgressIndicator(
-                      strokeWidth: 2.5, color: Colors.white))
-                  : const Text('Disable 2FA',
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white)),
+                      width: 22,
+                      height: 22,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.5,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Text(
+                      'Disable 2FA',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
             ),
           ),
         ],
@@ -653,9 +734,7 @@ class _StepIndicator extends StatelessWidget {
         width: active ? 24 : 8,
         height: 8,
         decoration: BoxDecoration(
-          color: active
-              ? const Color(0xFF0A9FBF)
-              : const Color(0xFFE2E8ED),
+          color: active ? const Color(0xFF0A9FBF) : const Color(0xFFE2E8ED),
           borderRadius: BorderRadius.circular(4),
         ),
       );

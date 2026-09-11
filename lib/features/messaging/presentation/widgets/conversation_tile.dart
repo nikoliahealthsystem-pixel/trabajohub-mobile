@@ -32,7 +32,9 @@ class ConversationTile extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected ? const Color(0xFFEAF8FC) : Colors.white,
           border: Border.all(
-            color: isSelected ? const Color(0xFF0A9FBF) : const Color(0xFFE8EDF2),
+            color: isSelected
+                ? const Color(0xFF0A9FBF)
+                : const Color(0xFFE8EDF2),
             width: isSelected ? 1.5 : 1,
           ),
           borderRadius: BorderRadius.circular(14),
@@ -41,10 +43,7 @@ class ConversationTile extends StatelessWidget {
           children: [
             Stack(
               children: [
-                CompactAvatar(
-                  user: conversation.otherParticipant!,
-                  radius: 22,
-                ),
+                CompactAvatar(user: conversation.otherParticipant!, radius: 22),
                 if (conversation.unreadCount > 0)
                   Positioned(
                     right: 0,
@@ -59,7 +58,11 @@ class ConversationTile extends StatelessWidget {
                       child: Center(
                         child: Text(
                           '${conversation.unreadCount}',
-                          style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w700),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 9,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
@@ -89,7 +92,10 @@ class ConversationTile extends StatelessWidget {
                       ),
                       Text(
                         _formatTime(time!),
-                        style: const TextStyle(fontSize: 10, color: Color(0xFF94A3B4)),
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: Color(0xFF94A3B4),
+                        ),
                       ),
                     ],
                   ),

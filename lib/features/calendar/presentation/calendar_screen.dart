@@ -62,7 +62,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
               _loadForCurrentMonth(state.focusedDay);
             },
           ),
-          if (state.status == CalendarLoadStatus.error && state.errorMessage != null)
+          if (state.status == CalendarLoadStatus.error &&
+              state.errorMessage != null)
             _buildErrorBanner(state.errorMessage!, notifier),
           _buildCalendar(state, notifier),
           const Divider(height: 1, color: Color(0xFFE8EDF2)),
@@ -76,23 +77,29 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
   Widget _buildHeader(BuildContext context, CalendarState state) {
     return Container(
-      decoration:  BoxDecoration(
-        gradient: ColorConstants.appGradient,
-      ),
+      decoration: BoxDecoration(gradient: ColorConstants.appGradient),
       padding: EdgeInsets.fromLTRB(
-          20, MediaQuery.of(context).padding.top + 14, 20, 16),
+        20,
+        MediaQuery.of(context).padding.top + 14,
+        20,
+        16,
+      ),
       child: Row(
         children: [
           GestureDetector(
             onTap: () => Navigator.pop(context),
             child: Container(
-              width: 36, height: 36,
+              width: 36,
+              height: 36,
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(Icons.arrow_back_ios_new_rounded,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new_rounded,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
@@ -100,13 +107,18 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Calendar',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700)),
-                Text('Your schedule at a glance',
-                    style: TextStyle(color: Colors.white70, fontSize: 12)),
+                Text(
+                  'Calendar',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Text(
+                  'Your schedule at a glance',
+                  style: TextStyle(color: Colors.white70, fontSize: 12),
+                ),
               ],
             ),
           ),
@@ -124,8 +136,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                       ref.read(calendarProvider.notifier).setViewMode(mode),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 160),
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 7,
+                    ),
                     decoration: BoxDecoration(
                       color: isActive
                           ? Colors.white.withOpacity(0.3)
@@ -166,13 +180,18 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             const Icon(Icons.error_outline, size: 14, color: Color(0xFFA32D2D)),
             const SizedBox(width: 8),
             Expanded(
-              child: Text(message.length < 20 ? message : "Error Fetching Calender",
-                  style: const TextStyle(fontSize: 12, color: Color(0xFFA32D2D))),
+              child: Text(
+                message.length < 20 ? message : "Error Fetching Calender",
+                style: const TextStyle(fontSize: 12, color: Color(0xFFA32D2D)),
+              ),
             ),
             GestureDetector(
               onTap: notifier.clearError,
-              child: const Icon(Icons.close_rounded,
-                  size: 14, color: Color(0xFFA32D2D)),
+              child: const Icon(
+                Icons.close_rounded,
+                size: 14,
+                color: Color(0xFFA32D2D),
+              ),
             ),
           ],
         ),
@@ -182,7 +201,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
   Widget _buildCalendar(CalendarState state, CalendarNotifier notifier) {
     final calendarFormat = state.viewMode == CalendarViewMode.month
-        ? CalendarFormat.month : CalendarFormat.week;
+        ? CalendarFormat.month
+        : CalendarFormat.week;
 
     return Container(
       color: Colors.white,
@@ -214,10 +234,14 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             fontWeight: FontWeight.w700,
             color: Color(0xFF1A2632),
           ),
-          leftChevronIcon:
-          Icon(Icons.chevron_left_rounded, color: Color(0xFF536C79)),
-          rightChevronIcon:
-          Icon(Icons.chevron_right_rounded, color: Color(0xFF536C79)),
+          leftChevronIcon: Icon(
+            Icons.chevron_left_rounded,
+            color: Color(0xFF536C79),
+          ),
+          rightChevronIcon: Icon(
+            Icons.chevron_right_rounded,
+            color: Color(0xFF536C79),
+          ),
         ),
 
         calendarStyle: CalendarStyle(
@@ -226,14 +250,18 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             color: accentColor.withOpacity(0.15),
             shape: BoxShape.circle,
           ),
-          todayTextStyle:
-          TextStyle(color: accentColor, fontWeight: FontWeight.w700),
+          todayTextStyle: TextStyle(
+            color: accentColor,
+            fontWeight: FontWeight.w700,
+          ),
           selectedDecoration: BoxDecoration(
             gradient: ColorConstants.appGradient,
             shape: BoxShape.circle,
           ),
           selectedTextStyle: const TextStyle(
-              color: Colors.white, fontWeight: FontWeight.w700),
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+          ),
           weekendTextStyle: const TextStyle(color: Color(0xFF94A3B4)),
           defaultTextStyle: const TextStyle(color: Color(0xFF1A2632)),
           markerDecoration: const BoxDecoration(
@@ -270,7 +298,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                 child: Center(
                   child: Text(
                     '${day.day}',
-                    style:   TextStyle(
+                    style: TextStyle(
                       color: accentColor,
                       fontWeight: FontWeight.w700,
                       fontSize: 14,
@@ -314,7 +342,9 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                   width: 12,
                   height: 12,
                   child: CircularProgressIndicator(
-                      strokeWidth: 1.5, color: accentColor),
+                    strokeWidth: 1.5,
+                    color: accentColor,
+                  ),
                 ),
               const Spacer(),
               Text(
@@ -327,25 +357,33 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
         Expanded(
           child: events.isEmpty
               ? const Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.event_available_outlined,
-                    size: 36, color: Color(0xFF94A3B4)),
-                SizedBox(height: 8),
-                Text('No events on this day',
-                    style: TextStyle(
-                        fontSize: 13, color: Color(0xFF94A3B4))),
-              ],
-            ),
-          )
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.event_available_outlined,
+                        size: 36,
+                        color: Color(0xFF94A3B4),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'No events on this day',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Color(0xFF94A3B4),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               : ListView.builder(
-            padding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-            itemCount: events.length,
-            itemBuilder: (_, i) =>
-                _EventListTile(event: events[i]),
-          ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 4,
+                  ),
+                  itemCount: events.length,
+                  itemBuilder: (_, i) => _EventListTile(event: events[i]),
+                ),
         ),
       ],
     );
@@ -369,7 +407,7 @@ class _EventListTile extends ConsumerWidget {
         EventDetailSheet.show(
           context,
           event,
-              () => ref.read(calendarProvider.notifier).closeDetail(),
+          () => ref.read(calendarProvider.notifier).closeDetail(),
         );
       },
       child: Container(
@@ -422,28 +460,41 @@ class _EventListTile extends ConsumerWidget {
                             ? 'All day'
                             : timeFormat.format(event.start),
                         style: const TextStyle(
-                            fontSize: 11, color: Color(0xFF94A3B4)),
+                          fontSize: 11,
+                          color: Color(0xFF94A3B4),
+                        ),
                       ),
                       if (!event.allDay && event.end != null) ...[
-                        const Text(' – ',
-                            style: TextStyle(
-                                fontSize: 11, color: Color(0xFF94A3B4))),
+                        const Text(
+                          ' – ',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Color(0xFF94A3B4),
+                          ),
+                        ),
                         Text(
                           timeFormat.format(event.end!),
                           style: const TextStyle(
-                              fontSize: 11, color: Color(0xFF94A3B4)),
+                            fontSize: 11,
+                            color: Color(0xFF94A3B4),
+                          ),
                         ),
                       ],
                       const SizedBox(width: 8),
                       if (event.meta.location != null) ...[
-                        const Icon(Icons.location_on_outlined,
-                            size: 11, color: Color(0xFF94A3B4)),
+                        const Icon(
+                          Icons.location_on_outlined,
+                          size: 11,
+                          color: Color(0xFF94A3B4),
+                        ),
                         Flexible(
                           child: Text(
                             event.meta.location!,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                                fontSize: 11, color: Color(0xFF94A3B4)),
+                              fontSize: 11,
+                              color: Color(0xFF94A3B4),
+                            ),
                           ),
                         ),
                       ],
@@ -455,8 +506,7 @@ class _EventListTile extends ConsumerWidget {
             const SizedBox(width: 8),
             // Status dot
             Container(
-              padding:
-              const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
               decoration: BoxDecoration(
                 color: color.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(10),
@@ -464,9 +514,10 @@ class _EventListTile extends ConsumerWidget {
               child: Text(
                 event.status.replaceAll('_', ' '),
                 style: TextStyle(
-                    fontSize: 9,
-                    fontWeight: FontWeight.w600,
-                    color: color),
+                  fontSize: 9,
+                  fontWeight: FontWeight.w600,
+                  color: color,
+                ),
               ),
             ),
           ],

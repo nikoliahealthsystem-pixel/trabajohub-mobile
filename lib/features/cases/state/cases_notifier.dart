@@ -37,8 +37,7 @@ class CasesNotifier extends StateNotifier<CasesState> {
       final message = e is DioException
           ? (e.error?.toString() ?? 'Something went wrong')
           : e.toString();
-      state = state.copyWith(
-          status: CasesStatus.error, errorMessage: message);
+      state = state.copyWith(status: CasesStatus.error, errorMessage: message);
     }
   }
 

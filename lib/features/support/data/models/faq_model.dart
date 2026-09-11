@@ -27,9 +27,6 @@ class FaqItem {
   FaqItem({required this.question, required this.answer});
 
   factory FaqItem.fromJson(Map<String, dynamic> json) {
-    return FaqItem(
-      question: json['q'],
-      answer: json['a'],
-    );
+    return FaqItem(question: json['q'], answer: json['a']);
   }
 }

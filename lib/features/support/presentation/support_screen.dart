@@ -30,7 +30,7 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
     if (user != null) {
       final notifier = ref.read(contactFormProvider.notifier);
 
-      notifier.updateField('name', user.displayName?? '');
+      notifier.updateField('name', user.displayName ?? '');
       notifier.updateField('email', user.email ?? '');
     }
   }
@@ -75,7 +75,12 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
   Widget _buildHeader(BuildContext context) => Container(
     width: double.maxFinite,
     decoration: const BoxDecoration(gradient: ColorConstants.appGradient),
-    padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).padding.top + 20, 20, 24),
+    padding: EdgeInsets.fromLTRB(
+      20,
+      MediaQuery.of(context).padding.top + 20,
+      20,
+      24,
+    ),
     child: Row(
       children: [
         GestureDetector(
@@ -87,8 +92,11 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
               color: Colors.white.withOpacity(0.2),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.arrow_back_ios_new_rounded,
-                color: Colors.white, size: 16),
+            child: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Colors.white,
+              size: 16,
+            ),
           ),
         ),
         const SizedBox(width: 12),
@@ -115,26 +123,20 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
   );
 
   Widget _buildContactForm(
-      ContactFormState state,
-      ContactFormNotifier notifier,
-      dynamic currentUser, // your user object
-      ) {
+    ContactFormState state,
+    ContactFormNotifier notifier,
+    dynamic currentUser, // your user object
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
           // Name (Read Only)
-          _buildReadOnlyField(
-            label: 'Full Name',
-            value: state.name,
-          ),
+          _buildReadOnlyField(label: 'Full Name', value: state.name),
           const SizedBox(height: 16),
 
           // Email (Read Only)
-          _buildReadOnlyField(
-            label: 'Email Address',
-            value: state.email,
-          ),
+          _buildReadOnlyField(label: 'Email Address', value: state.email),
           const SizedBox(height: 16),
 
           _buildCategoryDropdown(state, notifier),
@@ -144,14 +146,18 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
             label: 'Message',
             value: state.message,
             onChanged: (v) => notifier.updateField('message', v),
-            validator: (v) => v!.length < 20 ? 'Please provide more details' : null,
+            validator: (v) =>
+                v!.length < 20 ? 'Please provide more details' : null,
             maxLines: 6,
           ),
 
           if (state.error != null)
             Padding(
               padding: const EdgeInsets.only(top: 12),
-              child: Text(state.error!, style: const TextStyle(color: Colors.red)),
+              child: Text(
+                state.error!,
+                style: const TextStyle(color: Colors.red),
+              ),
             ),
 
           const SizedBox(height: 24),
@@ -163,19 +169,27 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
               onPressed: state.isLoading
                   ? null
                   : () {
-                if (_formKey.currentState!.validate()) {
-                final user = ref.read(authProvider).user;
-                  notifier.submit(user?.id??"");
-                }
-              },
+                      if (_formKey.currentState!.validate()) {
+                        final user = ref.read(authProvider).user;
+                        notifier.submit(user?.id ?? "");
+                      }
+                    },
               style: ElevatedButton.styleFrom(
                 backgroundColor: accentColor,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               child: state.isLoading
                   ? const CircularProgressIndicator(color: Colors.white)
-                  : const Text('Send Message',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white)),
+                  : const Text(
+                      'Send Message',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
             ),
           ),
         ],
@@ -188,7 +202,10 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
+        Text(
+          label,
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+        ),
         const SizedBox(height: 8),
         Container(
           width: double.infinity,
@@ -218,7 +235,10 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
+        Text(
+          label,
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+        ),
         const SizedBox(height: 8),
         TextFormField(
           initialValue: value,
@@ -227,7 +247,10 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
           maxLines: maxLines,
           decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 14,
+            ),
           ),
         ),
       ],
@@ -235,7 +258,10 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
   }
 
   // Your existing success screen...
-  Widget _buildSuccessScreen(String ticketNumber, ContactFormNotifier notifier) {
+  Widget _buildSuccessScreen(
+    String ticketNumber,
+    ContactFormNotifier notifier,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Center(
@@ -244,9 +270,15 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
           children: [
             const Icon(Icons.check_circle, size: 80, color: Color(0xFF10B981)),
             const SizedBox(height: 24),
-            const Text('Message Received!', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            const Text(
+              'Message Received!',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 12),
-            Text('Ticket Reference: $ticketNumber', style: const TextStyle(fontFamily: 'monospace')),
+            Text(
+              'Ticket Reference: $ticketNumber',
+              style: const TextStyle(fontFamily: 'monospace'),
+            ),
             const SizedBox(height: 32),
             TextButton.icon(
               onPressed: () => notifier.reset(),
@@ -259,7 +291,10 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
     );
   }
 
-  Widget _buildCategoryDropdown(ContactFormState state, ContactFormNotifier notifier) {
+  Widget _buildCategoryDropdown(
+    ContactFormState state,
+    ContactFormNotifier notifier,
+  ) {
     const categories = {
       'account': 'Account & Access',
       'credentials': 'Credentials & Compliance',
@@ -272,7 +307,10 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Category', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
+        const Text(
+          'Category',
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+        ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
           value: state.category.isEmpty ? null : state.category,

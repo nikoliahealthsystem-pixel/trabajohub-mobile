@@ -7,9 +7,12 @@ enum PayoutStatus {
 
   static PayoutStatus fromString(String raw) {
     switch (raw.toUpperCase()) {
-      case 'SETTLED': return settled;
-      case 'FAILED': return failed;
-      default: return pending;
+      case 'SETTLED':
+        return settled;
+      case 'FAILED':
+        return failed;
+      default:
+        return pending;
     }
   }
 

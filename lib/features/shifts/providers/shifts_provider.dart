@@ -16,23 +16,28 @@ final shiftsApiProvider = Provider<ShiftsApi>((ref) {
 });
 
 final shiftsRepositoryProvider = Provider<ShiftsRepository>((ref) {
-  return ShiftsRepositoryImpl(ref.watch(shiftsApiProvider),
-    ref.watch(appCacheProvider), );
+  return ShiftsRepositoryImpl(
+    ref.watch(shiftsApiProvider),
+    ref.watch(appCacheProvider),
+  );
 });
 
 final marketplaceProvider =
-StateNotifierProvider<MarketplaceNotifier, MarketplaceState>((ref) {
-  return MarketplaceNotifier(ref.watch(shiftsRepositoryProvider));
-});
+    StateNotifierProvider<MarketplaceNotifier, MarketplaceState>((ref) {
+      return MarketplaceNotifier(ref.watch(shiftsRepositoryProvider));
+    });
 
-final myShiftsProvider =
-StateNotifierProvider<MyShiftsNotifier, MyShiftsState>((ref) {
-  return MyShiftsNotifier(ref.watch(shiftsRepositoryProvider));
-});
+final myShiftsProvider = StateNotifierProvider<MyShiftsNotifier, MyShiftsState>(
+  (ref) {
+    return MyShiftsNotifier(ref.watch(shiftsRepositoryProvider));
+  },
+);
 
 // Single-shift detail — auto-disposed
-final shiftDetailProvider =
-FutureProvider.family<dynamic, String>((ref, id) async {
+final shiftDetailProvider = FutureProvider.family<dynamic, String>((
+  ref,
+  id,
+) async {
   final repo = ref.watch(shiftsRepositoryProvider);
   return repo.getShiftById(id);
 });

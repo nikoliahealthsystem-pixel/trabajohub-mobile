@@ -31,10 +31,7 @@ class Inputfield extends StatelessWidget {
         decoration: BoxDecoration(
           color: const Color(0xFFFAFAFA),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(
-            color: const Color(0xFFE1E7EA),
-            width: 2,
-          ),
+          border: Border.all(color: const Color(0xFFE1E7EA), width: 2),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

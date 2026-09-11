@@ -13,10 +13,14 @@ final calendarApiProvider = Provider<CalendarApi>((ref) {
 });
 
 final calendarRepositoryProvider = Provider<CalendarRepository>((ref) {
-  return CalendarRepositoryImpl(ref.watch(calendarApiProvider), ref.watch(appCacheProvider));
+  return CalendarRepositoryImpl(
+    ref.watch(calendarApiProvider),
+    ref.watch(appCacheProvider),
+  );
 });
 
-final calendarProvider =
-StateNotifierProvider<CalendarNotifier, CalendarState>((ref) {
-  return CalendarNotifier(ref.watch(calendarRepositoryProvider));
-});
+final calendarProvider = StateNotifierProvider<CalendarNotifier, CalendarState>(
+  (ref) {
+    return CalendarNotifier(ref.watch(calendarRepositoryProvider));
+  },
+);

@@ -3,7 +3,8 @@ import '../data/models/message_model.dart';
 
 const _sentinel = Object();
 
-enum MessagingStatus { initial, loading, loadingMore,success, error }
+enum MessagingStatus { initial, loading, loadingMore, success, error }
+
 enum MessageFetchStatus { idle, loading, loadingMore, success, error }
 
 class UserSearchResult {
@@ -22,8 +23,20 @@ class UserSearchResult {
   });
 
   factory UserSearchResult.fromJson(Map<String, dynamic> json) {
-    String display = json['email'];
-    String sub = json['role'] ?? '';
+    String display =
+        json['displayName']?.toString() ??
+        json['email']?.toString() ??
+        'TrabajoHub contact';
+
+    String sub = json['subtitle']?.toString() ?? json['role']?.toString() ?? '';
+
+    final facilityName = json['facilityName']?.toString();
+
+    if (facilityName != null &&
+        facilityName.isNotEmpty &&
+        !sub.contains(facilityName)) {
+      sub = sub.isEmpty ? facilityName : '$sub • $facilityName';
+    }
 
     final admin = json['adminProfile'] as Map<String, dynamic>?;
     final nurse = json['nurseProfile'] as Map<String, dynamic>?;
@@ -39,9 +52,9 @@ class UserSearchResult {
     }
 
     return UserSearchResult(
-      id: json['id'],
-      email: json['email'],
-      role: json['role'],
+      id: json['id']?.toString() ?? '',
+      email: json['email']?.toString() ?? '',
+      role: json['role']?.toString() ?? '',
       displayName: display,
       subtitle: sub,
     );
@@ -110,38 +123,37 @@ class MessagingState {
     Object? errorMessage = _sentinel,
     Object? typingUserId = _sentinel,
     Object? typingConversationId = _sentinel,
-  }) =>
-      MessagingState(
-        status: status ?? this.status,
-        conversations: conversations ?? this.conversations,
-        selectedConversation: selectedConversation == _sentinel
-            ? this.selectedConversation
-            : selectedConversation as ConversationModel?,
-        messages: messages ?? this.messages,
-        hasMoreMessages: hasMoreMessages ?? this.hasMoreMessages,
-        messagePage: messagePage ?? this.messagePage,
-        unreadCount: unreadCount ?? this.unreadCount,
-        isSending: isSending ?? this.isSending,
-        isUploading: isUploading ?? this.isUploading,
-        sendError: sendError == _sentinel ? this.sendError : sendError as String?,
-        userSearchResults: userSearchResults ?? this.userSearchResults,
-        isSearchingUsers: isSearchingUsers ?? this.isSearchingUsers,
-        selectedRecipient: selectedRecipient == _sentinel
-            ? this.selectedRecipient
-            : selectedRecipient as UserSearchResult?,
-        isStartingConversation:
+  }) => MessagingState(
+    status: status ?? this.status,
+    conversations: conversations ?? this.conversations,
+    selectedConversation: selectedConversation == _sentinel
+        ? this.selectedConversation
+        : selectedConversation as ConversationModel?,
+    messages: messages ?? this.messages,
+    hasMoreMessages: hasMoreMessages ?? this.hasMoreMessages,
+    messagePage: messagePage ?? this.messagePage,
+    unreadCount: unreadCount ?? this.unreadCount,
+    isSending: isSending ?? this.isSending,
+    isUploading: isUploading ?? this.isUploading,
+    sendError: sendError == _sentinel ? this.sendError : sendError as String?,
+    userSearchResults: userSearchResults ?? this.userSearchResults,
+    isSearchingUsers: isSearchingUsers ?? this.isSearchingUsers,
+    selectedRecipient: selectedRecipient == _sentinel
+        ? this.selectedRecipient
+        : selectedRecipient as UserSearchResult?,
+    isStartingConversation:
         isStartingConversation ?? this.isStartingConversation,
-        deletingMessageId: deletingMessageId == _sentinel
-            ? this.deletingMessageId
-            : deletingMessageId as String?,
-        errorMessage: errorMessage == _sentinel
-            ? this.errorMessage
-            : errorMessage as String?,
-        typingUserId: typingUserId == _sentinel
-            ? this.typingUserId
-            : typingUserId as String?,
-        typingConversationId: typingConversationId == _sentinel
-            ? this.typingConversationId
-            : typingConversationId as String?,
-      );
+    deletingMessageId: deletingMessageId == _sentinel
+        ? this.deletingMessageId
+        : deletingMessageId as String?,
+    errorMessage: errorMessage == _sentinel
+        ? this.errorMessage
+        : errorMessage as String?,
+    typingUserId: typingUserId == _sentinel
+        ? this.typingUserId
+        : typingUserId as String?,
+    typingConversationId: typingConversationId == _sentinel
+        ? this.typingConversationId
+        : typingConversationId as String?,
+  );
 }

@@ -46,7 +46,10 @@ class PayoutDetailsModal extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: _getStatusBackground(),
                     borderRadius: BorderRadius.circular(20),
@@ -67,8 +70,14 @@ class PayoutDetailsModal extends StatelessWidget {
 
           // Details
           _buildRow('Payout ID', payout.id),
-          _buildRow('Gross Charge', '\$${payout.grossCharge.toStringAsFixed(2)}'),
-          _buildRow('System Fee', '\$${payout.systemCommission.toStringAsFixed(2)}'),
+          _buildRow(
+            'Gross Charge',
+            '\$${payout.grossCharge.toStringAsFixed(2)}',
+          ),
+          _buildRow(
+            'System Fee',
+            '\$${payout.systemCommission.toStringAsFixed(2)}',
+          ),
           _buildRow('Net Amount', '\$${payout.netPayout.toStringAsFixed(2)}'),
 
           if (payout.stripeTransferId != null)
@@ -79,15 +88,11 @@ class PayoutDetailsModal extends StatelessWidget {
           if (payout.paidAt != null)
             _buildRow('Paid At', fullDateFormat.format(payout.paidAt!)),
 
-          if (payout.shiftId != null)
-            _buildRow('Shift ID', payout.shiftId!),
+          if (payout.shiftId != null) _buildRow('Shift ID', payout.shiftId!),
 
           if (payout.notes != null && payout.notes!.isNotEmpty) ...[
             const SizedBox(height: 16),
-            const Text(
-              'Notes',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+            const Text('Notes', style: TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 6),
             Text(
               payout.notes!,
@@ -114,7 +119,10 @@ class PayoutDetailsModal extends StatelessWidget {
             width: 130,
             child: Text(
               label,
-              style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.w500),
+              style: const TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
           Expanded(

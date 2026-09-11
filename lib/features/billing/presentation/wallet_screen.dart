@@ -63,9 +63,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
         color: accentColor,
         onRefresh: () async {
           await ref.read(billingProvider.notifier).loadWallet();
-          await ref
-              .read(billingProvider.notifier)
-              .loadPayouts(refresh: true);
+          await ref.read(billingProvider.notifier).loadPayouts(refresh: true);
         },
         child: CustomScrollView(
           controller: _scrollController,
@@ -98,11 +96,13 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
   // ── Header ──────────────────────────────────────────────────
 
   Widget _buildHeader(BuildContext context) => Container(
-    decoration: const BoxDecoration(
-      gradient: ColorConstants.appGradient,
-    ),
+    decoration: const BoxDecoration(gradient: ColorConstants.appGradient),
     padding: EdgeInsets.fromLTRB(
-        20, MediaQuery.of(context).padding.top + 14, 20, 20),
+      20,
+      MediaQuery.of(context).padding.top + 14,
+      20,
+      20,
+    ),
     child: Row(
       children: [
         GestureDetector(
@@ -114,8 +114,11 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
               color: Colors.white.withOpacity(0.2),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.arrow_back_ios_new_rounded,
-                color: Colors.white, size: 16),
+            child: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Colors.white,
+              size: 16,
+            ),
           ),
         ),
         const SizedBox(width: 12),
@@ -123,18 +126,30 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Wallet & Payouts',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 19,
-                      fontWeight: FontWeight.w700)),
-              Text('Your earnings and payment history',
-                  style:
-                  TextStyle(color: Colors.white70, fontSize: 12)),
+              Text(
+                'Wallet & Payouts',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 19,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              Text(
+                'Your earnings and payment history',
+                style: TextStyle(color: Colors.white70, fontSize: 12),
+              ),
             ],
           ),
         ),
-        IconButton(onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => PaymentConfig())), icon: Icon(Icons.settings_suggest,color: Colors.white,))
+        IconButton(
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => PaymentConfig(),
+            ),
+          ),
+          icon: Icon(Icons.settings_suggest, color: Colors.white),
+        ),
       ],
     ),
   );
@@ -168,24 +183,24 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
         ),
         child: Row(
           children: [
-            const Icon(Icons.error_outline,
-                color: Color(0xFFB91C1C), size: 20),
+            const Icon(Icons.error_outline, color: Color(0xFFB91C1C), size: 20),
             const SizedBox(width: 10),
             Expanded(
               child: Text(
                 state.walletError ?? 'Failed to load wallet',
-                style: const TextStyle(
-                    color: Color(0xFFB91C1C), fontSize: 13),
+                style: const TextStyle(color: Color(0xFFB91C1C), fontSize: 13),
               ),
             ),
             GestureDetector(
-              onTap: () =>
-                  ref.read(billingProvider.notifier).loadWallet(),
-              child: const Text('Retry',
-                  style: TextStyle(
-                      color: Color(0xFFB91C1C),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 13)),
+              onTap: () => ref.read(billingProvider.notifier).loadWallet(),
+              child: const Text(
+                'Retry',
+                style: TextStyle(
+                  color: Color(0xFFB91C1C),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 13,
+                ),
+              ),
             ),
           ],
         ),
@@ -209,15 +224,15 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
               child: Text(
                 'Payout history',
                 style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF1A2632)),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF1A2632),
+                ),
               ),
             ),
             Text(
               '${state.payoutsTotal} total',
-              style: const TextStyle(
-                  fontSize: 12, color: Color(0xFF94A3B4)),
+              style: const TextStyle(fontSize: 12, color: Color(0xFF94A3B4)),
             ),
           ],
         ),
@@ -230,8 +245,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           children: _statusFilters.map((filter) {
-            final isActive =
-                state.payoutsStatusFilter == filter.$1;
+            final isActive = state.payoutsStatusFilter == filter.$1;
             return Padding(
               padding: const EdgeInsets.only(right: 8),
               child: GestureDetector(
@@ -241,11 +255,11 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 180),
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 14, vertical: 8),
+                    horizontal: 14,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
-                    color: isActive
-                        ? const Color(0xFFEAF8FC)
-                        : Colors.white,
+                    color: isActive ? const Color(0xFFEAF8FC) : Colors.white,
                     border: Border.all(
                       color: isActive
                           ? const Color(0xFF0A9FBF)
@@ -295,20 +309,28 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
             padding: const EdgeInsets.all(24),
             child: Column(
               children: [
-                const Icon(Icons.error_outline,
-                    size: 40, color: Color(0xFF94A3B4)),
+                const Icon(
+                  Icons.error_outline,
+                  size: 40,
+                  color: Color(0xFF94A3B4),
+                ),
                 const SizedBox(height: 10),
-                Text(state.payoutsError ?? 'Failed to load payouts',
-                    style: const TextStyle(color: Color(0xFF536C79))),
+                Text(
+                  state.payoutsError ?? 'Failed to load payouts',
+                  style: const TextStyle(color: Color(0xFF536C79)),
+                ),
                 const SizedBox(height: 12),
                 ElevatedButton(
                   onPressed: () => ref
                       .read(billingProvider.notifier)
                       .loadPayouts(refresh: true),
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF0A9FBF)),
-                  child: const Text('Retry',
-                      style: TextStyle(color: Colors.white)),
+                    backgroundColor: const Color(0xFF0A9FBF),
+                  ),
+                  child: const Text(
+                    'Retry',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ],
             ),
@@ -337,18 +359,23 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                   ),
                 ),
                 const SizedBox(height: 14),
-                const Text('No payouts yet',
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF1A2632))),
+                const Text(
+                  'No payouts yet',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF1A2632),
+                  ),
+                ),
                 const SizedBox(height: 4),
                 Text(
                   state.payoutsStatusFilter != null
                       ? 'No ${state.payoutsStatusFilter!.toLowerCase()} payouts'
                       : 'Your earnings will appear here once processed',
                   style: const TextStyle(
-                      fontSize: 13, color: Color(0xFF94A3B4)),
+                    fontSize: 13,
+                    color: Color(0xFF94A3B4),
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -359,25 +386,21 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
     }
 
     return SliverList(
-      delegate: SliverChildBuilderDelegate(
-            (context, index) {
-          // Loading more indicator
-          if (index >= state.payouts.length) {
-            return const Padding(
-              padding: EdgeInsets.all(16),
-              child: Center(
-                  child: CircularProgressIndicator(
-                      color: Color(0xFF0A9FBF))),
-            );
-          }
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: PayoutTile(payout: state.payouts[index]),
+      delegate: SliverChildBuilderDelegate((context, index) {
+        // Loading more indicator
+        if (index >= state.payouts.length) {
+          return const Padding(
+            padding: EdgeInsets.all(16),
+            child: Center(
+              child: CircularProgressIndicator(color: Color(0xFF0A9FBF)),
+            ),
           );
-        },
-        childCount:
-        state.payouts.length + (state.payoutsHasMore ? 1 : 0),
-      ),
+        }
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: PayoutTile(payout: state.payouts[index]),
+        );
+      }, childCount: state.payouts.length + (state.payoutsHasMore ? 1 : 0)),
     );
   }
 }

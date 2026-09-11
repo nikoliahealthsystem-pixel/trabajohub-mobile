@@ -7,8 +7,7 @@ class TypingDots extends StatefulWidget {
   State<TypingDots> createState() => _TypingDotsState();
 }
 
-class _TypingDotsState extends State<TypingDots>
-    with TickerProviderStateMixin {
+class _TypingDotsState extends State<TypingDots> with TickerProviderStateMixin {
   late final List<AnimationController> _controllers;
   late final List<Animation<double>> _animations;
 
@@ -17,15 +16,18 @@ class _TypingDotsState extends State<TypingDots>
     super.initState();
     _controllers = List.generate(
       3,
-          (i) => AnimationController(
+      (i) => AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 400),
       ),
     );
     _animations = _controllers
-        .map((c) => Tween<double>(begin: 0, end: -6).animate(
-      CurvedAnimation(parent: c, curve: Curves.easeInOut),
-    ))
+        .map(
+          (c) => Tween<double>(
+            begin: 0,
+            end: -6,
+          ).animate(CurvedAnimation(parent: c, curve: Curves.easeInOut)),
+        )
         .toList();
 
     // Stagger the dots
@@ -40,7 +42,9 @@ class _TypingDotsState extends State<TypingDots>
 
   @override
   void dispose() {
-    for (final c in _controllers) c.dispose();
+    for (final c in _controllers) {
+      c.dispose();
+    }
     super.dispose();
   }
 
@@ -51,7 +55,7 @@ class _TypingDotsState extends State<TypingDots>
       children: List.generate(3, (i) {
         return AnimatedBuilder(
           animation: _animations[i],
-          builder: (_, __) => Transform.translate(
+          builder: (_, _) => Transform.translate(
             offset: Offset(0, _animations[i].value),
             child: Container(
               width: 6,

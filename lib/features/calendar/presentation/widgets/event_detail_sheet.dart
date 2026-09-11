@@ -7,17 +7,26 @@ class EventDetailSheet extends StatelessWidget {
   final CalendarEventModel event;
   final VoidCallback onClose;
 
-  const EventDetailSheet({super.key, required this.event, required this.onClose});
+  const EventDetailSheet({
+    super.key,
+    required this.event,
+    required this.onClose,
+  });
 
-  static void show(BuildContext context, CalendarEventModel event, VoidCallback onClose) {
+  static void show(
+    BuildContext context,
+    CalendarEventModel event,
+    VoidCallback onClose,
+  ) {
     showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (_) =>  Dialog(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          insetPadding: EdgeInsets.symmetric(horizontal: 24),
-          child: EventDetailSheet(event: event, onClose: onClose)),
+      context: context,
+      barrierDismissible: true,
+      builder: (_) => Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        insetPadding: EdgeInsets.symmetric(horizontal: 24),
+        child: EventDetailSheet(event: event, onClose: onClose),
+      ),
     );
   }
 
@@ -30,7 +39,7 @@ class EventDetailSheet extends StatelessWidget {
       maxChildSize: 0.92,
       minChildSize: 0.35,
       builder: (_, scrollController) => Container(
-        decoration:  BoxDecoration(
+        decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(24),
         ),
@@ -61,7 +70,10 @@ class EventDetailSheet extends StatelessWidget {
                           children: [
                             // Type badge
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 4,
+                              ),
                               decoration: BoxDecoration(
                                 color: color.withOpacity(0.12),
                                 borderRadius: BorderRadius.circular(20),
@@ -69,7 +81,10 @@ class EventDetailSheet extends StatelessWidget {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Text(event.type.emoji, style: const TextStyle(fontSize: 11)),
+                                  Text(
+                                    event.type.emoji,
+                                    style: const TextStyle(fontSize: 11),
+                                  ),
                                   const SizedBox(width: 4),
                                   Text(
                                     event.type.label,
@@ -93,16 +108,27 @@ class EventDetailSheet extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              _formatRange(event.start, event.end, event.allDay),
-                              style: const TextStyle(fontSize: 13, color: Color(0xFF94A3B4)),
+                              _formatRange(
+                                event.start,
+                                event.end,
+                                event.allDay,
+                              ),
+                              style: const TextStyle(
+                                fontSize: 13,
+                                color: Color(0xFF94A3B4),
+                              ),
                             ),
                           ],
                         ),
                       ),
                       const SizedBox(width: 12),
                       Container(
-                        width: 14, height: 14,
-                        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+                        width: 14,
+                        height: 14,
+                        decoration: BoxDecoration(
+                          color: color,
+                          shape: BoxShape.circle,
+                        ),
                       ),
                     ],
                   ),
@@ -131,11 +157,17 @@ class EventDetailSheet extends StatelessWidget {
                       },
                       style: OutlinedButton.styleFrom(
                         side: const BorderSide(color: Color(0xFFE2E8ED)),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
                       ),
                       child: const Text(
                         'Close',
-                        style: TextStyle(fontSize: 15, color: Color(0xFF536C79), fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Color(0xFF536C79),
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
@@ -155,51 +187,97 @@ class EventDetailSheet extends StatelessWidget {
     switch (event.type) {
       case CalendarEventType.shift:
       case CalendarEventType.recurringShift:
-        if (meta.caseIdentifier != null) rows.add(_DetailRow('Case', meta.caseIdentifier!));
-        if (meta.location != null) rows.add(_DetailRow('Location', meta.location!));
-        if (meta.visitType != null) rows.add(_DetailRow('Visit Type', _formatLabel(meta.visitType)));
-        if (meta.designation != null) rows.add(_DetailRow('Designation', meta.designation!));
-        if (meta.specialties.isNotEmpty) rows.add(_DetailRow('Specialties', meta.specialties.join(', ')));
+        if (meta.caseIdentifier != null)
+          rows.add(_DetailRow('Case', meta.caseIdentifier!));
+        if (meta.location != null)
+          rows.add(_DetailRow('Location', meta.location!));
+        if (meta.visitType != null)
+          rows.add(_DetailRow('Visit Type', _formatLabel(meta.visitType)));
+        if (meta.designation != null)
+          rows.add(_DetailRow('Designation', meta.designation!));
+        if (meta.specialties.isNotEmpty)
+          rows.add(_DetailRow('Specialties', meta.specialties.join(', ')));
         rows.add(_DetailRow('Status', _formatLabel(event.status)));
-        if (meta.assignee != null) rows.add(_DetailRow('Assigned To', meta.assignee!));
-        if (meta.payRate != null) rows.add(_DetailRow('Pay Rate', '\$${meta.payRate!.toStringAsFixed(2)}/hr'));
-        if (meta.chargeRate != null) rows.add(_DetailRow('Charge Rate', '\$${meta.chargeRate!.toStringAsFixed(2)}/hr'));
-        if (meta.pattern != null) rows.add(_DetailRow('Pattern', meta.pattern!));
+        if (meta.assignee != null)
+          rows.add(_DetailRow('Assigned To', meta.assignee!));
+        if (meta.payRate != null)
+          rows.add(
+            _DetailRow('Pay Rate', '\$${meta.payRate!.toStringAsFixed(2)}/hr'),
+          );
+        if (meta.chargeRate != null)
+          rows.add(
+            _DetailRow(
+              'Charge Rate',
+              '\$${meta.chargeRate!.toStringAsFixed(2)}/hr',
+            ),
+          );
+        if (meta.pattern != null)
+          rows.add(_DetailRow('Pattern', meta.pattern!));
         if (meta.period != null) rows.add(_DetailRow('Period', meta.period!));
         if (meta.isUrgent) rows.add(const _DetailRow('Urgent', 'Yes'));
-        if (meta.isEmergencyFill) rows.add(const _DetailRow('Emergency Fill', 'Yes'));
+        if (meta.isEmergencyFill)
+          rows.add(const _DetailRow('Emergency Fill', 'Yes'));
         break;
 
       case CalendarEventType.visit:
-        if (meta.caseIdentifier != null) rows.add(_DetailRow('Case', meta.caseIdentifier!));
-        if (meta.location != null) rows.add(_DetailRow('Location', meta.location!));
-        if (meta.visitType != null) rows.add(_DetailRow('Visit Type', _formatLabel(meta.visitType)));
+        if (meta.caseIdentifier != null)
+          rows.add(_DetailRow('Case', meta.caseIdentifier!));
+        if (meta.location != null)
+          rows.add(_DetailRow('Location', meta.location!));
+        if (meta.visitType != null)
+          rows.add(_DetailRow('Visit Type', _formatLabel(meta.visitType)));
         if (meta.nurse != null) rows.add(_DetailRow('Nurse', meta.nurse!));
         rows.add(_DetailRow('Status', _formatLabel(event.status)));
-        if (meta.checkInTime != null) rows.add(_DetailRow('Check In', _formatDateTime(meta.checkInTime)));
-        if (meta.checkOutTime != null) rows.add(_DetailRow('Check Out', _formatDateTime(meta.checkOutTime)));
-        if (meta.durationMinutes != null) rows.add(_DetailRow('Duration', '${meta.durationMinutes} min'));
-        if (meta.checkInDistance != null) rows.add(_DetailRow('Distance at CI', '${meta.checkInDistance!.toStringAsFixed(0)} m'));
-        if (meta.overrideRequired) rows.add(_DetailRow('Override', meta.overrideReason ?? 'Required'));
+        if (meta.checkInTime != null)
+          rows.add(_DetailRow('Check In', _formatDateTime(meta.checkInTime)));
+        if (meta.checkOutTime != null)
+          rows.add(_DetailRow('Check Out', _formatDateTime(meta.checkOutTime)));
+        if (meta.durationMinutes != null)
+          rows.add(_DetailRow('Duration', '${meta.durationMinutes} min'));
+        if (meta.checkInDistance != null)
+          rows.add(
+            _DetailRow(
+              'Distance at CI',
+              '${meta.checkInDistance!.toStringAsFixed(0)} m',
+            ),
+          );
+        if (meta.overrideRequired)
+          rows.add(_DetailRow('Override', meta.overrideReason ?? 'Required'));
         if (meta.notes != null) rows.add(_DetailRow('Notes', meta.notes!));
         break;
 
       case CalendarEventType.credentialExpiry:
         if (meta.nurse != null) rows.add(_DetailRow('Nurse', meta.nurse!));
-        rows.add(_DetailRow('Credential', meta.customLabel ?? _formatLabel(meta.credentialType)));
-        if (meta.expiresAt != null) rows.add(_DetailRow('Expires', _formatDateTime(meta.expiresAt)));
+        rows.add(
+          _DetailRow(
+            'Credential',
+            meta.customLabel ?? _formatLabel(meta.credentialType),
+          ),
+        );
+        if (meta.expiresAt != null)
+          rows.add(_DetailRow('Expires', _formatDateTime(meta.expiresAt)));
         if (meta.daysUntilExpiry != null)
-          rows.add(_DetailRow('Days Remaining',
-              meta.daysUntilExpiry! <= 0 ? 'Expired' : '${meta.daysUntilExpiry} days'));
+          rows.add(
+            _DetailRow(
+              'Days Remaining',
+              meta.daysUntilExpiry! <= 0
+                  ? 'Expired'
+                  : '${meta.daysUntilExpiry} days',
+            ),
+          );
         rows.add(_DetailRow('Status', _formatLabel(event.status)));
         break;
 
       case CalendarEventType.invoiceDue:
       case CalendarEventType.invoiceOverdue:
-        if (meta.facilityName != null) rows.add(_DetailRow('Facility', meta.facilityName!));
-        if (meta.invoiceNumber != null) rows.add(_DetailRow('Invoice #', meta.invoiceNumber!));
-        if (meta.total != null) rows.add(_DetailRow('Total', '\$${meta.total!.toStringAsFixed(2)}'));
-        if (meta.dueAt != null) rows.add(_DetailRow('Due Date', _formatDateTime(meta.dueAt)));
+        if (meta.facilityName != null)
+          rows.add(_DetailRow('Facility', meta.facilityName!));
+        if (meta.invoiceNumber != null)
+          rows.add(_DetailRow('Invoice #', meta.invoiceNumber!));
+        if (meta.total != null)
+          rows.add(_DetailRow('Total', '\$${meta.total!.toStringAsFixed(2)}'));
+        if (meta.dueAt != null)
+          rows.add(_DetailRow('Due Date', _formatDateTime(meta.dueAt)));
         rows.add(_DetailRow('Status', _formatLabel(event.status)));
         break;
     }
@@ -214,10 +292,14 @@ class EventDetailSheet extends StatelessWidget {
 
   String _formatLabel(String? raw) {
     if (raw == null || raw.isEmpty) return '—';
-    return raw.replaceAll('_', ' ').split(' ').map((w) {
-      if (w.isEmpty) return w;
-      return w[0].toUpperCase() + w.substring(1).toLowerCase();
-    }).join(' ');
+    return raw
+        .replaceAll('_', ' ')
+        .split(' ')
+        .map((w) {
+          if (w.isEmpty) return w;
+          return w[0].toUpperCase() + w.substring(1).toLowerCase();
+        })
+        .join(' ');
   }
 
   String _formatDateTime(String? raw) {
@@ -308,8 +390,14 @@ class _StatusPill extends StatelessWidget {
         color: colors.$1,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Text(label,
-          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: colors.$2)),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          color: colors.$2,
+        ),
+      ),
     );
   }
 }

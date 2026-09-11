@@ -26,17 +26,16 @@ class MarketplaceFilter {
     Object? maxPay = _sentinel,
     Object? date = _sentinel,
     Object? searchQuery = _sentinel,
-  }) =>
-      MarketplaceFilter(
-        visitType: visitType == _sentinel ? this.visitType : visitType as String?,
-        isUrgent: isUrgent == _sentinel ? this.isUrgent : isUrgent as bool?,
-        minPay: minPay == _sentinel ? this.minPay : minPay as double?,
-        maxPay: maxPay == _sentinel ? this.maxPay : maxPay as double?,
-        date: date == _sentinel ? this.date : date as String?,
-        searchQuery: searchQuery == _sentinel
-            ? this.searchQuery
-            : searchQuery as String?,
-      );
+  }) => MarketplaceFilter(
+    visitType: visitType == _sentinel ? this.visitType : visitType as String?,
+    isUrgent: isUrgent == _sentinel ? this.isUrgent : isUrgent as bool?,
+    minPay: minPay == _sentinel ? this.minPay : minPay as double?,
+    maxPay: maxPay == _sentinel ? this.maxPay : maxPay as double?,
+    date: date == _sentinel ? this.date : date as String?,
+    searchQuery: searchQuery == _sentinel
+        ? this.searchQuery
+        : searchQuery as String?,
+  );
 }
 
 const _sentinel = Object();
@@ -50,6 +49,8 @@ class MarketplaceState {
   final MarketplaceFilter filter;
   final String? bookingShiftId;
   final String? bookingError;
+  final String? bookingErrorCode;
+  final List<String> bookingMissingCredentialTypes;
 
   const MarketplaceState({
     this.status = MarketplaceStatus.initial,
@@ -60,6 +61,8 @@ class MarketplaceState {
     this.filter = const MarketplaceFilter(),
     this.bookingShiftId,
     this.bookingError,
+    this.bookingErrorCode,
+    this.bookingMissingCredentialTypes = const [],
   });
 
   bool get hasMore => shifts.length < total;
@@ -73,15 +76,26 @@ class MarketplaceState {
     MarketplaceFilter? filter,
     Object? bookingShiftId = _sentinel,
     Object? bookingError = _sentinel,
-  }) =>
-      MarketplaceState(
-        status: status ?? this.status,
-        shifts: shifts ?? this.shifts,
-        currentPage: currentPage ?? this.currentPage,
-        total: total ?? this.total,
-        errorMessage: errorMessage ?? this.errorMessage,
-        filter: filter ?? this.filter,
-        bookingShiftId: bookingShiftId == _sentinel ? this.bookingShiftId : bookingShiftId as String?,
-        bookingError: bookingError == _sentinel ? this.bookingError : bookingError as String?,
-      );
+    Object? bookingErrorCode = _sentinel,
+    Object? bookingMissingCredentialTypes = _sentinel,
+  }) => MarketplaceState(
+    status: status ?? this.status,
+    shifts: shifts ?? this.shifts,
+    currentPage: currentPage ?? this.currentPage,
+    total: total ?? this.total,
+    errorMessage: errorMessage ?? this.errorMessage,
+    filter: filter ?? this.filter,
+    bookingShiftId: bookingShiftId == _sentinel
+        ? this.bookingShiftId
+        : bookingShiftId as String?,
+    bookingError: bookingError == _sentinel
+        ? this.bookingError
+        : bookingError as String?,
+    bookingErrorCode: bookingErrorCode == _sentinel
+        ? this.bookingErrorCode
+        : bookingErrorCode as String?,
+    bookingMissingCredentialTypes: bookingMissingCredentialTypes == _sentinel
+        ? this.bookingMissingCredentialTypes
+        : List<String>.from(bookingMissingCredentialTypes as List),
+  );
 }

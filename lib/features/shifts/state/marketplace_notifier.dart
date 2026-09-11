@@ -1,5 +1,6 @@
+import 'package:flutter/foundation.dart';
+
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import '../data/shifts_repository.dart';
 import 'marketplace_state.dart';
@@ -15,7 +16,9 @@ class MarketplaceNotifier extends StateNotifier<MarketplaceState> {
     final currentFilter = state.filter;
 
     state = state.copyWith(
-      status: isFirstLoad ? MarketplaceStatus.loading : MarketplaceStatus.loadingMore,
+      status: isFirstLoad
+          ? MarketplaceStatus.loading
+          : MarketplaceStatus.loadingMore,
       shifts: refresh ? [] : state.shifts,
       // Keep filter as is
     );
@@ -28,7 +31,8 @@ class MarketplaceNotifier extends StateNotifier<MarketplaceState> {
         minPay: currentFilter.minPay,
         maxPay: currentFilter.maxPay,
         date: currentFilter.date,
-        searchQuery: currentFilter.searchQuery,   // ← This was likely missing or stale
+        searchQuery: currentFilter
+            .searchQuery, // ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â This was likely missing or stale
       );
 
       state = state.copyWith(
@@ -53,15 +57,20 @@ class MarketplaceNotifier extends StateNotifier<MarketplaceState> {
   Future<void> applyFilter(MarketplaceFilter filter) async {
     state = state.copyWith(
       filter: filter,
-      currentPage: 1,        // Important: Reset pagination
-      shifts: [],            // Clear current list
+      currentPage: 1, // Important: Reset pagination
+      shifts: [], // Clear current list
     );
 
     await load(refresh: true);
   }
 
   Future<bool> bookShift(String shiftId) async {
-    state = state.copyWith(bookingShiftId: shiftId, bookingError: null);
+    state = state.copyWith(
+      bookingShiftId: shiftId,
+      bookingError: null,
+      bookingErrorCode: null,
+      bookingMissingCredentialTypes: const [],
+    );
     try {
       await _repo.bookShift(shiftId);
       // Remove booked shift from marketplace list
@@ -75,7 +84,36 @@ class MarketplaceNotifier extends StateNotifier<MarketplaceState> {
       final message = e is DioException
           ? (e.error?.toString() ?? 'Something went wrong')
           : e.toString();
-      state = state.copyWith(bookingShiftId: null, bookingError: message);
+
+      String? errorCode;
+      List<String> missingCredentialTypes = const [];
+
+      if (e is DioException) {
+        final responseData = e.response?.data;
+
+        if (responseData is Map) {
+          final rawCode = responseData['code'];
+          if (rawCode != null) {
+            errorCode = rawCode.toString();
+          }
+
+          final rawMissing = responseData['missingCredentialTypes'];
+          if (rawMissing is List) {
+            missingCredentialTypes = rawMissing
+                .map((item) => item.toString())
+                .where((item) => item.trim().isNotEmpty)
+                .toList(growable: false);
+          }
+        }
+      }
+
+      state = state.copyWith(
+        bookingShiftId: null,
+        bookingError: message,
+        bookingErrorCode: errorCode,
+        bookingMissingCredentialTypes: missingCredentialTypes,
+      );
+
       return false;
     }
   }

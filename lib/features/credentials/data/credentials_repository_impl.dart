@@ -3,6 +3,7 @@ import '../../../core/cache/cache_keys.dart';
 import '../../../core/cache/cache_ttl.dart';
 import 'credentials_api.dart';
 import 'credentials_repository.dart';
+import 'models/credential_history_model.dart';
 import 'models/credential_model.dart';
 
 class CredentialsRepositoryImpl implements CredentialsRepository {
@@ -11,29 +12,78 @@ class CredentialsRepositoryImpl implements CredentialsRepository {
 
   CredentialsRepositoryImpl(this._api, this._cache);
 
+  static String _historyKey(String credentialId) {
+    return 'credentials:history:$credentialId';
+  }
+
   @override
   Future<List<CredentialModel>> getMine() async {
     final cached = _cache.get<List<CredentialModel>>(CacheKeys.credentials);
-    if (cached != null && !cached.isStale) return cached.data;
+
+    if (cached != null && !cached.isStale) {
+      return cached.data;
+    }
 
     final raw = await _api.fetchMine();
     final data = raw['data'] as List? ?? [];
-    final credentials =
-    data.map((j) => CredentialModel.fromJson(j)).toList();
+
+    final credentials = data
+        .whereType<Map>()
+        .map(
+          (json) => CredentialModel.fromJson(Map<String, dynamic>.from(json)),
+        )
+        .toList();
+
     _cache.set(CacheKeys.credentials, credentials, CacheTtl.credentials);
+
     return credentials;
   }
 
   @override
   Future<CredentialModel> getOne(String id) async {
     final key = CacheKeys.credentialDetail(id);
+
     final cached = _cache.get<CredentialModel>(key);
-    if (cached != null && !cached.isExpired) return cached.data;
+
+    if (cached != null && !cached.isExpired) {
+      return cached.data;
+    }
 
     final raw = await _api.fetchOne(id);
-    final credential = CredentialModel.fromJson(raw['data']);
+
+    final credential = CredentialModel.fromJson(
+      Map<String, dynamic>.from(raw['data'] as Map),
+    );
+
     _cache.set(key, credential, CacheTtl.credentials);
+
     return credential;
+  }
+
+  @override
+  Future<CredentialHistoryResult> getHistory(
+    String id, {
+    bool forceRefresh = false,
+  }) async {
+    final key = _historyKey(id);
+
+    if (!forceRefresh) {
+      final cached = _cache.get<CredentialHistoryResult>(key);
+
+      if (cached != null && !cached.isStale) {
+        return cached.data;
+      }
+    }
+
+    final raw = await _api.fetchHistory(id);
+
+    final data = raw['data'] as Map<String, dynamic>? ?? <String, dynamic>{};
+
+    final history = CredentialHistoryResult.fromJson(data);
+
+    _cache.set(key, history, const Duration(minutes: 2));
+
+    return history;
   }
 
   @override
@@ -55,16 +105,28 @@ class CredentialsRepositoryImpl implements CredentialsRepository {
     );
 
     _cache.invalidate(CacheKeys.credentials);
+
     _cache.invalidate(CacheKeys.me);
 
-    return CredentialModel.fromJson(raw['data']);
+    final credential = CredentialModel.fromJson(
+      Map<String, dynamic>.from(raw['data'] as Map),
+    );
+
+    _cache.invalidate(_historyKey(credential.id));
+
+    return credential;
   }
 
   @override
   Future<void> delete(String id) async {
     await _api.deleteCredential(id);
+
     _cache.invalidate(CacheKeys.credentials);
+
     _cache.invalidate(CacheKeys.credentialDetail(id));
+
+    _cache.invalidate(_historyKey(id));
+
     _cache.invalidate(CacheKeys.me);
   }
 }

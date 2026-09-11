@@ -46,23 +46,22 @@ class BillingState {
     int? payoutsPage,
     Object? payoutsStatusFilter = _sentinel,
     Object? payoutsError = _sentinel,
-  }) =>
-      BillingState(
-        walletStatus: walletStatus ?? this.walletStatus,
-        wallet: wallet == _sentinel ? this.wallet : wallet as WalletModel?,
-        walletError: walletError == _sentinel
-            ? this.walletError
-            : walletError as String?,
-        payoutsStatus: payoutsStatus ?? this.payoutsStatus,
-        payouts: payouts ?? this.payouts,
-        payoutsTotal: payoutsTotal ?? this.payoutsTotal,
-        payoutsHasMore: payoutsHasMore ?? this.payoutsHasMore,
-        payoutsPage: payoutsPage ?? this.payoutsPage,
-        payoutsStatusFilter: payoutsStatusFilter == _sentinel
-            ? this.payoutsStatusFilter
-            : payoutsStatusFilter as String?,
-        payoutsError: payoutsError == _sentinel
-            ? this.payoutsError
-            : payoutsError as String?,
-      );
+  }) => BillingState(
+    walletStatus: walletStatus ?? this.walletStatus,
+    wallet: wallet == _sentinel ? this.wallet : wallet as WalletModel?,
+    walletError: walletError == _sentinel
+        ? this.walletError
+        : walletError as String?,
+    payoutsStatus: payoutsStatus ?? this.payoutsStatus,
+    payouts: payouts ?? this.payouts,
+    payoutsTotal: payoutsTotal ?? this.payoutsTotal,
+    payoutsHasMore: payoutsHasMore ?? this.payoutsHasMore,
+    payoutsPage: payoutsPage ?? this.payoutsPage,
+    payoutsStatusFilter: payoutsStatusFilter == _sentinel
+        ? this.payoutsStatusFilter
+        : payoutsStatusFilter as String?,
+    payoutsError: payoutsError == _sentinel
+        ? this.payoutsError
+        : payoutsError as String?,
+  );
 }

@@ -1,6 +1,7 @@
 import '../data/models/case_model.dart';
 
 const _sentinel = Object();
+
 enum CasesStatus { initial, loading, loadingMore, success, error }
 
 class CasesState {
@@ -36,24 +37,23 @@ class CasesState {
     Object? visitTypeFilter = _sentinel,
     Object? isActiveFilter = _sentinel,
     Object? errorMessage = _sentinel,
-  }) =>
-      CasesState(
-        status: status ?? this.status,
-        cases: cases ?? this.cases,
-        total: total ?? this.total,
-        hasMore: hasMore ?? this.hasMore,
-        page: page ?? this.page,
-        searchQuery: searchQuery == _sentinel
-            ? this.searchQuery
-            : searchQuery as String?,
-        visitTypeFilter: visitTypeFilter == _sentinel
-            ? this.visitTypeFilter
-            : visitTypeFilter as String?,
-        isActiveFilter: isActiveFilter == _sentinel
-            ? this.isActiveFilter
-            : isActiveFilter as bool?,
-        errorMessage: errorMessage == _sentinel
-            ? this.errorMessage
-            : errorMessage as String?,
-      );
+  }) => CasesState(
+    status: status ?? this.status,
+    cases: cases ?? this.cases,
+    total: total ?? this.total,
+    hasMore: hasMore ?? this.hasMore,
+    page: page ?? this.page,
+    searchQuery: searchQuery == _sentinel
+        ? this.searchQuery
+        : searchQuery as String?,
+    visitTypeFilter: visitTypeFilter == _sentinel
+        ? this.visitTypeFilter
+        : visitTypeFilter as String?,
+    isActiveFilter: isActiveFilter == _sentinel
+        ? this.isActiveFilter
+        : isActiveFilter as bool?,
+    errorMessage: errorMessage == _sentinel
+        ? this.errorMessage
+        : errorMessage as String?,
+  );
 }

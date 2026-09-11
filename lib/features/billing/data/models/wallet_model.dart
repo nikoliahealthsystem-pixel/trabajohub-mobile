@@ -22,6 +22,21 @@ class WalletModel {
     this.recentPayouts = const [],
   });
 
+  factory WalletModel.empty() {
+    final now = DateTime.now();
+
+    return WalletModel(
+      id: '',
+      nurseProfileId: '',
+      pendingBalance: 0,
+      availableBalance: 0,
+      lifetimeEarnings: 0,
+      createdAt: now,
+      updatedAt: now,
+      recentPayouts: const [],
+    );
+  }
+
   factory WalletModel.fromJson(Map<String, dynamic> json) => WalletModel(
     id: json['id'],
     nurseProfileId: json['nurseProfileId'],

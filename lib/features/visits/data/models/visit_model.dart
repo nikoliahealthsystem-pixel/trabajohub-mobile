@@ -2,10 +2,11 @@ class VisitNurse {
   final String firstName;
   final String lastName;
   final String designation;
-  const VisitNurse(
-      {required this.firstName,
-        required this.lastName,
-        required this.designation});
+  const VisitNurse({
+    required this.firstName,
+    required this.lastName,
+    required this.designation,
+  });
   factory VisitNurse.fromJson(Map<String, dynamic> json) => VisitNurse(
     firstName: json['firstName'] ?? '',
     lastName: json['lastName'] ?? '',
@@ -18,6 +19,7 @@ class VisitShiftInfo {
   final DateTime scheduledStart;
   final DateTime scheduledEnd;
   final String visitType;
+  final String status;
   final String? caseIdentifier;
   final String? city;
   final String? state;
@@ -26,6 +28,7 @@ class VisitShiftInfo {
     required this.scheduledStart,
     required this.scheduledEnd,
     required this.visitType,
+    required this.status,
     this.caseIdentifier,
     this.city,
     this.state,
@@ -37,6 +40,7 @@ class VisitShiftInfo {
       scheduledStart: DateTime.parse(json['scheduledStart']),
       scheduledEnd: DateTime.parse(json['scheduledEnd']),
       visitType: json['visitType'] ?? '',
+      status: (json['status'] ?? '').toString(),
       caseIdentifier: c?['publicIdentifier'],
       city: c?['city'],
       state: c?['state'],
@@ -73,18 +77,36 @@ class VisitAuditEvent {
 }
 
 enum VisitStatus {
-  scheduled, checkedIn, checkedOut, verified, flagged,
-  overrideRequested, overrideApproved;
+  scheduled,
+  checkedIn,
+  checkedOut,
+  verified,
+  flagged,
+  overrideRequested,
+  overrideApproved,
+  cancelled;
 
   static VisitStatus fromString(String raw) {
-    switch (raw.toUpperCase()) {
-      case 'CHECKED_IN': return checkedIn;
-      case 'CHECKED_OUT': return checkedOut;
-      case 'VERIFIED': return verified;
-      case 'FLAGGED': return flagged;
-      case 'OVERRIDE_REQUESTED': return overrideRequested;
-      case 'OVERRIDE_APPROVED': return overrideApproved;
-      default: return scheduled;
+    switch (raw.trim().toUpperCase()) {
+      case 'SCHEDULED':
+        return scheduled;
+      case 'CHECKED_IN':
+        return checkedIn;
+      case 'CHECKED_OUT':
+        return checkedOut;
+      case 'VERIFIED':
+        return verified;
+      case 'FLAGGED':
+        return flagged;
+      case 'OVERRIDE_REQUESTED':
+        return overrideRequested;
+      case 'OVERRIDE_APPROVED':
+        return overrideApproved;
+      case 'CANCELLED':
+      case 'CANCELED':
+        return cancelled;
+      default:
+        return scheduled;
     }
   }
 
@@ -154,8 +176,7 @@ class VisitModel {
       checkOutTime: json['checkOutTime'] != null
           ? DateTime.parse(json['checkOutTime'])
           : null,
-      checkOutDistance:
-      (json['checkOutDistance'] as num?)?.toDouble(),
+      checkOutDistance: (json['checkOutDistance'] as num?)?.toDouble(),
       durationMinutes: json['durationMinutes'],
       overrideRequired: json['overrideRequired'] ?? false,
       overrideReason: json['overrideReason'],
@@ -164,8 +185,7 @@ class VisitModel {
       nurse: json['nurseProfile'] != null
           ? VisitNurse.fromJson(json['nurseProfile'])
           : null,
-      shiftInfo:
-      shift != null ? VisitShiftInfo.fromJson(shift) : null,
+      shiftInfo: shift != null ? VisitShiftInfo.fromJson(shift) : null,
       auditEvents: (json['auditEvents'] as List? ?? [])
           .map((e) => VisitAuditEvent.fromJson(e))
           .toList(),

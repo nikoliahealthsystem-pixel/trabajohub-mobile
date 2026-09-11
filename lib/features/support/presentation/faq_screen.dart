@@ -24,9 +24,8 @@ class FaqScreen extends ConsumerWidget {
             child: faqsAsync.when(
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (err, _) => _buildError(ref, err.toString()),
-              data: (categories) => _buildFaqList(
-                _filterCategories(categories, searchQuery),
-              ),
+              data: (categories) =>
+                  _buildFaqList(_filterCategories(categories, searchQuery)),
             ),
           ),
         ],
@@ -38,7 +37,12 @@ class FaqScreen extends ConsumerWidget {
     return Container(
       width: double.maxFinite,
       decoration: const BoxDecoration(gradient: ColorConstants.appGradient),
-      padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).padding.top + 20, 20, 24),
+      padding: EdgeInsets.fromLTRB(
+        20,
+        MediaQuery.of(context).padding.top + 20,
+        20,
+        24,
+      ),
       child: Column(
         children: [
           Row(
@@ -52,8 +56,11 @@ class FaqScreen extends ConsumerWidget {
                     color: Colors.white.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Icon(Icons.arrow_back_ios_new_rounded,
-                      color: Colors.white, size: 16),
+                  child: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: Colors.white,
+                    size: 16,
+                  ),
                 ),
               ),
               const SizedBox(width: 16),
@@ -98,30 +105,33 @@ class FaqScreen extends ConsumerWidget {
                 ref.read(faqSearchQueryProvider.notifier).state = value.trim();
               },
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
-  List<FaqCategory> _filterCategories(List<FaqCategory> categories, String query) {
+  List<FaqCategory> _filterCategories(
+    List<FaqCategory> categories,
+    String query,
+  ) {
     if (query.isEmpty) return categories;
 
     final lowerQuery = query.toLowerCase();
 
     return categories
         .map((category) {
-      final filteredItems = category.items.where((item) {
-        return item.question.toLowerCase().contains(lowerQuery) ||
-            item.answer.toLowerCase().contains(lowerQuery);
-      }).toList();
+          final filteredItems = category.items.where((item) {
+            return item.question.toLowerCase().contains(lowerQuery) ||
+                item.answer.toLowerCase().contains(lowerQuery);
+          }).toList();
 
-      return FaqCategory(
-        category: category.category,
-        icon: category.icon,
-        items: filteredItems,
-      );
-    })
+          return FaqCategory(
+            category: category.category,
+            icon: category.icon,
+            items: filteredItems,
+          );
+        })
         .where((category) => category.items.isNotEmpty)
         .toList();
   }
@@ -212,10 +222,7 @@ class _FaqCategoryCard extends StatelessWidget {
                   const SizedBox(height: 3),
                   Text(
                     "${category.items.length} Questions",
-                    style: TextStyle(
-                      color: accentColor,
-                      fontSize: 10,
-                    ),
+                    style: TextStyle(color: accentColor, fontSize: 10),
                   ),
                 ],
               ),
@@ -252,10 +259,7 @@ class _FaqItemTileState extends State<_FaqItemTile> {
             contentPadding: EdgeInsets.zero,
             title: Text(
               widget.item.question,
-              style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 15,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
             ),
             trailing: Icon(
               _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
@@ -281,7 +285,7 @@ class _FaqItemTileState extends State<_FaqItemTile> {
               ),
             ),
           ),
-           Divider(height: 1, indent: 4,),
+          Divider(height: 1, indent: 4),
         ],
       ),
     );

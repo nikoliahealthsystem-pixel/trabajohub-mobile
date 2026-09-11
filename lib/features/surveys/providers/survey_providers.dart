@@ -11,10 +11,16 @@ final surveysApiProvider = Provider<SurveysApi>((ref) {
 });
 
 final surveysRepositoryProvider = Provider<SurveysRepository>((ref) {
-  return SurveysRepositoryImpl(ref.watch(surveysApiProvider),ref.watch(appCacheProvider),);
+  return SurveysRepositoryImpl(
+    ref.watch(surveysApiProvider),
+    ref.watch(appCacheProvider),
+  );
 });
 
-final surveyProvider = FutureProvider.family<SurveyModel, String>((ref, shiftId) async {
+final surveyProvider = FutureProvider.family<SurveyModel, String>((
+  ref,
+  shiftId,
+) async {
   final repo = ref.watch(surveysRepositoryProvider);
   return repo.getSurveyForShift(shiftId);
 });

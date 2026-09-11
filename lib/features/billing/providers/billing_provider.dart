@@ -20,6 +20,6 @@ final billingRepositoryProvider = Provider<BillingRepository>((ref) {
 });
 
 final billingProvider =
-StateNotifierProvider<BillingNotifier, BillingState>((ref) {
-  return BillingNotifier(ref.watch(billingRepositoryProvider));
-});
+    StateNotifierProvider.autoDispose<BillingNotifier, BillingState>((ref) {
+      return BillingNotifier(ref.watch(billingRepositoryProvider));
+    });

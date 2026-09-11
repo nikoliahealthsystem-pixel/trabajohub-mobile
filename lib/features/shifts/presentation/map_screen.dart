@@ -36,20 +36,24 @@ class _ShiftMapScreenState extends ConsumerState<ShiftMapScreen> {
   void initState() {
     super.initState();
     _mappableShifts = widget.shifts
-        .where((s) =>
-    s.shiftCase?.latitude != null && s.shiftCase?.longitude != null)
+        .where(
+          (s) =>
+              s.shiftCase?.latitude != null && s.shiftCase?.longitude != null,
+        )
         .toList();
 
     if (_mappableShifts.isEmpty) {
       _initialCenter = const LatLng(6.5244, 3.3792);
     } else {
-      final avgLat = _mappableShifts
-          .map((s) => s.shiftCase!.latitude!)
-          .reduce((a, b) => a + b) /
+      final avgLat =
+          _mappableShifts
+              .map((s) => s.shiftCase!.latitude!)
+              .reduce((a, b) => a + b) /
           _mappableShifts.length;
-      final avgLng = _mappableShifts
-          .map((s) => s.shiftCase!.longitude!)
-          .reduce((a, b) => a + b) /
+      final avgLng =
+          _mappableShifts
+              .map((s) => s.shiftCase!.longitude!)
+              .reduce((a, b) => a + b) /
           _mappableShifts.length;
       _initialCenter = LatLng(avgLat, avgLng);
     }
@@ -61,9 +65,11 @@ class _ShiftMapScreenState extends ConsumerState<ShiftMapScreen> {
   Future<void> _buildMarkers({bool forceRebuild = false}) async {
     if (!forceRebuild && _markers.isNotEmpty) {
       // Only rebuild if necessary (e.g. selection changed)
-      final needsRebuild = _mappableShifts.any((s) =>
-      _selectedShift?.id == s.id ||
-          (_markers.any((m) => m.markerId.value == s.id) == false));
+      final needsRebuild = _mappableShifts.any(
+        (s) =>
+            _selectedShift?.id == s.id ||
+            (_markers.any((m) => m.markerId.value == s.id) == false),
+      );
       if (!needsRebuild) return;
     }
 
@@ -77,21 +83,28 @@ class _ShiftMapScreenState extends ConsumerState<ShiftMapScreen> {
         size: isSelected ? 52.0 : 42.0,
       );
 
-      markers.add(Marker(
-        markerId: MarkerId(shift.id),
-        position: LatLng(shift.shiftCase!.latitude!, shift.shiftCase!.longitude!),
-        icon: bitmap,
-        anchor: const Offset(0.5, 1.0),
-        onTap: () => _onMarkerTap(shift),
-      ));
+      markers.add(
+        Marker(
+          markerId: MarkerId(shift.id),
+          position: LatLng(
+            shift.shiftCase!.latitude!,
+            shift.shiftCase!.longitude!,
+          ),
+          icon: bitmap,
+          anchor: const Offset(0.5, 1.0),
+          onTap: () => _onMarkerTap(shift),
+        ),
+      );
     }
 
     if (mounted) setState(() => _markers = markers);
   }
 
   /// Converts a Flutter widget to a [BitmapDescriptor] for use as a Google Maps marker icon.
-  Future<BitmapDescriptor> _widgetToBitmap(Widget widget,
-      {double size = 42}) async {
+  Future<BitmapDescriptor> _widgetToBitmap(
+    Widget widget, {
+    double size = 42,
+  }) async {
     final repaintKey = GlobalKey();
 
     // Render off-screen
@@ -126,7 +139,7 @@ class _ShiftMapScreenState extends ConsumerState<ShiftMapScreen> {
     return _drawMarkerBitmap(shift: null, isSelected: false, size: size);
   }
 
-  /// Draws a marker directly on canvas — reliable cross-platform alternative.
+  /// Draws a marker directly on canvas â€” reliable cross-platform alternative.
   Future<BitmapDescriptor> _drawMarkerBitmap({
     required ShiftModel? shift,
     required bool isSelected,
@@ -134,14 +147,17 @@ class _ShiftMapScreenState extends ConsumerState<ShiftMapScreen> {
     Color? overrideColor,
   }) async {
     try {
-      final dpr = ui.PlatformDispatcher.instance.views.first.devicePixelRatio.clamp(1.0, 3.0); // cap it
+      final dpr = ui.PlatformDispatcher.instance.views.first.devicePixelRatio
+          .clamp(1.0, 3.0); // cap it
       final scaledSize = (size * dpr).roundToDouble();
       final pointerHeight = (8 * dpr).roundToDouble();
       final totalHeight = scaledSize + pointerHeight;
 
       final color = isSelected
           ? const Color(0xFF28D744)
-          : (shift?.isUrgent ?? false) ? const Color(0xFFEF4444) : accentColor;
+          : (shift?.isUrgent ?? false)
+          ? const Color(0xFFEF4444)
+          : accentColor;
 
       final recorder = ui.PictureRecorder();
       final canvas = Canvas(recorder);
@@ -156,7 +172,10 @@ class _ShiftMapScreenState extends ConsumerState<ShiftMapScreen> {
         r,
         Paint()
           ..color = color.withOpacity(0.35)
-          ..maskFilter = MaskFilter.blur(BlurStyle.normal, isSelected ? 6 * dpr : 3 * dpr),
+          ..maskFilter = MaskFilter.blur(
+            BlurStyle.normal,
+            isSelected ? 6 * dpr : 3 * dpr,
+          ),
       );
 
       // Fill
@@ -205,24 +224,33 @@ class _ShiftMapScreenState extends ConsumerState<ShiftMapScreen> {
       canvas.drawPath(triPath, Paint()..color = color);
 
       final picture = recorder.endRecording();
-      final img = await picture.toImage(scaledSize.toInt(), totalHeight.toInt());
+      final img = await picture.toImage(
+        scaledSize.toInt(),
+        totalHeight.toInt(),
+      );
       final byteData = await img.toByteData(format: ui.ImageByteFormat.png);
 
       if (byteData == null) throw Exception('Failed to get byte data');
 
       return BitmapDescriptor.fromBytes(byteData.buffer.asUint8List());
     } catch (e, st) {
-    debugPrint('Marker bitmap failed: $e\n$st');
-    // Fallback to default marker
-    return BitmapDescriptor.defaultMarkerWithHue(shift?.isUrgent ?? false ? BitmapDescriptor.hueRed : BitmapDescriptor.hueAzure,
-    );
+      // Fallback to default marker
+      return BitmapDescriptor.defaultMarkerWithHue(
+        shift?.isUrgent ?? false
+            ? BitmapDescriptor.hueRed
+            : BitmapDescriptor.hueAzure,
+      );
+    }
   }
-}
 
   Future<void> _onMarkerTap(ShiftModel shift) async {
     setState(() => _selectedShift = shift);
-    _mapController?.animateCamera(CameraUpdate.newLatLngZoom(
-        LatLng(shift.shiftCase!.latitude!, shift.shiftCase!.longitude!), 14.0));
+    _mapController?.animateCamera(
+      CameraUpdate.newLatLngZoom(
+        LatLng(shift.shiftCase!.latitude!, shift.shiftCase!.longitude!),
+        14.0,
+      ),
+    );
 
     // Only rebuild markers once
     await _buildMarkers(forceRebuild: true);
@@ -233,7 +261,7 @@ class _ShiftMapScreenState extends ConsumerState<ShiftMapScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // ── Google Map ──────────────────────────────────────
+          // â”€â”€ Google Map â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           GoogleMap(
             initialCameraPosition: CameraPosition(
               target: _initialCenter,
@@ -243,14 +271,14 @@ class _ShiftMapScreenState extends ConsumerState<ShiftMapScreen> {
             markers: _markers,
             onTap: (_) async {
               setState(() => _selectedShift = null);
-              await _buildMarkers(); // deselect (revert green → original colour)
+              await _buildMarkers(); // deselect (revert green â†’ original colour)
             },
             myLocationButtonEnabled: false,
             zoomControlsEnabled: false,
             mapToolbarEnabled: false,
           ),
 
-          // ── Top bar ─────────────────────────────────────────
+          // â”€â”€ Top bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           Positioned(
             top: 0,
             left: 0,
@@ -260,12 +288,19 @@ class _ShiftMapScreenState extends ConsumerState<ShiftMapScreen> {
                 gradient: ColorConstants.appGradient,
               ),
               padding: EdgeInsets.fromLTRB(
-                  8, MediaQuery.of(context).padding.top + 4, 16, 12),
+                8,
+                MediaQuery.of(context).padding.top + 4,
+                16,
+                12,
+              ),
               child: Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                        color: Colors.white, size: 20),
+                    icon: const Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      color: Colors.white,
+                      size: 20,
+                    ),
                     onPressed: () => Navigator.pop(context),
                   ),
                   Expanded(
@@ -275,29 +310,36 @@ class _ShiftMapScreenState extends ConsumerState<ShiftMapScreen> {
                         const Text(
                           'Shift locations',
                           style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700),
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                         Text(
                           '${_mappableShifts.length} of ${widget.shifts.length} shifts mapped',
                           style: const TextStyle(
-                              color: Colors.white70, fontSize: 11),
+                            color: Colors.white70,
+                            fontSize: 11,
+                          ),
                         ),
                       ],
                     ),
                   ),
                   GestureDetector(
                     onTap: () => _mapController?.animateCamera(
-                        CameraUpdate.newLatLngZoom(_initialCenter, _initialZoom)),
+                      CameraUpdate.newLatLngZoom(_initialCenter, _initialZoom),
+                    ),
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const Icon(Icons.my_location_rounded,
-                          color: Colors.white, size: 18),
+                      child: const Icon(
+                        Icons.my_location_rounded,
+                        color: Colors.white,
+                        size: 18,
+                      ),
                     ),
                   ),
                 ],
@@ -305,14 +347,14 @@ class _ShiftMapScreenState extends ConsumerState<ShiftMapScreen> {
             ),
           ),
 
-          // ── Legend ──────────────────────────────────────────
+          // â”€â”€ Legend â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           Positioned(
             top: MediaQuery.of(context).padding.top + 80,
             right: 12,
             child: _buildLegend(),
           ),
 
-          // ── Selected shift card ──────────────────────────────
+          // â”€â”€ Selected shift card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           if (_selectedShift != null)
             Positioned(
               bottom: MediaQuery.of(context).padding.bottom + 16,
@@ -335,30 +377,37 @@ class _ShiftMapScreenState extends ConsumerState<ShiftMapScreen> {
                   final ok = await ref
                       .read(marketplaceProvider.notifier)
                       .bookShift(_selectedShift!.id);
-                  final errorMessage =
-                      ref.read(marketplaceProvider).bookingError;
+                  final errorMessage = ref
+                      .read(marketplaceProvider)
+                      .bookingError;
                   if (!context.mounted) return;
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(ok
-                        ? 'Shift booked!'
-                        : (errorMessage != null && errorMessage.length < 50)
-                        ? errorMessage
-                        : 'Booking failed'),
-                    backgroundColor:
-                    ok ? const Color(0xFF0F6E56) : Colors.redAccent,
-                    behavior: SnackBarBehavior.floating,
-                  ));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        ok
+                            ? 'Shift booked!'
+                            : (errorMessage != null && errorMessage.length < 50)
+                            ? errorMessage
+                            : 'Booking failed',
+                      ),
+                      backgroundColor: ok
+                          ? const Color(0xFF0F6E56)
+                          : Colors.redAccent,
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
                   if (ok) {
                     setState(() => _selectedShift = null);
                     await _buildMarkers();
                   }
                 },
-                isBooking: ref.watch(marketplaceProvider).bookingShiftId ==
+                isBooking:
+                    ref.watch(marketplaceProvider).bookingShiftId ==
                     _selectedShift!.id,
               ),
             ),
 
-          // ── Empty state overlay ──────────────────────────────
+          // â”€â”€ Empty state overlay â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           if (_mappableShifts.isEmpty)
             Center(
               child: Container(
@@ -371,21 +420,24 @@ class _ShiftMapScreenState extends ConsumerState<ShiftMapScreen> {
                 child: const Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.location_off_outlined,
-                        size: 48, color: Color(0xFF94A3B4)),
+                    Icon(
+                      Icons.location_off_outlined,
+                      size: 48,
+                      color: Color(0xFF94A3B4),
+                    ),
                     SizedBox(height: 12),
                     Text(
                       'No shifts have location data',
                       style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF1A2632)),
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF1A2632),
+                      ),
                     ),
                     SizedBox(height: 4),
                     Text(
                       'Shifts appear here once a facility address is set.',
                       textAlign: TextAlign.center,
-                      style:
-                      TextStyle(fontSize: 12, color: Color(0xFF94A3B4)),
+                      style: TextStyle(fontSize: 12, color: Color(0xFF94A3B4)),
                     ),
                   ],
                 ),
@@ -404,9 +456,10 @@ class _ShiftMapScreenState extends ConsumerState<ShiftMapScreen> {
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 8,
-              offset: const Offset(0, 2)),
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
         ],
       ),
       child: Column(
@@ -423,7 +476,7 @@ class _ShiftMapScreenState extends ConsumerState<ShiftMapScreen> {
   }
 }
 
-// ── Marker widget (kept for reference / future use with RepaintBoundary) ──
+// â”€â”€ Marker widget (kept for reference / future use with RepaintBoundary) â”€â”€
 
 class _ShiftMarkerWidget extends StatelessWidget {
   final ShiftModel shift;
@@ -493,7 +546,7 @@ class _TrianglePainter extends CustomPainter {
   bool shouldRepaint(_TrianglePainter old) => old.color != color;
 }
 
-// ── Preview card ─────────────────────────────────────────────────────
+// â”€â”€ Preview card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class _ShiftPreviewCard extends ConsumerWidget {
   final ShiftModel shift;
@@ -536,8 +589,9 @@ class _ShiftPreviewCard extends ConsumerWidget {
             decoration: BoxDecoration(
               gradient: shift.isUrgent ? null : ColorConstants.appGradient,
               color: shift.isUrgent ? const Color(0xFFEF4444) : null,
-              borderRadius:
-              const BorderRadius.vertical(top: Radius.circular(20)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(20),
+              ),
             ),
           ),
           Padding(
@@ -556,10 +610,11 @@ class _ShiftPreviewCard extends ConsumerWidget {
                             Text(
                               shift.shiftCase!.publicIdentifier,
                               style: const TextStyle(
-                                  fontSize: 10,
-                                  color: Color(0xFF94A3B4),
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 0.4),
+                                fontSize: 10,
+                                color: Color(0xFF94A3B4),
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.4,
+                              ),
                             ),
                           Text(
                             shift.displayTitle,
@@ -580,8 +635,11 @@ class _ShiftPreviewCard extends ConsumerWidget {
                           color: const Color(0xFFF0F4F7),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Icon(Icons.close_rounded,
-                            size: 16, color: Color(0xFF536C79)),
+                        child: const Icon(
+                          Icons.close_rounded,
+                          size: 16,
+                          color: Color(0xFF536C79),
+                        ),
                       ),
                     ),
                   ],
@@ -594,8 +652,8 @@ class _ShiftPreviewCard extends ConsumerWidget {
                     _InfoChip(
                       icon: Icons.access_time_rounded,
                       label:
-                      '${dateFormat.format(shift.scheduledStart)} · '
-                          '${timeFormat.format(shift.scheduledStart)}–'
+                          '${dateFormat.format(shift.scheduledStart)} | '
+                          '${timeFormat.format(shift.scheduledStart)} - '
                           '${timeFormat.format(shift.scheduledEnd)}',
                     ),
                     _InfoChip(
@@ -624,12 +682,14 @@ class _ShiftPreviewCard extends ConsumerWidget {
                         style: OutlinedButton.styleFrom(
                           side: const BorderSide(color: Color(0xFFE2E8ED)),
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                          padding:
-                          const EdgeInsets.symmetric(vertical: 10),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 10),
                         ),
-                        child: const Text('Details',
-                            style: TextStyle(color: Color(0xFF536C79))),
+                        child: const Text(
+                          'Details',
+                          style: TextStyle(color: Color(0xFF536C79)),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -638,8 +698,9 @@ class _ShiftPreviewCard extends ConsumerWidget {
                       child: Container(
                         height: 42,
                         decoration: BoxDecoration(
-                          gradient:
-                          isBooking ? null : ColorConstants.appGradient,
+                          gradient: isBooking
+                              ? null
+                              : ColorConstants.appGradient,
                           color: isBooking ? const Color(0xFFE2E8ED) : null,
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -649,20 +710,25 @@ class _ShiftPreviewCard extends ConsumerWidget {
                             backgroundColor: Colors.transparent,
                             shadowColor: Colors.transparent,
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
                           child: isBooking
                               ? const SizedBox(
-                            width: 18,
-                            height: 18,
-                            child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: Colors.white),
-                          )
-                              : const Text('Book now',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700)),
+                                  width: 18,
+                                  height: 18,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : const Text(
+                                  'Book now',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
                         ),
                       ),
                     ),
@@ -677,7 +743,7 @@ class _ShiftPreviewCard extends ConsumerWidget {
   }
 }
 
-// ── Small helpers ─────────────────────────────────────────────────────
+// â”€â”€ Small helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class _InfoChip extends StatelessWidget {
   final IconData icon;
@@ -694,19 +760,20 @@ class _InfoChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c =
-        color ?? (highlight ? accentColor : const Color(0xFF536C79));
+    final c = color ?? (highlight ? accentColor : const Color(0xFF536C79));
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Icon(icon, size: 13, color: c),
         const SizedBox(width: 3),
-        Text(label,
-            style: TextStyle(
-                fontSize: 12,
-                color: c,
-                fontWeight:
-                highlight ? FontWeight.w700 : FontWeight.normal)),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            color: c,
+            fontWeight: highlight ? FontWeight.w700 : FontWeight.normal,
+          ),
+        ),
       ],
     );
   }
@@ -722,14 +789,15 @@ class _LegendRow extends StatelessWidget {
     mainAxisSize: MainAxisSize.min,
     children: [
       Container(
-          width: 10,
-          height: 10,
-          decoration:
-          BoxDecoration(color: color, shape: BoxShape.circle)),
+        width: 10,
+        height: 10,
+        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+      ),
       const SizedBox(width: 6),
-      Text(label,
-          style: const TextStyle(
-              fontSize: 11, color: Color(0xFF536C79))),
+      Text(
+        label,
+        style: const TextStyle(fontSize: 11, color: Color(0xFF536C79)),
+      ),
     ],
   );
 }

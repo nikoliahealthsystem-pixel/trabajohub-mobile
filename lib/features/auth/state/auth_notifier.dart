@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/legacy.dart';
+import '../../../core/cache/app_cache.dart';
 import '../../../core/socket/socket_client.dart';
 import '../../../core/storage/secure_storage.dart';
 import '../data/auth_repository.dart';
@@ -18,8 +19,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(isLoading: true, error: null);
     try {
       final user = await repository.login(email, password);
-      if(!user.isNurse){
-        state = state.copyWith(isLoading: false, error: "The App Isn't Accessible For ${user.role.replaceAll("_", " ")}");
+      if (!user.isNurse) {
+        state = state.copyWith(
+          isLoading: false,
+          error:
+              "The App Isn't Accessible For ${user.role.replaceAll("_", " ")}",
+        );
         return false;
       }
       state = state.copyWith(isLoading: false, user: user);
@@ -49,10 +54,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         message = e.toString();
       }
 
-      state = state.copyWith(
-        isLoading: false,
-        error: message,
-      );
+      state = state.copyWith(isLoading: false, error: message);
 
       return false;
     }
@@ -72,8 +74,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
         challengeToken: challenge,
         totpCode: totpCode,
       );
-      if(!user.isNurse){
-        state = state.copyWith(isLoading: false, error: "The App Isn't Accessible For ${user.role.replaceAll("_", " ")}");
+      if (!user.isNurse) {
+        state = state.copyWith(
+          isLoading: false,
+          error:
+              "The App Isn't Accessible For ${user.role.replaceAll("_", " ")}",
+        );
         return false;
       }
       if (user.isNurse) await _socketClient.connect();
@@ -229,8 +235,26 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> logout() async {
     _socketClient.disconnect();
-    await AppStorage.clear();
+
+    // Clear all user-scoped in-memory data before another account can sign in.
+    AppCache.instance.clear();
+
+    await AppStorage.clearSession();
     state = const AuthState();
+  }
+
+  String _dioMessage(DioException error, String fallback) {
+    final data = error.response?.data;
+
+    if (data is Map) {
+      final message = data['message']?.toString();
+
+      if (message != null && message.trim().isNotEmpty) {
+        return message.trim();
+      }
+    }
+
+    return error.message ?? fallback;
   }
 
   Future<void> fetchMe() async {
@@ -262,6 +286,83 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
+  Future<Map<String, dynamic>?> sendEmailChangeCode(String email) async {
+    final normalizedEmail = email.trim().toLowerCase();
+
+    if (normalizedEmail.isEmpty) {
+      state = state.copyWith(
+        isLoading: false,
+        error: 'Enter a valid email address.',
+      );
+      return null;
+    }
+
+    state = state.copyWith(isLoading: true, error: null);
+
+    try {
+      final result = await repository.sendEmailChangeCode(
+        email: normalizedEmail,
+      );
+
+      state = state.copyWith(isLoading: false, error: null);
+
+      return result;
+    } catch (e) {
+      final message = e is DioException
+          ? _dioMessage(e, 'Unable to send email verification code.')
+          : e.toString();
+
+      state = state.copyWith(isLoading: false, error: message);
+
+      return null;
+    }
+  }
+
+  Future<bool> verifyEmailChange({
+    required String email,
+    required String code,
+  }) async {
+    final normalizedEmail = email.trim().toLowerCase();
+    final normalizedCode = code.trim();
+
+    if (normalizedEmail.isEmpty) {
+      state = state.copyWith(
+        isLoading: false,
+        error: 'Enter a valid email address.',
+      );
+      return false;
+    }
+
+    if (normalizedCode.isEmpty) {
+      state = state.copyWith(
+        isLoading: false,
+        error: 'Enter the verification code.',
+      );
+      return false;
+    }
+
+    state = state.copyWith(isLoading: true, error: null);
+
+    try {
+      final user = await repository.verifyEmailChange(
+        email: normalizedEmail,
+        code: normalizedCode,
+      );
+
+      state = state.copyWith(isLoading: false, user: user, error: null);
+
+      return true;
+    } catch (e) {
+      final message = e is DioException
+          ? _dioMessage(e, 'Unable to verify the new email address.')
+          : e.toString();
+
+      state = state.copyWith(isLoading: false, error: message);
+
+      return false;
+    }
+  }
+
   Future<bool> changePassword({
     required String currentPassword,
     required String newPassword,
@@ -283,16 +384,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<bool> deleteAccount({
-    required String password,
-    String? reason,
-  }) async {
+  Future<bool> deleteAccount({required String password, String? reason}) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      await repository.deleteAccount(
-        password: password,
-        reason: reason,
-      );
+      await repository.deleteAccount(password: password, reason: reason);
       await logout();
       state = state.copyWith(isLoading: false);
       return true;
@@ -319,11 +414,14 @@ class AuthNotifier extends StateNotifier<AuthState> {
       return {'error': e.toString()};
     }
   }
+
   /// Update FCM token on the backend
   Future<bool> updateFcmToken(String token) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      await repository.updateFcmToken(token);   // We'll add this in repository too
+      await repository.updateFcmToken(
+        token,
+      ); // We'll add this in repository too
       await fetchMe(); // Refresh user data
       return true;
     } catch (e) {

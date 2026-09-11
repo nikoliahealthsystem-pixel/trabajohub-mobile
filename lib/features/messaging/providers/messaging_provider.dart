@@ -15,13 +15,17 @@ final messagingApiProvider = Provider<MessagingApi>((ref) {
 });
 
 final messagingRepositoryProvider = Provider<MessagingRepository>((ref) {
-  return MessagingRepositoryImpl(ref.watch(messagingApiProvider), ref.watch(appCacheProvider));
-});
-
-final messagingProvider = StateNotifierProvider.autoDispose<MessagingNotifier, MessagingState>((ref) {
-  return MessagingNotifier(
-    ref.watch(messagingRepositoryProvider),
-    ref.watch(socketClientProvider),
+  return MessagingRepositoryImpl(
+    ref.watch(messagingApiProvider),
     ref.watch(appCacheProvider),
   );
 });
+
+final messagingProvider =
+    StateNotifierProvider.autoDispose<MessagingNotifier, MessagingState>((ref) {
+      return MessagingNotifier(
+        ref.watch(messagingRepositoryProvider),
+        ref.watch(socketClientProvider),
+        ref.watch(appCacheProvider),
+      );
+    });

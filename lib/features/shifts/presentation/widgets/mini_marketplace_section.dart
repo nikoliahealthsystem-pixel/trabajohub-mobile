@@ -30,7 +30,7 @@ class MiniMarketplaceSection extends ConsumerWidget {
                 context,
                 MaterialPageRoute(builder: (_) => const MarketplaceScreen()),
               ),
-              child: Text('View All',style: TextStyle(color: accentColor),),
+              child: Text('View All', style: TextStyle(color: accentColor)),
             ),
           ],
         ),
@@ -41,7 +41,11 @@ class MiniMarketplaceSection extends ConsumerWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, WidgetRef ref, MarketplaceState state) {
+  Widget _buildContent(
+    BuildContext context,
+    WidgetRef ref,
+    MarketplaceState state,
+  ) {
     if (state.status == MarketplaceStatus.loading) {
       return const Padding(
         padding: EdgeInsets.symmetric(vertical: 24),
@@ -59,7 +63,8 @@ class MiniMarketplaceSection extends ConsumerWidget {
             const SizedBox(height: 8),
             Text(state.errorMessage ?? 'Failed to load shifts'),
             TextButton(
-              onPressed: () => ref.read(marketplaceProvider.notifier).load(refresh: true),
+              onPressed: () =>
+                  ref.read(marketplaceProvider.notifier).load(refresh: true),
               child: const Text('Retry'),
             ),
           ],
@@ -99,13 +104,21 @@ class MiniMarketplaceSection extends ConsumerWidget {
     );
   }
 
-  Future<void> _handleBook(BuildContext context, WidgetRef ref, String shiftId) async {
-    final success = await ref.read(marketplaceProvider.notifier).bookShift(shiftId);
+  Future<void> _handleBook(
+    BuildContext context,
+    WidgetRef ref,
+    String shiftId,
+  ) async {
+    final success = await ref
+        .read(marketplaceProvider.notifier)
+        .bookShift(shiftId);
     if (!context.mounted) return;
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(success ? 'Shift booked successfully!' : 'Booking failed'),
+        content: Text(
+          success ? 'Shift booked successfully!' : 'Booking failed',
+        ),
         backgroundColor: success ? const Color(0xFF0F6E56) : Colors.redAccent,
         behavior: SnackBarBehavior.floating,
       ),

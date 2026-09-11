@@ -54,14 +54,17 @@ class NotificationsBell extends ConsumerWidget {
                     color: Color(0xFFEF4444),
                     shape: BoxShape.circle,
                   ),
-                  constraints:
-                  const BoxConstraints(minWidth: 16, minHeight: 16),
+                  constraints: const BoxConstraints(
+                    minWidth: 16,
+                    minHeight: 16,
+                  ),
                   child: Text(
                     unread > 99 ? '99+' : '$unread',
                     style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 9,
-                        fontWeight: FontWeight.w700),
+                      color: Colors.white,
+                      fontSize: 9,
+                      fontWeight: FontWeight.w700,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),

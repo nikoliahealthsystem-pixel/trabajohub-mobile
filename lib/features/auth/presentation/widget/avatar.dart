@@ -49,15 +49,15 @@ class AvatarState extends ConsumerState<Avatar> {
       final response = await dio.post(
         '/users/me/avatar',
         data: formData,
-        options: Options(
-          contentType: 'multipart/form-data',
-        ),
+        options: Options(contentType: 'multipart/form-data'),
       );
 
       final avatarUrl = _extractAvatarUrl(response.data);
 
       if (avatarUrl == null || avatarUrl.isEmpty) {
-        throw Exception('Profile picture uploaded, but avatar URL was not returned');
+        throw Exception(
+          'Profile picture uploaded, but avatar URL was not returned',
+        );
       }
 
       if (!mounted) return;
@@ -66,11 +66,9 @@ class AvatarState extends ConsumerState<Avatar> {
         _uploadedAvatarUrl = avatarUrl;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Profile picture uploaded'),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Profile picture uploaded')));
     } catch (e) {
       if (!mounted) return;
 
@@ -78,11 +76,9 @@ class AvatarState extends ConsumerState<Avatar> {
           ? e.error?.toString() ?? 'Failed to upload profile picture'
           : 'Failed to upload profile picture';
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(message)));
     } finally {
       if (mounted) {
         setState(() {
@@ -107,13 +103,13 @@ class AvatarState extends ConsumerState<Avatar> {
 
     final initials = widget.user.displayName.isNotEmpty
         ? widget.user.displayName
-        .trim()
-        .split(' ')
-        .where((p) => p.isNotEmpty)
-        .map((p) => p[0])
-        .take(2)
-        .join()
-        .toUpperCase()
+              .trim()
+              .split(' ')
+              .where((p) => p.isNotEmpty)
+              .map((p) => p[0])
+              .take(2)
+              .join()
+              .toUpperCase()
         : '?';
 
     return GestureDetector(
@@ -129,13 +125,13 @@ class AvatarState extends ConsumerState<Avatar> {
                 : null,
             child: avatarUrl.isEmpty
                 ? Text(
-              initials,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
-              ),
-            )
+                    initials,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  )
                 : null,
           ),
 

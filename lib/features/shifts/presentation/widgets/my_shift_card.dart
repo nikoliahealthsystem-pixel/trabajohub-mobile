@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../visits/data/models/visit_model.dart';
 import '../../../visits/presentation/visit_detail_screen.dart';
-import '../../data/models/shift_assignment_model.dart' hide VisitModel;
+import '../../data/models/shift_assignment_model.dart';
 
 class MyShiftCard extends StatelessWidget {
   final ShiftAssignmentModel assignment;
@@ -20,16 +20,22 @@ class MyShiftCard extends StatelessWidget {
   });
 
   static const _statusColors = {
-    'ACCEPTED': (Color(0xFFE1F5EE), Color(0xFF0F6E56)),
+    'BOOKED': (Color(0xFFEAF8FC), Color(0xFF087F9D)),
+    'IN_PROGRESS': (Color(0xFFFFF4E5), Color(0xFFB76E00)),
+    'NEEDS_COMPLETION': (Color(0xFFFFF4E5), Color(0xFFB76E00)),
     'COMPLETED': (Color(0xFFEAF3DE), Color(0xFF3B6D11)),
     'CANCELLED': (Color(0xFFFCEBEB), Color(0xFFA32D2D)),
+    'ACCEPTED': (Color(0xFFEAF8FC), Color(0xFF087F9D)),
     'PENDING': (Color(0xFFFAEEDA), Color(0xFF854F0B)),
   };
 
   static final _statusBarColors = {
-    'ACCEPTED': accentColor,
+    'BOOKED': accentColor,
+    'IN_PROGRESS': const Color(0xFFEF9F27),
+    'NEEDS_COMPLETION': const Color(0xFFEF9F27),
     'COMPLETED': const Color(0xFF28D744),
     'CANCELLED': const Color(0xFFE24B4A),
+    'ACCEPTED': accentColor,
     'PENDING': const Color(0xFFEF9F27),
   };
 
@@ -40,8 +46,14 @@ class MyShiftCard extends StatelessWidget {
 
     final timeFormat = DateFormat('h:mm a');
     final dateFormat = DateFormat('EEE, MMM d');
-    final colors = _statusColors[assignment.status] ?? _statusColors['ACCEPTED']!;
-    final barColor = _statusBarColors[assignment.status] ?? _statusBarColors['ACCEPTED']!;
+    final lifecycleStatus = shift.status.isNotEmpty
+        ? shift.status
+        : assignment.status;
+
+    final colors = _statusColors[lifecycleStatus] ?? _statusColors['ACCEPTED']!;
+
+    final barColor =
+        _statusBarColors[lifecycleStatus] ?? _statusBarColors['ACCEPTED']!;
 
     return GestureDetector(
       onTap: onTap,
@@ -59,7 +71,9 @@ class MyShiftCard extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: 4),
               decoration: BoxDecoration(
                 color: barColor,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(16),
+                ),
               ),
             ),
             Padding(
@@ -78,15 +92,18 @@ class MyShiftCard extends StatelessWidget {
                               Text(
                                 shift.shiftCase!.publicIdentifier,
                                 style: const TextStyle(
-                                  fontSize: 10, fontWeight: FontWeight.w600,
-                                  color: Color(0xFF94A3B4), letterSpacing: 0.5,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFF94A3B4),
+                                  letterSpacing: 0.5,
                                 ),
                               ),
                             const SizedBox(height: 2),
                             Text(
                               shift.displayTitle,
                               style: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w700,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
                                 color: Color(0xFF1A2632),
                               ),
                             ),
@@ -94,14 +111,21 @@ class MyShiftCard extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: colors.$1,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          assignment.status,
-                          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: colors.$2),
+                          lifecycleStatus.replaceAll('_', ' ').toUpperCase(),
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                            color: colors.$2,
+                          ),
                         ),
                       ),
                     ],
@@ -111,20 +135,26 @@ class MyShiftCard extends StatelessWidget {
                     children: [
                       _MetaItem(
                         icon: Icons.access_time_rounded,
-                        label: '${dateFormat.format(shift.scheduledStart)}  ·  '
-                            '${timeFormat.format(shift.scheduledStart)}–${timeFormat.format(shift.scheduledEnd)}',
+                        label:
+                            '${dateFormat.format(shift.scheduledStart)}  •  '
+                            '${timeFormat.format(shift.scheduledStart)} - ${timeFormat.format(shift.scheduledEnd)}',
                       ),
                     ],
                   ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      _MetaItem(icon: Icons.location_on_outlined, label: shift.locationDisplay),
+                      _MetaItem(
+                        icon: Icons.location_on_outlined,
+                        label: shift.locationDisplay,
+                      ),
                       const Spacer(),
                       Text(
                         '\$${shift.payRate.toStringAsFixed(0)}/hr',
-                        style:  TextStyle(
-                          fontSize: 13, fontWeight: FontWeight.w700, color: accentColor,
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: accentColor,
                         ),
                       ),
                     ],
@@ -138,16 +168,33 @@ class MyShiftCard extends StatelessWidget {
                         onPressed: isCancelling ? null : onCancel,
                         style: OutlinedButton.styleFrom(
                           side: const BorderSide(color: Color(0xFFE24B4A)),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
                         child: isCancelling
-                            ? const SizedBox(width: 14, height: 14, child: CircularProgressIndicator(strokeWidth: 2))
-                            : const Text('Cancel shift', style: TextStyle(fontSize: 12, color: Color(0xFFE24B4A))),
+                            ? const SizedBox(
+                                width: 14,
+                                height: 14,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Text(
+                                'Cancel shift',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFFE24B4A),
+                                ),
+                              ),
                       ),
                     ),
                   ],
 
-                  if (assignment.visit != null) ...[
+                  if (assignment.visit != null &&
+                      lifecycleStatus.toUpperCase() != 'CANCELLED' &&
+                      lifecycleStatus.toUpperCase() != 'CANCELED' &&
+                      lifecycleStatus.toUpperCase() != 'COMPLETED') ...[
                     const SizedBox(height: 10),
                     _buildVisitButton(context, assignment.visit!),
                   ],
@@ -160,7 +207,7 @@ class MyShiftCard extends StatelessWidget {
     );
   }
 
-  // ─────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   Widget _buildVisitButton(BuildContext context, VisitModel visit) {
     final canCheckIn = visit.status == VisitStatus.scheduled;
     final canCheckOut = visit.status == VisitStatus.checkedIn;
@@ -191,7 +238,8 @@ class MyShiftCard extends StatelessWidget {
             backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10)),
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
           icon: Icon(
             canCheckOut ? Icons.logout_rounded : Icons.login_rounded,
@@ -201,9 +249,10 @@ class MyShiftCard extends StatelessWidget {
           label: Text(
             canCheckOut ? 'Check Out' : 'Check In',
             style: const TextStyle(
-                color: Colors.white,
-                fontSize: 13,
-                fontWeight: FontWeight.w700),
+              color: Colors.white,
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
       ),
@@ -221,7 +270,10 @@ class _MetaItem extends StatelessWidget {
     children: [
       Icon(icon, size: 13, color: const Color(0xFF94A3B4)),
       const SizedBox(width: 4),
-      Text(label, style: const TextStyle(fontSize: 12, color: Color(0xFF536C79))),
+      Text(
+        label,
+        style: const TextStyle(fontSize: 12, color: Color(0xFF536C79)),
+      ),
     ],
   );
 }

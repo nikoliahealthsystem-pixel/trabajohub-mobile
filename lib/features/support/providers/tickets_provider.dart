@@ -15,7 +15,9 @@ final supportRepositoryProvider = Provider<SupportRepository>((ref) {
   return SupportRepositoryImpl(api, cache);
 });
 
-final ticketsProvider = StateNotifierProvider<TicketsNotifier, TicketsState>((ref) {
+final ticketsProvider = StateNotifierProvider<TicketsNotifier, TicketsState>((
+  ref,
+) {
   return TicketsNotifier(ref.watch(supportRepositoryProvider));
 });
 
@@ -80,7 +82,9 @@ class TicketsNotifier extends StateNotifier<TicketsState> {
         search: state.searchQuery,
       );
 
-      final newTickets = refresh ? response.tickets : [...state.tickets, ...response.tickets];
+      final newTickets = refresh
+          ? response.tickets
+          : [...state.tickets, ...response.tickets];
 
       state = state.copyWith(
         tickets: newTickets,
@@ -89,9 +93,7 @@ class TicketsNotifier extends StateNotifier<TicketsState> {
         status: TicketsLoadStatus.success,
       );
       if (response.hasMore) _currentPage++;
-    }  catch (e) {
-      debugPrint("❌ ERROR fetching tickets: $e");
-    }
+    } catch (e) {}
   }
 
   void setStatusFilter(String? status) {

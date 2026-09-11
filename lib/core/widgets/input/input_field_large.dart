@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../constants/app_constants.dart';
 
-
 class InputFieldLarge extends StatelessWidget {
   final String inputHintText;
   final String inputTitle;
@@ -22,39 +21,37 @@ class InputFieldLarge extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: BoxDecoration(
-            color: const Color(0xFFFAFAFA),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: const Color(0xFFE1E7EA),
-              width: 2,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: const Color(0xFFFAFAFA),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: const Color(0xFFE1E7EA), width: 2),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              inputTitle,
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
             ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                inputTitle,
-                style:
-                    const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+            TextFormField(
+              cursorColor: accentColor,
+              maxLines: null,
+              minLines: 5,
+              keyboardType: TextInputType.multiline,
+              controller: textController,
+              validator: validator,
+              decoration: InputDecoration(
+                hintText: inputHintText,
+                hintStyle: const TextStyle(
+                  color: Colors.grey,
+                ), // Style for hint text
+                border: InputBorder.none, // Removes the border line
               ),
-              TextFormField(
-                cursorColor: accentColor,
-                maxLines: null,
-                minLines: 5,
-                keyboardType: TextInputType.multiline,
-                controller: textController,
-                validator: validator,
-                decoration: InputDecoration(
-                  hintText: inputHintText,
-                  hintStyle: const TextStyle(
-                      color: Colors.grey), // Style for hint text
-                  border: InputBorder.none, // Removes the border line
-                ),
-              )
-            ],
-          )),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

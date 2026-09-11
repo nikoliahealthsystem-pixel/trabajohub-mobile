@@ -8,7 +8,9 @@ class SurveysApi {
   SurveysApi(this._client);
 
   Future<Map<String, dynamic>> getSurveyForShift(String shiftId) async {
-    final response = await _client.instance.get('/Surveys/shifts/$shiftId/survey');
+    final response = await _client.instance.get(
+      '/Surveys/shifts/$shiftId/survey',
+    );
     return response.data as Map<String, dynamic>;
   }
 
@@ -19,10 +21,7 @@ class SurveysApi {
   }) async {
     final response = await _client.instance.post(
       '/Surveys/shifts/$shiftId/survey/respond',
-      data: {
-        'visitId': visitId,
-        'answers': answers,
-      },
+      data: {'visitId': visitId, 'answers': answers},
     );
     return response.data as Map<String, dynamic>;
   }

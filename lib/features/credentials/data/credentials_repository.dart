@@ -1,8 +1,16 @@
+import 'models/credential_history_model.dart';
 import 'models/credential_model.dart';
 
 abstract class CredentialsRepository {
   Future<List<CredentialModel>> getMine();
+
   Future<CredentialModel> getOne(String id);
+
+  Future<CredentialHistoryResult> getHistory(
+    String id, {
+    bool forceRefresh = false,
+  });
+
   Future<CredentialModel> upload({
     required String filePath,
     required String fileName,
@@ -11,5 +19,6 @@ abstract class CredentialsRepository {
     DateTime? issuedAt,
     DateTime? expiresAt,
   });
+
   Future<void> delete(String id);
 }

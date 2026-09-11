@@ -16,8 +16,8 @@ class MessagingRepositoryImpl implements MessagingRepository {
   Future<({List<ConversationModel> conversations, int total})>
   getConversations({int page = 1, int limit = 20}) async {
     final key = CacheKeys.conversations(page: page);
-    final cached =
-    _cache.get<({List<ConversationModel> conversations, int total})>(key);
+    final cached = _cache
+        .get<({List<ConversationModel> conversations, int total})>(key);
 
     // Serve from cache and still refresh in background if stale
     if (cached != null && !cached.isExpired) {
@@ -34,41 +34,43 @@ class MessagingRepositoryImpl implements MessagingRepository {
     final data = raw['data'] as List? ?? [];
     final pagination = raw['pagination'] as Map<String, dynamic>? ?? {};
     final result = (
-    conversations: data.map((j) => ConversationModel.fromJson(j)).toList(),
-    total: pagination['total'] as int? ?? 0,
+      conversations: data.map((j) => ConversationModel.fromJson(j)).toList(),
+      total: pagination['total'] as int? ?? 0,
     );
     _cache.set(key, result, CacheTtl.conversations);
     return result;
   }
 
-  void _refreshConversationsInBackground(
-      String key, int page, int limit) {
+  void _refreshConversationsInBackground(String key, int page, int limit) {
     // Fire-and-forget background refresh
     _fetchAndCacheConversations(key, page, limit).ignore();
   }
 
   @override
   Future<({List<MessageModel> messages, int total, bool hasMore})> getMessages(
-      String conversationId, {
-        int page = 1,
-        int limit = 50,
-      }) async {
+    String conversationId, {
+    int page = 1,
+    int limit = 50,
+  }) async {
     final key = CacheKeys.messages(conversationId, page: page);
     // Only cache page 1 — older pages are historical and don't change
     if (page == 1) {
-      final cached =
-      _cache.get<({List<MessageModel> messages, int total, bool hasMore})>(
-          key);
+      final cached = _cache
+          .get<({List<MessageModel> messages, int total, bool hasMore})>(key);
       if (cached != null && !cached.isExpired) return cached.data;
     }
 
-    final raw = await _api.fetchMessages(conversationId, page: page, limit: limit);
+    final raw = await _api.fetchMessages(
+      conversationId,
+      page: page,
+      limit: limit,
+    );
     final data = raw['data'] as List? ?? [];
     final pagination = raw['pagination'] as Map<String, dynamic>? ?? {};
     final result = (
-    messages: data.map((j) => MessageModel.fromJson(j)).toList(),
-    total: pagination['total'] as int? ?? 0,
-    hasMore: pagination['hasNext'] as bool? ?? false,
+      messages: data.map((j) => MessageModel.fromJson(j)).toList(),
+      total: pagination['total'] as int? ?? 0,
+      hasMore: pagination['hasNext'] as bool? ?? false,
     );
     _cache.set(key, result, CacheTtl.messages);
     return result;
@@ -80,7 +82,9 @@ class MessagingRepositoryImpl implements MessagingRepository {
     String? facilityId,
   }) async {
     final raw = await _api.startConversation(
-        recipientId: recipientId, facilityId: facilityId);
+      recipientId: recipientId,
+      facilityId: facilityId,
+    );
     _cache.invalidatePrefix(CacheKeys.prefixConversations);
     return ConversationModel.fromJson(raw['data']);
   }
@@ -90,8 +94,10 @@ class MessagingRepositoryImpl implements MessagingRepository {
     required String conversationId,
     required String content,
   }) async {
-    final raw =
-    await _api.sendMessage(conversationId: conversationId, content: content);
+    final raw = await _api.sendMessage(
+      conversationId: conversationId,
+      content: content,
+    );
     // Bust message and conversation caches after send
     _cache.invalidate(CacheKeys.messages(conversationId));
     _cache.invalidatePrefix(CacheKeys.prefixConversations);
@@ -145,9 +151,8 @@ class MessagingRepositoryImpl implements MessagingRepository {
   }
 
   @override
-  Future<List<Map<String, dynamic>>> searchUsers(String query) async {
-    // Search results are not cached — always fresh
-    final raw = await _api.searchUsers(query);
-    return List<Map<String, dynamic>>.from(raw['data'] ?? []);
+  Future<Map<String, dynamic>> getMessageableRecipients() async {
+    final raw = await _api.fetchMessageableRecipients();
+    return Map<String, dynamic>.from(raw['data'] ?? const {});
   }
 }

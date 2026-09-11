@@ -1,4 +1,4 @@
-import 'package:file_picker/file_picker.dart';
+﻿import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trabajo_hub/features/messaging/presentation/widgets/compact_avatar.dart';
@@ -25,7 +25,7 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
   final _messageController = TextEditingController();
   final _scrollController = ScrollController();
 
-  // ── Pending attachment state ─────────────────────────────────
+  // Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬ Pending attachment state Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬
   PlatformFile? _pendingFile;
 
   @override
@@ -36,7 +36,8 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final state = ref.read(messagingProvider);
       if (state.selectedConversation != null && state.messages.isEmpty) {
-        ref.read(messagingProvider.notifier)
+        ref
+            .read(messagingProvider.notifier)
             .selectConversation(state.selectedConversation!);
       }
       final currentUserId = ref.read(currentUserProvider)?.id ?? '';
@@ -78,11 +79,11 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
     });
   }
 
-  // ── Send: handles both plain text AND file-with-caption ──────
+  // Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬ Send: handles both plain text AND file-with-caption Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬
   Future<void> _handleSend() async {
     final text = _messageController.text.trim();
 
-    // ── Case 1: file is pending — upload with optional caption
+    // Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬ Case 1: file is pending Æ’Â¢Â¢-Å¡Â¬Â¢Ã¢â€šÂ¬Â upload with optional caption
     if (_pendingFile != null) {
       final file = _pendingFile!;
       final caption = text.isEmpty ? null : text;
@@ -92,32 +93,37 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
 
       if (file.path == null) return;
 
-      final ok = await ref.read(messagingProvider.notifier).uploadAttachment(
-        filePath: file.path!,
-        fileName: file.name,
-        mimeType: file.extension != null
-            ? 'application/${file.extension}'
-            : 'application/octet-stream',
-        caption: caption,
-      );
+      final ok = await ref
+          .read(messagingProvider.notifier)
+          .uploadAttachment(
+            filePath: file.path!,
+            fileName: file.name,
+            mimeType: file.extension != null
+                ? 'application/${file.extension}'
+                : 'application/octet-stream',
+            caption: caption,
+          );
       if (ok) _scrollToBottom();
       return;
     }
 
-    // ── Case 2: plain text message
+    // Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬ Case 2: plain text message
     if (text.isEmpty) return;
     _messageController.clear();
-    final success = await ref.read(messagingProvider.notifier).sendMessage(text);
+    final success = await ref
+        .read(messagingProvider.notifier)
+        .sendMessage(text);
     if (success) _scrollToBottom();
   }
 
-  // ── Attach: stage the file, don't upload yet ─────────────────
+  // Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬ Attach: stage the file, don't upload yet Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬
   Future<void> _handleAttach() async {
     final result = await FilePicker.platform.pickFiles(withData: false);
     if (result == null || result.files.isEmpty) return;
     final file = result.files.first;
     if (file.path == null) return;
 
+    if (!mounted) return;
     setState(() => _pendingFile = file);
     // Focus the text field so user can type a caption immediately
     FocusScope.of(context).requestFocus(FocusNode());
@@ -147,13 +153,10 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
       );
     }
 
-    ref.listen<int>(
-      messagingProvider.select((s) => s.messages.length),
-          (_, __) {
-        _scrollToBottom();
-        _markUnreadMessagesAsRead(currentUserId);
-      },
-    );
+    ref.listen<int>(messagingProvider.select((s) => s.messages.length), (_, _) {
+      _scrollToBottom();
+      _markUnreadMessagesAsRead(currentUserId);
+    });
 
     return Scaffold(
       backgroundColor: const Color(0xFFF4F7FA),
@@ -166,9 +169,11 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
               state.typingConversationId == state.selectedConversation?.id)
             _buildTypingIndicator(),
           if (state.sendError != null)
-            _buildErrorBanner(state.sendError!.length < 20
-                ? '${state.sendError}'
-                : 'Unable To Send'),
+            _buildErrorBanner(
+              state.sendError!.length < 20
+                  ? '${state.sendError}'
+                  : 'Unable To Send',
+            ),
           // File preview chip sits above the input bar
           if (_pendingFile != null) _buildFilePreviewBar(),
           _buildInputBar(state),
@@ -176,27 +181,30 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
       ),
     );
   }
+
   void _markUnreadMessagesAsRead(String currentUserId) {
     final messages = ref.read(messagingProvider).messages;
     final notifier = ref.read(messagingProvider.notifier);
 
     for (final msg in messages) {
-      if (msg.senderId != currentUserId && msg.status != 'READ' && !msg.isDeleted) {
+      if (msg.senderId != currentUserId &&
+          msg.status != 'READ' &&
+          !msg.isDeleted) {
         notifier.markMessageRead(msg.id);
       }
     }
   }
 
-  // ── Header ───────────────────────────────────────────────────
+  // Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬ Header Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬
 
   Widget _buildHeader(
-      BuildContext context,
-      MessagingState state,
-      String? otherUserName,
-      ConversationParticipant? user
-      ) {
-
-    final  initials = otherUserName?.trim()
+    BuildContext context,
+    MessagingState state,
+    String? otherUserName,
+    ConversationParticipant? user,
+  ) {
+    final initials = otherUserName
+        ?.trim()
         .split(RegExp(r'\s+'))
         .where((part) => part.isNotEmpty)
         .take(2)
@@ -204,124 +212,133 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
         .join();
 
     return GestureDetector(
-      onTap: ()=> user !=null ? showParticipantDetailsModal(
-        context,
-        user,
-      ):null,
-        child: Container(
-      decoration: const BoxDecoration(gradient: ColorConstants.appGradient),
-      padding: EdgeInsets.fromLTRB(
-          12, MediaQuery.of(context).padding.top + 10, 16, 14),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              ref.read(messagingProvider.notifier).clearSelectedConversation();
-              Navigator.pop(context);
-            },
-            child: Container(
-              width: 36,
-              height: 36,
-              margin: const EdgeInsets.only(right: 10),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Icon(Icons.arrow_back_ios_new_rounded,
-                  color: Colors.white, size: 16),
-            ),
-          ),
-          user != null?
-          CompactAvatar(
-            user: user,
-            radius: 18,
-          ):
-          CircleAvatar(
-            radius: 18,
-            backgroundColor: Colors.white.withOpacity(0.25),
-            child: Text(initials??"",
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 13)),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(user?.name ?? otherUserName ?? "",
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700),
-                    overflow: TextOverflow.ellipsis),
-                Consumer(
-                  builder: (_, ref, __) {
-                    final socketStatus = ref.watch(socketConnectionProvider);
-                    final isLive = socketStatus == SocketStatus.connected;
-                    return Row(
-                      children: [
-                        Container(
-                          width: 7,
-                          height: 7,
-                          margin: const EdgeInsets.only(right: 4),
-                          decoration: BoxDecoration(
-                            color: isLive
-                                ? const Color(0xFF28D744)
-                                : const Color(0xFF94A3B4),
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        Text(
-                          isLive ? 'Live' : 'Reconnecting…',
-                          style: TextStyle(
-                            color:
-                            isLive ? Colors.white70 : Colors.white38,
-                            fontSize: 11,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
+      onTap: () =>
+          user != null ? showParticipantDetailsModal(context, user) : null,
+      child: Container(
+        decoration: const BoxDecoration(gradient: ColorConstants.appGradient),
+        padding: EdgeInsets.fromLTRB(
+          12,
+          MediaQuery.of(context).padding.top + 10,
+          16,
+          14,
+        ),
+        child: Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                ref
+                    .read(messagingProvider.notifier)
+                    .clearSelectedConversation();
+                Navigator.pop(context);
+              },
+              child: Container(
+                width: 36,
+                height: 36,
+                margin: const EdgeInsets.only(right: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              ],
+                child: const Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Colors.white,
+                  size: 16,
+                ),
+              ),
             ),
-          ),
-        ],
+            user != null
+                ? CompactAvatar(user: user, radius: 18)
+                : CircleAvatar(
+                    radius: 18,
+                    backgroundColor: Colors.white.withValues(alpha: 0.25),
+                    child: Text(
+                      initials ?? "",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    user?.name ?? otherUserName ?? "",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Consumer(
+                    builder: (_, ref, _) {
+                      final socketStatus = ref.watch(socketConnectionProvider);
+                      final isLive = socketStatus == SocketStatus.connected;
+                      return Row(
+                        children: [
+                          Container(
+                            width: 7,
+                            height: 7,
+                            margin: const EdgeInsets.only(right: 4),
+                            decoration: BoxDecoration(
+                              color: isLive
+                                  ? const Color(0xFF28D744)
+                                  : const Color(0xFF94A3B4),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          Text(
+                            isLive ? 'Live' : 'Reconnecting...',
+                            style: TextStyle(
+                              color: isLive ? Colors.white70 : Colors.white38,
+                              fontSize: 11,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
-    ));
+    );
   }
 
-  // ── Load more ────────────────────────────────────────────────
+  // Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬ Load more Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬
 
   Widget _buildLoadMoreButton() => Center(
     child: Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: GestureDetector(
-        onTap: () =>
-            ref.read(messagingProvider.notifier).loadMoreMessages(),
+        onTap: () => ref.read(messagingProvider.notifier).loadMoreMessages(),
         child: Container(
-          padding:
-          const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: const Color(0xFFE2E8ED)),
           ),
-          child: const Text('Load older messages',
-              style:
-              TextStyle(fontSize: 12, color: Color(0xFF536C79))),
+          child: const Text(
+            'Load older messages',
+            style: TextStyle(fontSize: 12, color: Color(0xFF536C79)),
+          ),
         ),
       ),
     ),
   );
 
-  // ── Message list ─────────────────────────────────────────────
+  // Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬ Message list Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬
 
   Widget _buildMessageList(MessagingState state, String currentUserId) {
     final isLoading =
-        state.status == MessageFetchStatus.loading && state.messages.isEmpty;
+        state.status == MessagingStatus.loading && state.messages.isEmpty;
 
     if (isLoading) {
       return const Center(
@@ -358,7 +375,7 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
     );
   }
 
-  // ── File preview bar (shown above input when file is staged) ─
+  // Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬ File preview bar (shown above input when file is staged) Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬
 
   Widget _buildFilePreviewBar() {
     final file = _pendingFile!;
@@ -374,7 +391,7 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
         border: Border.all(color: const Color(0xFFE2E8ED)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 6,
             offset: const Offset(0, -2),
           ),
@@ -415,7 +432,9 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
                   Text(
                     _formatFileSize(file.size),
                     style: const TextStyle(
-                        fontSize: 11, color: Color(0xFF94A3B4)),
+                      fontSize: 11,
+                      color: Color(0xFF94A3B4),
+                    ),
                   ),
               ],
             ),
@@ -430,8 +449,11 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
                 color: const Color(0xFFF0F4F7),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Icon(Icons.close_rounded,
-                  size: 16, color: Color(0xFF536C79)),
+              child: const Icon(
+                Icons.close_rounded,
+                size: 16,
+                color: Color(0xFF536C79),
+              ),
             ),
           ),
         ],
@@ -445,7 +467,7 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
     return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
   }
 
-  // ── Error banner ─────────────────────────────────────────────
+  // Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬ Error banner Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬
 
   Widget _buildErrorBanner(String error) => Container(
     margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
@@ -459,9 +481,11 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
         const Icon(Icons.error_outline, color: Colors.red, size: 16),
         const SizedBox(width: 8),
         Expanded(
-            child: Text(error,
-                style: const TextStyle(
-                    color: Colors.red, fontSize: 13))),
+          child: Text(
+            error,
+            style: const TextStyle(color: Colors.red, fontSize: 13),
+          ),
+        ),
         GestureDetector(
           onTap: () => ref.read(messagingProvider.notifier).clearError(),
           child: const Icon(Icons.close, size: 16, color: Colors.red),
@@ -470,7 +494,7 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
     ),
   );
 
-  // ── Typing indicator ─────────────────────────────────────────
+  // Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬ Typing indicator Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬
 
   Widget _buildTypingIndicator() => Padding(
     padding: const EdgeInsets.only(left: 16, bottom: 4),
@@ -479,7 +503,7 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
         TypingDots(),
         const SizedBox(width: 8),
         const Text(
-          'typing…',
+          'typing...',
           style: TextStyle(
             fontSize: 12,
             color: Color(0xFF94A3B4),
@@ -490,20 +514,23 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
     ),
   );
 
-  // ── Input bar ────────────────────────────────────────────────
+  // Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬ Input bar Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬
 
   Widget _buildInputBar(MessagingState state) => Container(
     padding: EdgeInsets.fromLTRB(
-        12, 8, 12, MediaQuery.of(context).padding.bottom + 8),
+      12,
+      8,
+      12,
+      MediaQuery.of(context).padding.bottom + 8,
+    ),
     decoration: const BoxDecoration(
       color: Colors.white,
-      border:
-      Border(top: BorderSide(color: Color(0xFFE8EDF2), width: 1)),
+      border: Border(top: BorderSide(color: Color(0xFFE8EDF2), width: 1)),
     ),
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        // Attach — hidden once a file is already staged
+        // Attach Æ’Â¢Â¢-Å¡Â¬Â¢Ã¢â€šÂ¬Â hidden once a file is already staged
         if (_pendingFile == null)
           GestureDetector(
             onTap: state.isUploading ? null : _handleAttach,
@@ -516,16 +543,21 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
               ),
               child: state.isUploading
                   ? const Padding(
-                padding: EdgeInsets.all(10),
-                child: CircularProgressIndicator(
-                    strokeWidth: 2, color: Color(0xFF0A9FBF)),
-              )
-                  : const Icon(Icons.attach_file_rounded,
-                  size: 22, color: Color(0xFF536C79)),
+                      padding: EdgeInsets.all(10),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Color(0xFF0A9FBF),
+                      ),
+                    )
+                  : const Icon(
+                      Icons.attach_file_rounded,
+                      size: 22,
+                      color: Color(0xFF536C79),
+                    ),
             ),
           ),
         if (_pendingFile == null) const SizedBox(width: 8),
-        // Text input — hint adapts to context
+        // Text input Æ’Â¢Â¢-Å¡Â¬Â¢Ã¢â€šÂ¬Â hint adapts to context
         Expanded(
           child: Container(
             decoration: BoxDecoration(
@@ -538,18 +570,21 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
               onChanged: _onMessageChanged,
               minLines: 1,
               maxLines: 4,
-              style: const TextStyle(
-                  fontSize: 14, color: Color(0xFF1A2632)),
+              style: const TextStyle(fontSize: 14, color: Color(0xFF1A2632)),
               decoration: InputDecoration(
                 // Hint changes when a file is staged
                 hintText: _pendingFile != null
-                    ? 'Add a caption…'
-                    : 'Type a message…',
+                    ? 'Add a caption...'
+                    : 'Type a message...',
                 hintStyle: const TextStyle(
-                    color: Color(0xFF94A3B4), fontSize: 14),
+                  color: Color(0xFF94A3B4),
+                  fontSize: 14,
+                ),
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 14, vertical: 10),
+                  horizontal: 14,
+                  vertical: 10,
+                ),
               ),
               onSubmitted: (_) => _handleSend(),
               textInputAction: TextInputAction.send,
@@ -559,9 +594,7 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
         const SizedBox(width: 8),
         // Send
         GestureDetector(
-          onTap: state.isSending || state.isUploading
-              ? null
-              : _handleSend,
+          onTap: state.isSending || state.isUploading ? null : _handleSend,
           child: Container(
             width: 48,
             height: 48,
@@ -576,19 +609,20 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
             ),
             child: (state.isSending || state.isUploading)
                 ? const Padding(
-              padding: EdgeInsets.all(10),
-              child: CircularProgressIndicator(
-                  strokeWidth: 2, color: Colors.white),
-            )
-                : const Icon(Icons.send_rounded,
-                color: Colors.white, size: 22),
+                    padding: EdgeInsets.all(10),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  )
+                : const Icon(Icons.send_rounded, color: Colors.white, size: 22),
           ),
         ),
       ],
     ),
   );
 
-  // ── Delete confirm ───────────────────────────────────────────
+  // Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬ Delete confirm Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬Æ’Â¢Â¢Ã¢â€šÂ¬ÂÂ¢-Å¡Â¬
 
   Future<void> _confirmDelete(String messageId) async {
     final confirmed = await showDialog<bool>(
@@ -596,16 +630,15 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
       builder: (ctx) => AlertDialog(
         title: const Text('Delete message?'),
         content: const Text('This cannot be undone.'),
-        shape:
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Cancel')),
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Cancel'),
+          ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child:
-            const Text('Delete', style: TextStyle(color: Colors.red)),
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
           ),
         ],
       ),

@@ -1,4 +1,3 @@
-
 class SubmitTicketResult {
   final String ticketNumber;
   final String id;
@@ -117,9 +116,10 @@ class TicketDetail extends TicketListItem {
       description: json['description'],
       resolution: json['resolution'],
       tags: List<String>.from(json['tags'] ?? []),
-      replies: (json['replies'] as List?)
-          ?.map((r) => TicketReply.fromJson(r))
-          .toList() ??
+      replies:
+          (json['replies'] as List?)
+              ?.map((r) => TicketReply.fromJson(r))
+              .toList() ??
           [],
     );
   }
@@ -151,9 +151,13 @@ class TicketReply {
       final author = json['author'];
       if (author['adminProfile'] != null) {
         isStaff = true;
-        authorName = "${author['adminProfile']['firstName'] ?? ''} ${author['adminProfile']['lastName'] ?? ''}".trim();
+        authorName =
+            "${author['adminProfile']['firstName'] ?? ''} ${author['adminProfile']['lastName'] ?? ''}"
+                .trim();
       } else if (author['nurseProfile'] != null) {
-        authorName = "${author['nurseProfile']['firstName'] ?? ''} ${author['nurseProfile']['lastName'] ?? ''}".trim();
+        authorName =
+            "${author['nurseProfile']['firstName'] ?? ''} ${author['nurseProfile']['lastName'] ?? ''}"
+                .trim();
       }
     }
     // Fallbacks

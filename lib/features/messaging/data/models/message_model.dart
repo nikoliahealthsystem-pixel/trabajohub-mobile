@@ -70,7 +70,9 @@ class MessageModel {
     status: json['status'] ?? 'SENT',
     readAt: json['readAt'] != null ? DateTime.parse(json['readAt']) : null,
     createdAt: DateTime.parse(json['createdAt']),
-    sender: json['sender'] != null ? MessageSender.fromJson(json['sender']) : null,
+    sender: json['sender'] != null
+        ? MessageSender.fromJson(json['sender'])
+        : null,
   );
 
   bool get isDeleted =>
@@ -85,19 +87,18 @@ class MessageModel {
     String? attachmentUrl,
     String? attachmentKey,
     String? attachmentSignedUrl,
-  }) =>
-      MessageModel(
-        id: id,
-        conversationId: conversationId,
-        senderId: senderId,
-        content: content ?? this.content,
-        attachmentUrl: attachmentUrl ?? this.attachmentUrl,
-        attachmentKey: attachmentKey ?? this.attachmentKey,
-        attachmentSignedUrl: attachmentSignedUrl ?? this.attachmentSignedUrl,
-        attachmentType: attachmentType,
-        status: status ?? this.status,
-        readAt: readAt != null ? DateTime.parse(readAt) : this.readAt,
-        createdAt: createdAt,
-        sender: sender,
-      );
+  }) => MessageModel(
+    id: id,
+    conversationId: conversationId,
+    senderId: senderId,
+    content: content ?? this.content,
+    attachmentUrl: attachmentUrl ?? this.attachmentUrl,
+    attachmentKey: attachmentKey ?? this.attachmentKey,
+    attachmentSignedUrl: attachmentSignedUrl ?? this.attachmentSignedUrl,
+    attachmentType: attachmentType,
+    status: status ?? this.status,
+    readAt: readAt != null ? DateTime.parse(readAt) : this.readAt,
+    createdAt: createdAt,
+    sender: sender,
+  );
 }

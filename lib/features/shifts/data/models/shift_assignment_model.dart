@@ -24,16 +24,21 @@ class ShiftAssignmentModel {
     this.visit,
   });
 
-  factory ShiftAssignmentModel.fromJson(Map<String, dynamic> json) =>
-      ShiftAssignmentModel(
-        id: json['id'],
-        shiftId: json['shiftId'],
-        nurseProfileId: json['nurseProfileId'],
-        status: json['status'],
-        acceptedAt: json['acceptedAt'] != null ? DateTime.parse(json['acceptedAt']) : null,
-        cancelledAt: json['cancelledAt'] != null ? DateTime.parse(json['cancelledAt']) : null,
-        cancelReason: json['cancelReason'],
-        shift: json['shift'] != null ? ShiftModel.fromJson(json['shift']) : null,
-        visit: json['visit'] != null ? VisitModel.fromJson(json['visit']) : null,
-      );
+  factory ShiftAssignmentModel.fromJson(
+    Map<String, dynamic> json,
+  ) => ShiftAssignmentModel(
+    id: json['id'],
+    shiftId: json['shiftId'],
+    nurseProfileId: json['nurseProfileId'],
+    status: json['status'],
+    acceptedAt: json['acceptedAt'] != null
+        ? DateTime.parse(json['acceptedAt'])
+        : null,
+    cancelledAt: json['cancelledAt'] != null
+        ? DateTime.parse(json['cancelledAt'])
+        : null,
+    cancelReason: json['cancelReason'],
+    shift: json['shift'] != null ? ShiftModel.fromJson(json['shift']) : null,
+    visit: json['visit'] != null ? VisitModel.fromJson(json['visit']) : null,
+  );
 }

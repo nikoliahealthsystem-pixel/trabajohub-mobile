@@ -45,24 +45,34 @@ class EventTypeFilterBar extends StatelessWidget {
                       onTap: () => onToggle(type),
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 180),
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 6,
+                        ),
                         decoration: BoxDecoration(
                           color: isActive ? colors.$1 : const Color(0xFFF0F4F7),
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                            color: isActive ? colors.$2.withOpacity(0.3) : const Color(0xFFE2E8ED),
+                            color: isActive
+                                ? colors.$2.withOpacity(0.3)
+                                : const Color(0xFFE2E8ED),
                           ),
                         ),
                         child: Row(
                           children: [
-                            Text(type.emoji, style: const TextStyle(fontSize: 11)),
+                            Text(
+                              type.emoji,
+                              style: const TextStyle(fontSize: 11),
+                            ),
                             const SizedBox(width: 5),
                             Text(
                               type.label,
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w600,
-                                color: isActive ? colors.$2 : const Color(0xFF94A3B4),
+                                color: isActive
+                                    ? colors.$2
+                                    : const Color(0xFF94A3B4),
                               ),
                             ),
                           ],
@@ -74,10 +84,17 @@ class EventTypeFilterBar extends StatelessWidget {
                 GestureDetector(
                   onTap: onReset,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
                     child: const Text(
                       'Reset',
-                      style: TextStyle(fontSize: 11, color: Color(0xFF94A3B4), fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Color(0xFF94A3B4),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),

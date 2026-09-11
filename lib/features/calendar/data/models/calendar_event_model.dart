@@ -77,8 +77,8 @@ class CalendarEventMeta {
         period: json['period'],
         isUrgent: json['isUrgent'] ?? false,
         isEmergencyFill: json['isEmergencyFill'] ?? false,
-        payRate:     _parseDouble(json['payRate']),
-        chargeRate:  _parseDouble(json['chargeRate']),
+        payRate: _parseDouble(json['payRate']),
+        chargeRate: _parseDouble(json['chargeRate']),
         durationMinutes: json['durationMinutes'],
         checkInTime: json['checkInTime'],
         checkOutTime: json['checkOutTime'],
@@ -92,7 +92,7 @@ class CalendarEventMeta {
         daysUntilExpiry: json['daysUntilExpiry'],
         nurseProfileId: json['nurseProfileId'],
         invoiceNumber: json['invoiceNumber'],
-        total:       _parseDouble(json['total']),
+        total: _parseDouble(json['total']),
         dueAt: json['dueAt'],
         facilityName: json['facilityName'],
       );
@@ -108,46 +108,71 @@ enum CalendarEventType {
 
   static CalendarEventType fromString(String raw) {
     switch (raw) {
-      case 'SHIFT': return shift;
-      case 'RECURRING_SHIFT': return recurringShift;
-      case 'VISIT': return visit;
-      case 'CREDENTIAL_EXPIRY': return credentialExpiry;
-      case 'INVOICE_DUE': return invoiceDue;
-      case 'INVOICE_OVERDUE': return invoiceOverdue;
-      default: return shift;
+      case 'SHIFT':
+        return shift;
+      case 'RECURRING_SHIFT':
+        return recurringShift;
+      case 'VISIT':
+        return visit;
+      case 'CREDENTIAL_EXPIRY':
+        return credentialExpiry;
+      case 'INVOICE_DUE':
+        return invoiceDue;
+      case 'INVOICE_OVERDUE':
+        return invoiceOverdue;
+      default:
+        return shift;
     }
   }
 
   String toApiString() {
     switch (this) {
-      case shift: return 'SHIFT';
-      case recurringShift: return 'RECURRING_SHIFT';
-      case visit: return 'VISIT';
-      case credentialExpiry: return 'CREDENTIAL_EXPIRY';
-      case invoiceDue: return 'INVOICE_DUE';
-      case invoiceOverdue: return 'INVOICE_OVERDUE';
+      case shift:
+        return 'SHIFT';
+      case recurringShift:
+        return 'RECURRING_SHIFT';
+      case visit:
+        return 'VISIT';
+      case credentialExpiry:
+        return 'CREDENTIAL_EXPIRY';
+      case invoiceDue:
+        return 'INVOICE_DUE';
+      case invoiceOverdue:
+        return 'INVOICE_OVERDUE';
     }
   }
 
   String get label {
     switch (this) {
-      case shift: return 'Shift';
-      case recurringShift: return 'Recurring';
-      case visit: return 'Visit';
-      case credentialExpiry: return 'Credential';
-      case invoiceDue: return 'Invoice Due';
-      case invoiceOverdue: return 'Overdue';
+      case shift:
+        return 'Shift';
+      case recurringShift:
+        return 'Recurring';
+      case visit:
+        return 'Visit';
+      case credentialExpiry:
+        return 'Credential';
+      case invoiceDue:
+        return 'Invoice Due';
+      case invoiceOverdue:
+        return 'Overdue';
     }
   }
 
   String get emoji {
     switch (this) {
-      case shift: return '🩺';
-      case recurringShift: return '🔁';
-      case visit: return '📍';
-      case credentialExpiry: return '📋';
-      case invoiceDue: return '💳';
-      case invoiceOverdue: return '⚠️';
+      case shift:
+        return '🩺';
+      case recurringShift:
+        return '🔁';
+      case visit:
+        return '📍';
+      case credentialExpiry:
+        return '📋';
+      case invoiceDue:
+        return '💳';
+      case invoiceOverdue:
+        return '⚠️';
     }
   }
 }
@@ -192,7 +217,8 @@ class CalendarEventModel {
         resourceId: json['resourceId'] ?? '',
         facilityId: json['facilityId'],
         meta: CalendarEventMeta.fromJson(
-            json['meta'] as Map<String, dynamic>? ?? {}),
+          json['meta'] as Map<String, dynamic>? ?? {},
+        ),
       );
 
   // Normalize to the calendar day key (UTC midnight)

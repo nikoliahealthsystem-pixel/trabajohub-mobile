@@ -9,7 +9,8 @@ class SupportApi {
   SupportApi(this._dio);
 
   // ... (same methods as before)
-  Future<Map<String, dynamic>> getFaqs() => _dio.get('/support/faqs').then((r) => r.data);
+  Future<Map<String, dynamic>> getFaqs() =>
+      _dio.get('/support/faqs').then((r) => r.data);
 
   Future<Map<String, dynamic>> submitTicket(Map<String, dynamic> payload) =>
       _dio.post('/support', data: payload).then((r) => r.data);
@@ -37,10 +38,10 @@ class SupportApi {
     required String body,
     bool isInternal = false,
   }) async {
-    await _dio.post('/support/$ticketId/replies', data: {
-      'body': body,
-      'isInternal': isInternal,
-    });
+    await _dio.post(
+      '/support/$ticketId/replies',
+      data: {'body': body, 'isInternal': isInternal},
+    );
   }
 }
 

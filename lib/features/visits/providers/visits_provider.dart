@@ -13,15 +13,21 @@ final visitsApiProvider = Provider<VisitsApi>((ref) {
 });
 
 final visitsRepositoryProvider = Provider<VisitsRepository>((ref) {
-  return VisitsRepositoryImpl(ref.watch(visitsApiProvider),ref.watch(appCacheProvider));
+  return VisitsRepositoryImpl(
+    ref.watch(visitsApiProvider),
+    ref.watch(appCacheProvider),
+  );
 });
 
-final visitsProvider =
-StateNotifierProvider<VisitsNotifier, VisitsState>((ref) {
+final visitsProvider = StateNotifierProvider<VisitsNotifier, VisitsState>((
+  ref,
+) {
   return VisitsNotifier(ref.watch(visitsRepositoryProvider));
 });
 
-final visitDetailProvider =
-FutureProvider.family<dynamic, String>((ref, id) async {
+final visitDetailProvider = FutureProvider.family<dynamic, String>((
+  ref,
+  id,
+) async {
   return ref.watch(visitsRepositoryProvider).getVisit(id);
 });

@@ -13,14 +13,17 @@ class CredentialSummary {
       CredentialSummary(
         type: json['type'],
         status: json['status'],
-        expiresAt: json['expiresAt'] != null ? DateTime.parse(json['expiresAt']) : null,
+        expiresAt: json['expiresAt'] != null
+            ? DateTime.parse(json['expiresAt'])
+            : null,
       );
 
-  bool get isExpired => expiresAt != null && expiresAt!.isBefore(DateTime.now());
+  bool get isExpired =>
+      expiresAt != null && expiresAt!.isBefore(DateTime.now());
   bool get isExpiringSoon =>
       expiresAt != null &&
-          !isExpired &&
-          expiresAt!.isBefore(DateTime.now().add(const Duration(days: 30)));
+      !isExpired &&
+      expiresAt!.isBefore(DateTime.now().add(const Duration(days: 30)));
 }
 
 class WalletSummary {
@@ -54,8 +57,11 @@ class NurseProfileData {
   final int? yearsOfExperience;
   final double? availabilityRadius;
   final bool isAvailable;
+  final String? addressLine1;
+  final String? addressLine2;
   final String? city;
   final String? state;
+  final String? zipCode;
   final String? stripeAccountId;
   final List<CredentialSummary> credentials;
   final WalletSummary? wallet;
@@ -70,8 +76,11 @@ class NurseProfileData {
     this.yearsOfExperience,
     this.availabilityRadius,
     required this.isAvailable,
+    this.addressLine1,
+    this.addressLine2,
     this.city,
     this.state,
+    this.zipCode,
     this.stripeAccountId,
     required this.credentials,
     this.wallet,
@@ -88,8 +97,11 @@ class NurseProfileData {
         yearsOfExperience: json['yearsOfExperience'],
         availabilityRadius: (json['availabilityRadius'] as num?)?.toDouble(),
         isAvailable: json['isAvailable'] ?? true,
+        addressLine1: json['addressLine1'],
+        addressLine2: json['addressLine2'],
         city: json['city'],
         state: json['state'],
+        zipCode: json['zipCode'],
         stripeAccountId: json['stripeAccountId'],
         credentials: (json['credentials'] as List? ?? [])
             .map((c) => CredentialSummary.fromJson(c))
@@ -106,6 +118,7 @@ class UserModel {
   final String id;
   final String email;
   final String? phone;
+  final DateTime? phoneVerifiedAt;
   final String role;
   final String status;
   final String verificationStatus;
@@ -117,6 +130,7 @@ class UserModel {
     required this.id,
     required this.email,
     this.phone,
+    this.phoneVerifiedAt,
     required this.role,
     required this.status,
     required this.verificationStatus,
@@ -129,6 +143,9 @@ class UserModel {
     id: json['id'],
     email: json['email'],
     phone: json['phone'],
+    phoneVerifiedAt: json['phoneVerifiedAt'] != null
+        ? DateTime.tryParse(json['phoneVerifiedAt'].toString())
+        : null,
     role: json['role'],
     status: json['status'] ?? 'PENDING',
     verificationStatus: json['verificationStatus'] ?? 'UNVERIFIED',
@@ -142,11 +159,14 @@ class UserModel {
   );
 
   // Convenience getters
-  String get displayName =>
-      nurseProfile?.fullName ?? email.split('@').first;
+  String get displayName => nurseProfile?.fullName ?? email.split('@').first;
 
   String get avatarUrl => nurseProfile?.avatarUrl ?? '';
 
   bool get isNurse => role == 'NURSE';
   bool get isVerified => verificationStatus == 'VERIFIED';
+
+  bool get hasPhone => phone != null && phone!.trim().isNotEmpty;
+
+  bool get isPhoneVerified => hasPhone && phoneVerifiedAt != null;
 }

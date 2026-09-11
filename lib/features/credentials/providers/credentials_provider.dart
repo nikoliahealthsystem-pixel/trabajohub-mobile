@@ -12,12 +12,14 @@ final credentialsApiProvider = Provider<CredentialsApi>((ref) {
   return CredentialsApi(ref.watch(dioClientProvider));
 });
 
-final credentialsRepositoryProvider =
-Provider<CredentialsRepository>((ref) {
-  return CredentialsRepositoryImpl(ref.watch(credentialsApiProvider), ref.watch(appCacheProvider));
+final credentialsRepositoryProvider = Provider<CredentialsRepository>((ref) {
+  return CredentialsRepositoryImpl(
+    ref.watch(credentialsApiProvider),
+    ref.watch(appCacheProvider),
+  );
 });
 
 final credentialsProvider =
-StateNotifierProvider<CredentialsNotifier, CredentialsState>((ref) {
-  return CredentialsNotifier(ref.watch(credentialsRepositoryProvider));
-});
+    StateNotifierProvider<CredentialsNotifier, CredentialsState>((ref) {
+      return CredentialsNotifier(ref.watch(credentialsRepositoryProvider));
+    });

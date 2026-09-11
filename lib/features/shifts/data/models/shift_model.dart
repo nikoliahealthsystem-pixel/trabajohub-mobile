@@ -100,16 +100,20 @@ class ShiftModel {
   );
 
   String get displayTitle =>
-      title ?? '${_formatVisitType(visitType)} – ${requiredDesignation}';
+      title ?? '${_formatVisitType(visitType)} ? $requiredDesignation';
 
-  String get locationDisplay =>
-      shiftCase != null ? '${shiftCase!.city}, ${shiftCase!.state}' : 'Unknown location';
+  String get locationDisplay => shiftCase != null
+      ? '${shiftCase!.city}, ${shiftCase!.state}'
+      : 'Unknown location';
 
   double get estimatedEarnings {
     final hours = scheduledEnd.difference(scheduledStart).inMinutes / 60;
     return payRate * hours;
   }
 
-  static String _formatVisitType(String raw) =>
-      raw.replaceAll('_', ' ').split(' ').map((w) => w[0].toUpperCase() + w.substring(1).toLowerCase()).join(' ');
+  static String _formatVisitType(String raw) => raw
+      .replaceAll('_', ' ')
+      .split(' ')
+      .map((w) => w[0].toUpperCase() + w.substring(1).toLowerCase())
+      .join(' ');
 }

@@ -7,8 +7,7 @@ enum SocketStatus { disconnected, connecting, connected, error }
 class SocketConnectionNotifier extends StateNotifier<SocketStatus> {
   final SocketClient _client;
 
-  SocketConnectionNotifier(this._client)
-      : super(SocketStatus.disconnected) {
+  SocketConnectionNotifier(this._client) : super(SocketStatus.disconnected) {
     _attach();
   }
 
@@ -38,7 +37,7 @@ class SocketConnectionNotifier extends StateNotifier<SocketStatus> {
 }
 
 final socketConnectionProvider =
-StateNotifierProvider<SocketConnectionNotifier, SocketStatus>((ref) {
-  final client = ref.watch(socketClientProvider);
-  return SocketConnectionNotifier(client);
-});
+    StateNotifierProvider<SocketConnectionNotifier, SocketStatus>((ref) {
+      final client = ref.watch(socketClientProvider);
+      return SocketConnectionNotifier(client);
+    });

@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import '../data/notifications_repository.dart';
 import 'notifications_state.dart';
@@ -28,10 +27,14 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
         page: page,
         unreadOnly: state.unreadOnly,
       );
+
+      final unreadCount = await _repo.getUnreadCount();
+
       state = state.copyWith(
         status: NotificationsStatus.success,
         items: [...(refresh ? [] : state.items), ...result.items],
         total: result.total,
+        unreadCount: unreadCount,
         hasMore: result.hasMore,
         page: page + 1,
       );
@@ -56,22 +59,44 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
   // ── Mark one read ──────────────────────────────────────────
 
   Future<void> markOneRead(String id) async {
-    // Optimistic update
+    final existing = state.items
+        .where((n) => n.id == id)
+        .cast<dynamic>()
+        .firstWhere((n) => n != null, orElse: () => null);
+
+    if (existing == null || existing.isRead == true) {
+      return;
+    }
+
+    final previousItems = state.items;
+    final previousUnreadCount = state.unreadCount;
+    final previousTotal = state.total;
+
+    final updatedItems = state.unreadOnly
+        ? state.items.where((n) => n.id != id).toList()
+        : state.items
+              .map(
+                (n) => n.id == id
+                    ? n.copyWith(isRead: true, readAt: DateTime.now())
+                    : n,
+              )
+              .toList();
+
     state = state.copyWith(
-      items: state.items
-          .map((n) => n.id == id
-          ? n.copyWith(isRead: true, readAt: DateTime.now())
-          : n)
-          .toList(),
+      items: updatedItems,
+      unreadCount: previousUnreadCount > 0 ? previousUnreadCount - 1 : 0,
+      total: state.unreadOnly && previousTotal > 0
+          ? previousTotal - 1
+          : previousTotal,
     );
+
     try {
       await _repo.markOneRead(id);
     } catch (_) {
-      // Rollback on failure
       state = state.copyWith(
-        items: state.items
-            .map((n) => n.id == id ? n.copyWith(isRead: false) : n)
-            .toList(),
+        items: previousItems,
+        unreadCount: previousUnreadCount,
+        total: previousTotal,
       );
     }
   }
@@ -84,18 +109,19 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
       await _repo.markAllRead();
       state = state.copyWith(
         isMarkingAll: false,
-        items: state.items
-            .map((n) => n.copyWith(isRead: true, readAt: DateTime.now()))
-            .toList(),
+        unreadCount: 0,
+        items: state.unreadOnly
+            ? []
+            : state.items
+                  .map((n) => n.copyWith(isRead: true, readAt: DateTime.now()))
+                  .toList(),
+        total: state.unreadOnly ? 0 : state.total,
       );
     } catch (e) {
       final message = e is DioException
           ? (e.error?.toString() ?? 'Something went wrong')
           : e.toString();
-      state = state.copyWith(
-        isMarkingAll: false,
-        errorMessage: message,
-      );
+      state = state.copyWith(isMarkingAll: false, errorMessage: message);
     }
   }
 

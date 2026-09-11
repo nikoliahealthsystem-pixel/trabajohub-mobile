@@ -61,14 +61,18 @@ class SocketClient {
     });
 
     socket.onDisconnect((_) {
-      for (final handler in List<SocketNoArgHandler>.from(_disconnectHandlers)) {
+      for (final handler in List<SocketNoArgHandler>.from(
+        _disconnectHandlers,
+      )) {
         handler();
       }
     });
 
     socket.onConnectError((error) {
       _isConnecting = false;
-      for (final handler in List<Function(dynamic)>.from(_connectErrorHandlers)) {
+      for (final handler in List<Function(dynamic)>.from(
+        _connectErrorHandlers,
+      )) {
         handler(error);
       }
     });

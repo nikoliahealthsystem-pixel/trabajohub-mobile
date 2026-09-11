@@ -12,31 +12,51 @@ enum NotificationType {
 
   static NotificationType fromString(String raw) {
     switch (raw) {
-      case 'SHIFT_ALERT': return shiftAlert;
-      case 'BOOKING_CONFIRMATION': return bookingConfirmation;
-      case 'CREDENTIAL_EXPIRY': return credentialExpiry;
-      case 'ASSIGNMENT_UPDATE': return assignmentUpdate;
-      case 'PAYMENT_ALERT': return paymentAlert;
-      case 'CREDENTIAL_APPROVED': return credentialApproved;
-      case 'CREDENTIAL_REJECTED': return credentialRejected;
-      case 'SHIFT_CANCELLED': return shiftCancelled;
-      case 'NEW_MESSAGE': return newMessage;
-      default: return systemAlert;
+      case 'SHIFT_ALERT':
+        return shiftAlert;
+      case 'BOOKING_CONFIRMATION':
+        return bookingConfirmation;
+      case 'CREDENTIAL_EXPIRY':
+        return credentialExpiry;
+      case 'ASSIGNMENT_UPDATE':
+        return assignmentUpdate;
+      case 'PAYMENT_ALERT':
+        return paymentAlert;
+      case 'CREDENTIAL_APPROVED':
+        return credentialApproved;
+      case 'CREDENTIAL_REJECTED':
+        return credentialRejected;
+      case 'SHIFT_CANCELLED':
+        return shiftCancelled;
+      case 'NEW_MESSAGE':
+        return newMessage;
+      default:
+        return systemAlert;
     }
   }
 
   String get label {
     switch (this) {
-      case shiftAlert: return 'Shift Alert';
-      case bookingConfirmation: return 'Booking';
-      case credentialExpiry: return 'Credential';
-      case assignmentUpdate: return 'Assignment';
-      case paymentAlert: return 'Payment';
-      case credentialApproved: return 'Approved';
-      case credentialRejected: return 'Rejected';
-      case shiftCancelled: return 'Cancelled';
-      case newMessage: return 'Message';
-      default: return 'System';
+      case shiftAlert:
+        return 'Shift Alert';
+      case bookingConfirmation:
+        return 'Booking';
+      case credentialExpiry:
+        return 'Credential';
+      case assignmentUpdate:
+        return 'Assignment';
+      case paymentAlert:
+        return 'Payment';
+      case credentialApproved:
+        return 'Approved';
+      case credentialRejected:
+        return 'Rejected';
+      case shiftCancelled:
+        return 'Cancelled';
+      case newMessage:
+        return 'Message';
+      default:
+        return 'System';
     }
   }
 }

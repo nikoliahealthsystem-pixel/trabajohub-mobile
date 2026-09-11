@@ -25,10 +25,10 @@ class CaseShiftSummary {
       status: json['status'] ?? '',
       assignedNurses: assignments
           .map<String>((a) {
-        final np = a['nurseProfile'] as Map<String, dynamic>?;
-        if (np == null) return '';
-        return '${np['firstName']} ${np['lastName']}';
-      })
+            final np = a['nurseProfile'] as Map<String, dynamic>?;
+            if (np == null) return '';
+            return '${np['firstName']} ${np['lastName']}';
+          })
           .where((s) => s.isNotEmpty)
           .toList(),
     );
@@ -114,6 +114,6 @@ class CaseModel {
   String get locationDisplay => '$city, $state $zipCode';
   String get patientDisplay =>
       (patientFirstName != null && patientLastName != null)
-          ? '$patientFirstName $patientLastName'
-          : 'Patient (masked)';
+      ? '$patientFirstName $patientLastName'
+      : 'Patient (masked)';
 }

@@ -8,7 +8,7 @@ class MyShiftsState {
   final int currentPage;
   final int total;
   final String? errorMessage;
-  final String selectedTab; // 'ACCEPTED' | 'COMPLETED' | 'CANCELLED'
+  final String selectedTab; // UPCOMING | IN_PROGRESS | COMPLETED | CANCELLED
   final String? cancellingId;
 
   const MyShiftsState({
@@ -17,7 +17,7 @@ class MyShiftsState {
     this.currentPage = 1,
     this.total = 0,
     this.errorMessage,
-    this.selectedTab = 'ACCEPTED',
+    this.selectedTab = 'UPCOMING',
     this.cancellingId,
   });
 
@@ -28,19 +28,22 @@ class MyShiftsState {
     List<ShiftAssignmentModel>? assignments,
     int? currentPage,
     int? total,
-    String? errorMessage,
+    Object? errorMessage = _sentinel,
     String? selectedTab,
     Object? cancellingId = _sentinel,
-  }) =>
-      MyShiftsState(
-        status: status ?? this.status,
-        assignments: assignments ?? this.assignments,
-        currentPage: currentPage ?? this.currentPage,
-        total: total ?? this.total,
-        errorMessage: errorMessage ?? this.errorMessage,
-        selectedTab: selectedTab ?? this.selectedTab,
-        cancellingId: cancellingId == _sentinel ? this.cancellingId : cancellingId as String?,
-      );
+  }) => MyShiftsState(
+    status: status ?? this.status,
+    assignments: assignments ?? this.assignments,
+    currentPage: currentPage ?? this.currentPage,
+    total: total ?? this.total,
+    errorMessage: errorMessage == _sentinel
+        ? this.errorMessage
+        : errorMessage as String?,
+    selectedTab: selectedTab ?? this.selectedTab,
+    cancellingId: cancellingId == _sentinel
+        ? this.cancellingId
+        : cancellingId as String?,
+  );
 }
 
 const _sentinel = Object();

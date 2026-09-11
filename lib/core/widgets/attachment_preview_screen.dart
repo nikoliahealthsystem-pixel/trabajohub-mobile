@@ -24,8 +24,7 @@ class AttachmentPreviewScreen extends StatefulWidget {
 class _AttachmentPreviewScreenState extends State<AttachmentPreviewScreen> {
   bool _pdfError = false;
 
-  String get _ext =>
-      widget.fileName.split('.').last.toLowerCase();
+  String get _ext => widget.fileName.split('.').last.toLowerCase();
 
   bool get _isImage =>
       ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'].contains(_ext);
@@ -37,13 +36,10 @@ class _AttachmentPreviewScreenState extends State<AttachmentPreviewScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // ── Content ──────────────────────────────────────────
-          SafeArea(
-            top: false,
-            child: _buildPreview(),
-          ),
+          // â”€â”€ Content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+          SafeArea(top: false, child: _buildPreview()),
 
-          // ── Top bar ──────────────────────────────────────────
+          // â”€â”€ Top bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           Positioned(
             top: 0,
             left: 0,
@@ -53,7 +49,11 @@ class _AttachmentPreviewScreenState extends State<AttachmentPreviewScreen> {
                 gradient: ColorConstants.appGradient,
               ),
               padding: EdgeInsets.fromLTRB(
-                  8, MediaQuery.of(context).padding.top + 8, 8, 16),
+                8,
+                MediaQuery.of(context).padding.top + 8,
+                8,
+                16,
+              ),
               child: Row(
                 children: [
                   // Close
@@ -89,7 +89,7 @@ class _AttachmentPreviewScreenState extends State<AttachmentPreviewScreen> {
     );
   }
 
-  // ── Preview router ───────────────────────────────────────────
+  // â”€â”€ Preview router â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   Widget _buildPreview() {
     if (_isImage) return _buildImagePreview();
@@ -97,7 +97,7 @@ class _AttachmentPreviewScreenState extends State<AttachmentPreviewScreen> {
     return _buildUnsupportedPreview();
   }
 
-  // ── Image (pinch-zoom) ───────────────────────────────────────
+  // â”€â”€ Image (pinch-zoom) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   Widget _buildImagePreview() {
     return PhotoView(
@@ -117,7 +117,7 @@ class _AttachmentPreviewScreenState extends State<AttachmentPreviewScreen> {
     );
   }
 
-  // ── PDF ──────────────────────────────────────────────────────
+  // â”€â”€ PDF â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   Widget _buildPdfPreview() {
     if (_pdfError) {
@@ -131,7 +131,7 @@ class _AttachmentPreviewScreenState extends State<AttachmentPreviewScreen> {
     );
   }
 
-  // ── Unsupported type ─────────────────────────────────────────
+  // â”€â”€ Unsupported type â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   Widget _buildUnsupportedPreview() {
     return Center(
@@ -145,16 +145,20 @@ class _AttachmentPreviewScreenState extends State<AttachmentPreviewScreen> {
               color: Colors.white12,
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const Icon(Icons.insert_drive_file_rounded,
-                color: Colors.white54, size: 36),
+            child: const Icon(
+              Icons.insert_drive_file_rounded,
+              color: Colors.white54,
+              size: 36,
+            ),
           ),
           const SizedBox(height: 16),
           Text(
             widget.fileName,
             style: const TextStyle(
-                color: Colors.white70,
-                fontSize: 14,
-                fontWeight: FontWeight.w600),
+              color: Colors.white70,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
@@ -171,9 +175,9 @@ class _AttachmentPreviewScreenState extends State<AttachmentPreviewScreen> {
               backgroundColor: accentColor,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              padding:
-              const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             ),
           ),
         ],
@@ -181,61 +185,55 @@ class _AttachmentPreviewScreenState extends State<AttachmentPreviewScreen> {
     );
   }
 
-  // ── Error state ──────────────────────────────────────────────
+  // â”€â”€ Error state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   Widget _buildErrorState(String message) => Center(
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(Icons.broken_image_outlined,
-            color: Colors.white38, size: 48),
+        const Icon(
+          Icons.broken_image_outlined,
+          color: Colors.white38,
+          size: 48,
+        ),
         const SizedBox(height: 12),
         Text(
           message,
           textAlign: TextAlign.center,
-          style:
-          const TextStyle(color: Colors.white54, fontSize: 13),
+          style: const TextStyle(color: Colors.white54, fontSize: 13),
         ),
       ],
     ),
   );
 
-  // ── Helpers ──────────────────────────────────────────────────
+  // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   Widget _iconButton({
     required IconData icon,
     required VoidCallback onTap,
     String? tooltip,
-  }) =>
-      GestureDetector(
-        onTap: onTap,
-        child: Tooltip(
-          message: tooltip ?? '',
-          child: Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.32),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(icon, color: Colors.white, size: 18),
-          ),
+  }) => GestureDetector(
+    onTap: onTap,
+    child: Tooltip(
+      message: tooltip ?? '',
+      child: Container(
+        width: 36,
+        height: 36,
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.32),
+          borderRadius: BorderRadius.circular(10),
         ),
-      );
+        child: Icon(icon, color: Colors.white, size: 18),
+      ),
+    ),
+  );
 
   Future<void> _downloadFile() async {
     try {
       final dir = await getApplicationDocumentsDirectory();
       final savePath = '${dir.path}/${widget.fileName}';
 
-      await Dio().download(
-        widget.url,
-        savePath,
-      );
-
-      debugPrint('Downloaded to: $savePath');
-    } catch (e) {
-      debugPrint('Download failed: $e');
-    }
+      await Dio().download(widget.url, savePath);
+    } catch (e) {}
   }
 }

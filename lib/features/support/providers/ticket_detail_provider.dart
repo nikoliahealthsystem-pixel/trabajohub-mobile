@@ -5,20 +5,22 @@ import 'package:trabajo_hub/features/support/providers/support_provider.dart';
 import '../data/support_repository.dart';
 import '../data/models/support_ticket.dart';
 
-final ticketDetailProvider = StateNotifierProvider.family<TicketDetailNotifier, TicketDetailState, String>(
-      (ref, ticketId) => TicketDetailNotifier(ref.watch(supportRepositoryProvider), ticketId),
-);
+final ticketDetailProvider =
+    StateNotifierProvider.family<
+      TicketDetailNotifier,
+      TicketDetailState,
+      String
+    >(
+      (ref, ticketId) =>
+          TicketDetailNotifier(ref.watch(supportRepositoryProvider), ticketId),
+    );
 
 class TicketDetailState {
   final TicketDetail? ticket;
   final bool isLoading;
   final String? error;
 
-  TicketDetailState({
-    this.ticket,
-    this.isLoading = true,
-    this.error,
-  });
+  TicketDetailState({this.ticket, this.isLoading = true, this.error});
 
   TicketDetailState copyWith({
     TicketDetail? ticket,
@@ -38,7 +40,7 @@ class TicketDetailNotifier extends StateNotifier<TicketDetailState> {
   final String ticketId;
 
   TicketDetailNotifier(this._repository, this.ticketId)
-      : super(TicketDetailState()) {
+    : super(TicketDetailState()) {
     load();
   }
 
@@ -47,18 +49,9 @@ class TicketDetailNotifier extends StateNotifier<TicketDetailState> {
 
     try {
       final ticket = await _repository.getTicketDetail(ticketId);
-      state = state.copyWith(
-        ticket: ticket,
-        isLoading: false,
-      );
+      state = state.copyWith(ticket: ticket, isLoading: false);
     } catch (e, stackTrace) {
-      debugPrint("❌ Failed to load ticket $ticketId: $e"); // ← Debug
-      debugPrint(stackTrace.toString());
-
-      state = state.copyWith(
-        isLoading: false,
-        error: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
 
@@ -69,7 +62,6 @@ class TicketDetailNotifier extends StateNotifier<TicketDetailState> {
       await _repository.addReply(ticketId: ticketId, body: body);
       await load(); // Refresh after reply
     } catch (e) {
-      debugPrint("❌ Failed to add reply: $e");
       // You can show a snackbar here
     }
   }

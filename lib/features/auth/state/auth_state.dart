@@ -44,20 +44,18 @@ class AuthState {
     String? twoFAQrCode,
     String? twoFASecret,
     bool? twoFASetupSuccess,
-  }) =>
-      AuthState(
-        isLoading: isLoading ?? this.isLoading,
-        error: error,
-        user: user ?? this.user,
-        profileUpdateSuccess: profileUpdateSuccess ?? false,
-        requires2FA: requires2FA ?? this.requires2FA,
-        pendingUserId: pendingUserId ?? this.pendingUserId,
-        pendingChallengeToken:
-        pendingChallengeToken ?? this.pendingChallengeToken,
-        twoFAQrCode: twoFAQrCode ?? this.twoFAQrCode,
-        twoFASecret: twoFASecret ?? this.twoFASecret,
-        twoFASetupSuccess: twoFASetupSuccess ?? false,
-      );
+  }) => AuthState(
+    isLoading: isLoading ?? this.isLoading,
+    error: error,
+    user: user ?? this.user,
+    profileUpdateSuccess: profileUpdateSuccess ?? false,
+    requires2FA: requires2FA ?? this.requires2FA,
+    pendingUserId: pendingUserId ?? this.pendingUserId,
+    pendingChallengeToken: pendingChallengeToken ?? this.pendingChallengeToken,
+    twoFAQrCode: twoFAQrCode ?? this.twoFAQrCode,
+    twoFASecret: twoFASecret ?? this.twoFASecret,
+    twoFASetupSuccess: twoFASetupSuccess ?? false,
+  );
 
   /// Clear all 2FA pending state
   AuthState clearTwoFAPending() => copyWith(

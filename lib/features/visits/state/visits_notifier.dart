@@ -1,32 +1,35 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:geolocator/geolocator.dart';
+
 import '../data/models/visit_model.dart';
 import '../data/visits_repository.dart';
 import 'visits_state.dart';
 
 class VisitsNotifier extends StateNotifier<VisitsState> {
   final VisitsRepository _repo;
-  VisitsNotifier(this._repo) : super(const VisitsState());
 
-  // ── Load ──────────────────────────────────────────────────
+  VisitsNotifier(this._repo) : super(const VisitsState());
 
   Future<void> load({bool refresh = false}) async {
     if (state.status == VisitsLoadStatus.loading) return;
+
     final page = refresh ? 1 : state.page;
+
     state = state.copyWith(
       status: (refresh || state.visits.isEmpty)
           ? VisitsLoadStatus.loading
           : VisitsLoadStatus.loadingMore,
       visits: refresh ? [] : state.visits,
     );
+
     try {
       final result = await _repo.getVisits(
         page: page,
         status: state.statusFilter,
         flaggedOnly: state.flaggedOnly,
       );
+
       state = state.copyWith(
         status: VisitsLoadStatus.success,
         visits: [...(refresh ? [] : state.visits), ...result.visits],
@@ -35,9 +38,13 @@ class VisitsNotifier extends StateNotifier<VisitsState> {
         page: page + 1,
       );
     } catch (e) {
-      final msg = e is DioException ? (e.message ?? 'Something went wrong') : e.toString();
       state = state.copyWith(
-          status: VisitsLoadStatus.error, errorMessage: msg);
+        status: VisitsLoadStatus.error,
+        errorMessage: _extractErrorMessage(
+          e,
+          fallback: 'Unable to load visits.',
+        ),
+      );
     }
   }
 
@@ -51,28 +58,29 @@ class VisitsNotifier extends StateNotifier<VisitsState> {
     load(refresh: true);
   }
 
-  void clearEvvError() =>
-      state = state.copyWith(evvError: null, evvFlagged: false);
+  void clearEvvError() {
+    state = state.copyWith(evvError: null, evvFlagged: false);
+  }
 
-  // ── GPS helper ─────────────────────────────────────────────
-
-  /// Requests location permission and returns current position.
-  /// Throws a descriptive string on permission denial or service disabled.
   Future<Position> _getCurrentLocation() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
     if (!serviceEnabled) {
-      throw 'Location services are disabled. Please enable GPS.';
+      throw 'Location services are disabled. You can enable GPS or choose another verification method.';
     }
 
-    LocationPermission permission = await Geolocator.checkPermission();
+    var permission = await Geolocator.checkPermission();
+
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
+
       if (permission == LocationPermission.denied) {
-        throw 'Location permission denied.';
+        throw 'Location permission was denied. Choose another verification method if GPS is unavailable.';
       }
     }
+
     if (permission == LocationPermission.deniedForever) {
-      throw 'Location permission permanently denied. Please enable it in Settings.';
+      throw 'Location permission is permanently denied. Enable it in Settings or choose another verification method.';
     }
 
     return Geolocator.getCurrentPosition(
@@ -83,68 +91,186 @@ class VisitsNotifier extends StateNotifier<VisitsState> {
     );
   }
 
-  // ── Check-in ───────────────────────────────────────────────
-
-  /// Returns true on success, false on error.
-  /// On geofence flag (422), returns false and sets evvFlagged=true.
-  Future<bool> checkIn(String visitId, {String? qrCode}) async {
-    state = state.copyWith(
-        checkingInVisitId: visitId, evvError: null, evvFlagged: false);
+  Future<Position?> _tryCurrentLocation() async {
     try {
-      final pos = await _getCurrentLocation();
+      return await _getCurrentLocation();
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<bool> checkIn(
+    String visitId, {
+    String verificationMethod = 'GPS',
+    String? qrCode,
+    String? pin,
+    String? reason,
+  }) async {
+    state = state.copyWith(
+      checkingInVisitId: visitId,
+      evvError: null,
+      evvFlagged: false,
+    );
+
+    try {
+      final requiresGps = verificationMethod == 'GPS';
+      final position = requiresGps
+          ? await _getCurrentLocation()
+          : await _tryCurrentLocation();
+
       final updated = await _repo.checkIn(
         visitId: visitId,
-        latitude: pos.latitude,
-        longitude: pos.longitude,
+        verificationMethod: verificationMethod,
+        latitude: position?.latitude,
+        longitude: position?.longitude,
+        accuracy: position?.accuracy,
         qrCode: qrCode,
+        pin: pin,
+        reason: reason,
       );
-      // Replace the visit in the list with the updated model
+
+      final needsReview =
+          updated.overrideRequired || updated.status == VisitStatus.flagged;
+
       state = state.copyWith(
         checkingInVisitId: null,
         visits: _replaceVisit(updated),
+        evvFlagged: needsReview,
+        evvError: needsReview
+            ? (updated.overrideReason ?? 'Check-in recorded for review.')
+            : null,
       );
+
       return true;
     } catch (e) {
-      final msg = e is DioException ? (e.message ?? 'Something went wrong') : e.toString();
-      // 422 geofence flag — treat as a soft warning, not a hard error
-      final isFlagged = msg.toLowerCase().contains('flagged') ||
-          msg.toLowerCase().contains('override');
+      final message = _extractErrorMessage(e, fallback: 'Unable to check in.');
+
+      final isFlagged = _isReviewResponse(e, message);
+
+      if (isFlagged) {
+        await _refreshVisitAfterReview(visitId);
+      }
+
       state = state.copyWith(
         checkingInVisitId: null,
-        evvError: msg.replaceAll('Exception: ', ''),
+        evvError: message,
         evvFlagged: isFlagged,
       );
+
       return false;
     }
   }
 
-  // ── Check-out ──────────────────────────────────────────────
-
-  Future<bool> checkOut(String visitId, {String? notes}) async {
+  Future<bool> checkOut(
+    String visitId, {
+    String verificationMethod = 'GPS',
+    String? qrCode,
+    String? pin,
+    String? reason,
+    String? notes,
+  }) async {
     state = state.copyWith(
-        checkingOutVisitId: visitId, evvError: null, evvFlagged: false);
+      checkingOutVisitId: visitId,
+      evvError: null,
+      evvFlagged: false,
+    );
+
     try {
-      final pos = await _getCurrentLocation();
+      final requiresGps = verificationMethod == 'GPS';
+      final position = requiresGps
+          ? await _getCurrentLocation()
+          : await _tryCurrentLocation();
+
       final updated = await _repo.checkOut(
         visitId: visitId,
-        latitude: pos.latitude,
-        longitude: pos.longitude,
+        verificationMethod: verificationMethod,
+        latitude: position?.latitude,
+        longitude: position?.longitude,
+        accuracy: position?.accuracy,
+        qrCode: qrCode,
+        pin: pin,
+        reason: reason,
         notes: notes,
       );
+
+      final needsReview = updated.overrideRequired;
+
       state = state.copyWith(
         checkingOutVisitId: null,
         visits: _replaceVisit(updated),
+        evvFlagged: needsReview,
+        evvError: needsReview
+            ? (updated.overrideReason ?? 'Checkout recorded for review.')
+            : null,
       );
+
       return true;
     } catch (e) {
-      final msg = e is DioException ? (e.message ?? 'Something went wrong') : e.toString();
+      final message = _extractErrorMessage(e, fallback: 'Unable to check out.');
+
+      final isFlagged = _isReviewResponse(e, message);
+
+      if (isFlagged) {
+        await _refreshVisitAfterReview(visitId);
+      }
+
       state = state.copyWith(
         checkingOutVisitId: null,
-        evvError: msg.replaceAll('Exception: ', ''),
+        evvError: message,
+        evvFlagged: isFlagged,
       );
+
       return false;
     }
   }
 
-  List<VisitModel> _replaceVisit(VisitModel updated) => state.visits.map((v) => v.id == updated.id ? updated : v).toList();
+  Future<void> _refreshVisitAfterReview(String visitId) async {
+    try {
+      final updated = await _repo.getVisit(visitId);
+      state = state.copyWith(visits: _replaceVisit(updated));
+    } catch (_) {
+      // Keep the original list if the refresh itself fails.
+    }
+  }
+
+  bool _isReviewResponse(Object error, String message) {
+    if (error is DioException && error.response?.statusCode == 422) {
+      return true;
+    }
+
+    final normalized = message.toLowerCase();
+
+    return normalized.contains('flagged') ||
+        normalized.contains('override') ||
+        normalized.contains('review');
+  }
+
+  String _extractErrorMessage(Object error, {required String fallback}) {
+    if (error is DioException) {
+      final data = error.response?.data;
+
+      if (data is Map<String, dynamic>) {
+        final candidates = [data['message'], data['error'], data['detail']];
+
+        for (final candidate in candidates) {
+          if (candidate is String && candidate.trim().isNotEmpty) {
+            return candidate.trim();
+          }
+        }
+      }
+
+      if (error.message != null && error.message!.trim().isNotEmpty) {
+        return error.message!.trim();
+      }
+    }
+
+    final text = error.toString().replaceFirst('Exception: ', '').trim();
+    return text.isEmpty ? fallback : text;
+  }
+
+  List<VisitModel> _replaceVisit(VisitModel updated) {
+    return state.visits
+        .map((visit) => visit.id == updated.id ? updated : visit)
+        .toList();
+  }
 }

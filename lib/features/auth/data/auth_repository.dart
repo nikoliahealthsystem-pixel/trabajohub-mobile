@@ -11,9 +11,25 @@ abstract class AuthRepository {
   ///Profile section
   Future<UserModel> getMe();
   Future<void> updateProfile(Map<String, dynamic> data);
-  Future<void> changePassword({required String currentPassword, required String newPassword});
+
+  Future<Map<String, dynamic>> sendEmailChangeCode({required String email});
+
+  Future<UserModel> verifyEmailChange({
+    required String email,
+    required String code,
+  });
+
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  });
   Future<Map<String, dynamic>?> connectStripe();
-  Future<Map<String, dynamic>> deleteAccount({required String password, String? reason});
+  Future<Map<String, dynamic>> exportMyData();
+
+  Future<Map<String, dynamic>> deleteAccount({
+    required String password,
+    String? reason,
+  });
 
   // ── 2FA ──────────────────────────────────────────────────
 
@@ -31,9 +47,6 @@ abstract class AuthRepository {
     required String totpCode,
   });
 
-  Future<void> disable2FA({
-    required String totpCode,
-    required String password,
-  });
+  Future<void> disable2FA({required String totpCode, required String password});
   Future<void> updateFcmToken(String token);
 }

@@ -53,7 +53,9 @@ class SurveyNotifier extends StateNotifier<SurveyState> {
       final survey = await _repo.getSurveyForShift(shiftId);
       state = state.copyWith(survey: survey, isLoading: false);
     } catch (e) {
-      final msg = e is DioException ? (e.message ?? 'Something went wrong') : e.toString();
+      final msg = e is DioException
+          ? (e.message ?? 'Something went wrong')
+          : e.toString();
       state = state.copyWith(isLoading: false, error: msg);
     }
   }
@@ -85,13 +87,16 @@ class SurveyNotifier extends StateNotifier<SurveyState> {
       );
       return true;
     } catch (e) {
-      final msg = e is DioException ? (e.message ?? 'Something went wrong') : e.toString();
+      final msg = e is DioException
+          ? (e.message ?? 'Something went wrong')
+          : e.toString();
       state = state.copyWith(isSubmitting: false, error: msg);
       return false;
     }
   }
 }
 
-final surveyNotifierProvider = StateNotifierProvider.family<SurveyNotifier, SurveyState, String>(
+final surveyNotifierProvider =
+    StateNotifierProvider.family<SurveyNotifier, SurveyState, String>(
       (ref, shiftId) => SurveyNotifier(ref.watch(surveysRepositoryProvider)),
-);
+    );

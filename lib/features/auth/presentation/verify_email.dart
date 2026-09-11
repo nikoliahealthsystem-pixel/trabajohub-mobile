@@ -7,7 +7,11 @@ import '../providers/auth_provider.dart';
 class VerifyEmailScreen extends ConsumerStatefulWidget {
   final String userId;
   final String email;
-  const VerifyEmailScreen({super.key, required this.userId, required this.email});
+  const VerifyEmailScreen({
+    super.key,
+    required this.userId,
+    required this.email,
+  });
 
   @override
   ConsumerState<VerifyEmailScreen> createState() => _VerifyEmailScreenState();
@@ -34,10 +38,9 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
       return;
     }
 
-    final success = await ref.read(authProvider.notifier).verifyEmail(
-      widget.userId,
-      code,
-    );
+    final success = await ref
+        .read(authProvider.notifier)
+        .verifyEmail(widget.userId, code);
 
     if (!mounted) return;
 
@@ -87,11 +90,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
                   color: accentColor.withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  Icons.email_outlined,
-                  size: 80,
-                  color: accentColor,
-                ),
+                child: Icon(Icons.email_outlined, size: 80, color: accentColor),
               ),
 
               const SizedBox(height: 32),
@@ -106,10 +105,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
 
               Text(
                 "We've sent a 6-digit verification code to your email address.",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                 textAlign: TextAlign.center,
               ),
 
@@ -147,10 +143,10 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
               const SizedBox(height: 16),
 
               TextButton(
-                onPressed: () async{
-                  await ref.read(authProvider.notifier).resendVerification(
-                    widget.email,
-                  );
+                onPressed: () async {
+                  await ref
+                      .read(authProvider.notifier)
+                      .resendVerification(widget.email);
                 },
                 child: Text(
                   "Didn't receive the code? Resend",

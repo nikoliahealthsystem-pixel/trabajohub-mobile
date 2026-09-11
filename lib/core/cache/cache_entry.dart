@@ -9,9 +9,7 @@ class CacheEntry<T> {
     required this.ttl,
   });
 
-  bool get isExpired =>
-      DateTime.now().difference(cachedAt) > ttl;
+  bool get isExpired => DateTime.now().difference(cachedAt) > ttl;
 
-  bool get isStale =>
-      DateTime.now().difference(cachedAt) > (ttl * 0.75);
+  bool get isStale => DateTime.now().difference(cachedAt) > (ttl * 0.75);
 }
