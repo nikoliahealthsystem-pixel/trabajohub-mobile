@@ -58,10 +58,10 @@ class DefaultFirebaseOptions {
   );
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyB30AUwmJWr4exphaSETvrCfod4SSWBxe0',
-    appId: '1:616518085043:ios:8bc09f46b306d07f2343c6',
+    appId: '1:616518085043:ios:522b780c0c8084492343c6',
     messagingSenderId: '616518085043',
     projectId: 'trabajohub-5f023',
     storageBucket: 'trabajohub-5f023.firebasestorage.app',
-    iosBundleId: 'com.nikoliahealthsystem.trabajoHub',
+    iosBundleId: 'com.nikoliahealthsystem.trabajohub',
   );
 }
